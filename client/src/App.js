@@ -3,6 +3,7 @@ import './App.css';
 import {Grid} from '@material-ui/core' 
 import MainPage from './pages/MainPage';
 import AccountBookPage from './pages/AccountBookPage';
+import SettingPage from './pages/SettingPage';
 import {BrowserRouter as Router, Routes , Route} from "react-router-dom"
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage/>}/>
           <Route path="/accountbook" element={<AccountBookPage/>}/>
+          <Route path="/setting" element={<SettingPage/>}/>
         </Routes>
       </Router>
     </Grid>
