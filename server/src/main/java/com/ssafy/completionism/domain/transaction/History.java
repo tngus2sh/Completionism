@@ -41,6 +41,7 @@ public class History extends TimeBaseEntity {
     @Lob
     private String diary;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
