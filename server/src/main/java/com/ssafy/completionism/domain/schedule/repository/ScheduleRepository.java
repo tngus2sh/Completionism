@@ -1,6 +1,6 @@
-package com.ssafy.completionism.client.schedule.repository;
+package com.ssafy.completionism.domain.schedule.repository;
 
-import com.ssafy.completionism.client.schedule.Schedule;
+import com.ssafy.completionism.domain.schedule.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
