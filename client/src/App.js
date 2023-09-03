@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Grid } from '@mui/material';
+import { Grid } from '@mui/material'; //mui에 의한 의존성 문제 해결!
 import MainPage from './pages/MainPage';
 import AccountBookPage from './pages/AccountBookPage';
 import SettingPage from './pages/SettingPage';
