@@ -25,7 +25,7 @@ public class History extends TimeBaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime date;
-
+    // TODO: 2023-09-03 이거이넘? 
     @Column(nullable = false)
     private String type;
 
