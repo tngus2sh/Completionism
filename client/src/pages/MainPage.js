@@ -12,7 +12,7 @@ const MainPage = ()=>{
             </Grid>
 
             <Grid className="body">
-                this is MainPage
+                this is MainPage.
             </Grid>
             <Grid className="body">
                 1
