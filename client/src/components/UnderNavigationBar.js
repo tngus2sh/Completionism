@@ -1,11 +1,11 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import "./NavigationBar.css";
+import "./UnderNavigationBar.css";
 import {Link} from "react-router-dom" ;
 
-const NavigationBar = () => {
+const UnderNavigationBar = () => {
     return(
-        <Grid className ="navbar">
+        <Grid className ="undernavbar">
             this is Navgation bar
             <Link to ="/">홈</Link>
             <Link to ="/accountbook">가계부</Link>
@@ -13,4 +13,4 @@ const NavigationBar = () => {
     )
 }
 
-export default NavigationBar
+export default UnderNavigationBar

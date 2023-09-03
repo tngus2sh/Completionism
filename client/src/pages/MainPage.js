@@ -1,11 +1,16 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import NavigationBar from "../components/NavigationBar";
+import UnderNavigationBar from "../components/UnderNavigationBar";
+import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./MainPage.css";
 
 const MainPage = ()=>{
     return(
         <Grid>
+            <Grid className="uppernavbar">
+                <UpperNavigationBar/>
+            </Grid>
+
             <Grid className="body">
                 this is MainPage
             </Grid>
@@ -34,8 +39,8 @@ const MainPage = ()=>{
                 8
             </Grid>
             
-            <Grid className="navbar">
-                <NavigationBar/>
+            <Grid className="undernavbar">
+                <UnderNavigationBar/>
             </Grid>
         </Grid>
     )

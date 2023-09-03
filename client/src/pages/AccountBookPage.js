@@ -1,17 +1,22 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import NavigationBar from "../components/NavigationBar";
+import UnderNavigationBar from "../components/UnderNavigationBar";
+import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
 
 const AccountBookPage = ()=>{
     return(
         <Grid>
+            <Grid className="uppernavbar">
+                <UpperNavigationBar/>
+            </Grid>
+
             <Grid className="body">
                 this is AccountBookPage
             </Grid>
             
-            <Grid className="navbar">
-                <NavigationBar/>
+            <Grid className="undernavbar">
+                <UnderNavigationBar/>
             </Grid>
         </Grid>
     )

@@ -1,8 +1,8 @@
 /* MainPage.css */
 
 
-/* 네비게이션 바 스타일 */
-.navbar {
+/* 하단 네비게이션 바 스타일 */
+.undernavbar {
     background-color: aqua;
     width: 390px;
     height: 60px;
