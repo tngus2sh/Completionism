@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Grid} from '@material-ui/core' 
+import { Grid } from '@mui/material';
 import MainPage from './pages/MainPage';
 import AccountBookPage from './pages/AccountBookPage';
 import SettingPage from './pages/SettingPage';
