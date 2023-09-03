@@ -1,15 +1,17 @@
-package com.ssafy.completionism.client.domain.budget;
+package com.ssafy.completionism.domain.budget;
 
-import com.ssafy.completionism.client.domain.Category;
-import com.ssafy.completionism.client.domain.TimeBaseEntity;
+import com.ssafy.completionism.domain.Category;
+import com.ssafy.completionism.domain.TimeBaseEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
+@RequiredArgsConstructor
 public class Budget extends TimeBaseEntity {
 
     @Id

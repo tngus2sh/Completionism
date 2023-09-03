@@ -1,4 +1,4 @@
-package com.ssafy.completionism.client.schedule;
+package com.ssafy.completionism.domain.schedule;
 
 import lombok.Builder;
 import lombok.Getter;
