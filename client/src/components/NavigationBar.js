@@ -5,7 +5,7 @@ import {Link} from "react-router-dom" ;
 
 const NavigationBar = () => {
     return(
-        <Grid class ="navbar">
+        <Grid className ="navbar">
             this is Navgation bar
             <Link to ="/">홈</Link>
             <Link to ="/accountbook">가계부</Link>

@@ -9,6 +9,30 @@ const MainPage = ()=>{
             <Grid className="body">
                 this is MainPage
             </Grid>
+            <Grid className="body">
+                1
+            </Grid>
+            <Grid className="body">
+                2
+            </Grid>
+            <Grid className="body">
+                3
+            </Grid>
+            <Grid className="body">
+                4
+            </Grid>
+            <Grid className="body">
+                5
+            </Grid>
+            <Grid className="body">
+                6
+            </Grid>
+            <Grid className="body">
+                7
+            </Grid>
+            <Grid className="body">
+                8
+            </Grid>
             
             <Grid className="navbar">
                 <NavigationBar/>
