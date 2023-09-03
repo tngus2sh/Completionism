@@ -11,33 +11,19 @@ const MainPage = ()=>{
                 <UpperNavigationBar/>
             </Grid>
 
-            <Grid className="body">
-                this is MainPage.
-            </Grid>
-            <Grid className="body">
+            <Grid className="box1">
                 1
             </Grid>
-            <Grid className="body">
+            <Grid className="box2">
                 2
             </Grid>
-            <Grid className="body">
+            <Grid className="box3">
                 3
             </Grid>
-            <Grid className="body">
+            <Grid className="box4">
                 4
             </Grid>
-            <Grid className="body">
-                5
-            </Grid>
-            <Grid className="body">
-                6
-            </Grid>
-            <Grid className="body">
-                7
-            </Grid>
-            <Grid className="body">
-                8
-            </Grid>
+            
             
             <Grid className="undernavbar">
                 <UnderNavigationBar/>

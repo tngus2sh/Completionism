@@ -20,3 +20,26 @@
   position: fixed;
   z-index: 1000;
 }
+
+.box1{
+  margin-top: 30px;
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+
+}
+.box2{
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+.box3{
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+.box4{
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
