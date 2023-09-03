@@ -1,8 +1,8 @@
-package com.ssafy.completionism.client.api.controller.schedule;
+package com.ssafy.completionism.api.controller.schedule;
 
-import com.ssafy.completionism.client.api.ApiResult;
-import com.ssafy.completionism.client.api.controller.schedule.request.CreateFutureScheduleRequest;
-import com.ssafy.completionism.client.api.service.schedule.FutureScheduleService;
+import com.ssafy.completionism.api.ApiResult;
+import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
+import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
