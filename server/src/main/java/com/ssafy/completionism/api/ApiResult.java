@@ -1,4 +1,4 @@
-package com.ssafy.completionism.client.api;
+package com.ssafy.completionism.api;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

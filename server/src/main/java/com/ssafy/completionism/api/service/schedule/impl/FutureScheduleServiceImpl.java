@@ -1,7 +1,7 @@
-package com.ssafy.completionism.client.api.service.schedule.impl;
+package com.ssafy.completionism.api.service.schedule.impl;
 
 import com.ssafy.completionism.domain.schedule.repository.ScheduleRepository;
-import com.ssafy.completionism.client.api.service.schedule.FutureScheduleService;
+import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
