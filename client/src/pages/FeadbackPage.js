@@ -4,24 +4,15 @@ import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
 
-const AccountBookPage = ()=>{
-    const upper_navbar_name = "가계부"
-
-
+const FeadbackPage = ()=>{
     return(
-        <Grid className='accountbook_page'>
+        <Grid>
             <Grid className="uppernavbar">
-                <UpperNavigationBar props={upper_navbar_name}/>
+                <UpperNavigationBar/>
             </Grid>
 
-            <Grid className="progressive_bar">
-            </Grid> 
-
-            <Grid className = "upper_information_box" container>
-            </Grid>
-
-
-            <Grid className = "calander_container" container>
+            <Grid className="body">
+                this is FeadbackPage
             </Grid>
             
             <Grid className="undernavbar">
@@ -31,4 +22,4 @@ const AccountBookPage = ()=>{
     )
 }
 
-export default AccountBookPage
+export default FeadbackPage
