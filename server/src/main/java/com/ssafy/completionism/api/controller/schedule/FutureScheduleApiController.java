@@ -2,6 +2,7 @@ package com.ssafy.completionism.api.controller.schedule;
 
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
+import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import io.swagger.annotations.Api;
@@ -34,4 +35,17 @@ public class FutureScheduleApiController {
         return ApiResponse.ok(null);
     }
 
+    @ApiOperation(value = "미래 예상 소비 수정")
+    @PatchMapping
+    public ApiResponse<Void> modifyFutureSchedule(@RequestBody ModifyFutureScheduleRequest request) {
+        log.debug("ModifyFutureScheduleRequest={}", request);
+
+        try {
+            futureScheduleService.modifyFutureSchedule(request);
+        }
+        catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
+        return ApiResponse.ok(null);
+    }
 }
