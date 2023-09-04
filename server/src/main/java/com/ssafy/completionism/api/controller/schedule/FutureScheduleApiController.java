@@ -33,4 +33,5 @@ public class FutureScheduleApiController {
         }
         return ApiResponse.ok(null);
     }
+
 }

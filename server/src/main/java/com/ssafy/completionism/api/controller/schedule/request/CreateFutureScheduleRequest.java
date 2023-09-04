@@ -39,23 +39,14 @@ public class CreateFutureScheduleRequest {
     @ApiModelProperty(example = "true")
     private boolean fixed;
 
-    @NotNull
-    @ApiModelProperty(example = "true")
-    private boolean periodType;
-
-    @Range(min = 1, max = 31)
-    @ApiModelProperty(example = "2")
-    private int period;
-
 
     @Builder
-    public CreateFutureScheduleRequest(String loginId, String date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+    public CreateFutureScheduleRequest(String loginId, String date, String todo, int cost, boolean plus, boolean fixed) {
         this.loginId = loginId;
         this.date = date;
         this.todo = todo;
         this.cost = cost;
         this.plus = plus;
         this.fixed = fixed;
-        this.periodType = periodType;
     }
 }

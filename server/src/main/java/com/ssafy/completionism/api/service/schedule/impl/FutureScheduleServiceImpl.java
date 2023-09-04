@@ -41,8 +41,6 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
                 .cost(request.getCost())
                 .plus(request.isPlus())
                 .fixed(request.isFixed())
-                .periodType(request.isPeriodType())
-                .period(request.getPeriod())
                 .build();
 
         Schedule futureSchedule = scheduleRepository.save(schedule);
