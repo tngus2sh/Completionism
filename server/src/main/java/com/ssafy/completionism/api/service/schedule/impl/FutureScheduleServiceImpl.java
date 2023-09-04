@@ -2,6 +2,7 @@ package com.ssafy.completionism.api.service.schedule.impl;
 
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
+import com.ssafy.completionism.api.exception.NoAuthorizationException;
 import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.schedule.Schedule;
@@ -29,7 +30,7 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 //        Optional<Member> findMember = memberRepository.findByIdAndActive(request.getLoginId(), ACTIVE);
 //
 //        if(findMember.isEmpty()) {
-//            throw new NotFoundException("204", HttpStatus.NO_CONTENT, "해당 회원은 존재하지 않습니다.");
+//            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다.");
 //        }
 //        else {
 
@@ -55,14 +56,17 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 //        Optional<Member> findMember = memberRepository.findByIdAndActive(request.getLoginId(), ACTIVE);
 //
 //        if(findMember.isEmpty()) {
-//            throw new NotFoundException("204", HttpStatus.NO_CONTENT, "해당 회원은 존재하지 않습니다.");
+//            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다.");
 //        }
 
         Optional<Schedule> findSchedule = scheduleRepository.findById(request.getId());
 
         if(findSchedule.isEmpty()) {
-            throw new NotFoundException("204", HttpStatus.NO_CONTENT, "해당하는 소비 일정이 존재하지 않습니다.");
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다.");
         }
+//        else if(!findSchedule.get().getMember().getLoginId().equals(request.getLoginId())) {
+//            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+//        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime date = LocalDateTime.parse(request.getDate(), formatter);
