@@ -7,13 +7,11 @@ import com.ssafy.completionism.domain.schedule.Schedule;
 import com.ssafy.completionism.domain.schedule.repository.ScheduleRepository;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

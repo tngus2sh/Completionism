@@ -1,7 +1,6 @@
 package com.ssafy.completionism.api.controller.schedule;
 
 import com.ssafy.completionism.api.ApiResponse;
-import com.ssafy.completionism.api.DataHeader;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
