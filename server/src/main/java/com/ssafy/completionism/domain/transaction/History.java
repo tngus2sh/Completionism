@@ -41,7 +41,7 @@ public class History extends TimeBaseEntity {
     private Member member;
 
     @Builder
-    public History(Long id, int income, int outcome, String diary, Member member) {
+    private History(Long id, int income, int outcome, String diary, Member member) {
         this.id = id;
         this.income = income;
         this.outcome = outcome;
