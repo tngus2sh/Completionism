@@ -69,4 +69,9 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
         scheduleRepository.updateFutureSchedule(request.getId(), date, request.getTodo(), request.getCost());
     }
+
+    @Override
+    public void removeFutureSchedule(Long id) {
+
+    }
 }

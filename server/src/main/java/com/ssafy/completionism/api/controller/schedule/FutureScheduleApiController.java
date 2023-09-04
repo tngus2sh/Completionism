@@ -7,6 +7,7 @@ import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class FutureScheduleApiController {
 
     @ApiOperation(value = "미래 예상 소비 등록")
     @PostMapping
-    public ApiResponse<Void> createFutureSchedule(@RequestBody CreateFutureScheduleRequest request) {
+    public ApiResponse<Void> createFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody CreateFutureScheduleRequest request) {
         log.debug("CreateFutureScheduleRequest={}", request);
 
         try {
@@ -37,7 +38,7 @@ public class FutureScheduleApiController {
 
     @ApiOperation(value = "미래 예상 소비 수정")
     @PatchMapping
-    public ApiResponse<Void> modifyFutureSchedule(@RequestBody ModifyFutureScheduleRequest request) {
+    public ApiResponse<Void> modifyFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody ModifyFutureScheduleRequest request) {
         log.debug("ModifyFutureScheduleRequest={}", request);
 
         try {
@@ -46,6 +47,16 @@ public class FutureScheduleApiController {
         catch(NotFoundException e) {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
         }
+        return ApiResponse.ok(null);
+    }
+
+    @ApiOperation(value = "미래 예상 소비 삭제")
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> removeFutureSchedule(@ApiParam(value = "schedule-id") @PathVariable(value = "id") Long id) {
+        log.debug("scheduleId={}", id);
+
+        futureScheduleService.removeFutureSchedule(id);
+
         return ApiResponse.ok(null);
     }
 }
