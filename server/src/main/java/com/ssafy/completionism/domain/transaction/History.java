@@ -9,7 +9,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +50,17 @@ public class History extends TimeBaseEntity {
         this.outcome = outcome;
         this.diary = diary;
         this.member = member;
+    }
+
+    public void updateHistory(int cost, boolean plus) {
+        if (plus) {
+            this.income += cost;
+        } else {
+            this.outcome += cost;
+        }
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
     }
 }
