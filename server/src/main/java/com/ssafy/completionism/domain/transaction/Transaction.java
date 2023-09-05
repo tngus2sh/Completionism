@@ -53,4 +53,9 @@ public class Transaction extends TimeBaseEntity {
         this.diary = diary;
         this.history = history;
     }
+
+    public void regist(History todayHistory) {
+        this.history = todayHistory;
+        this.history.addTransaction(this);
+    }
 }
