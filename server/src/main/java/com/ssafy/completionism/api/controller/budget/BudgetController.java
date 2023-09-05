@@ -1,15 +1,15 @@
 package com.ssafy.completionism.api.controller.budget;
 
 import com.ssafy.completionism.api.ApiResponse;
+import com.ssafy.completionism.api.controller.budget.request.AddBudgetRequest;
 import com.ssafy.completionism.api.controller.budget.response.MonthBudgetResponse;
 import com.ssafy.completionism.api.service.budget.BudgetService;
+import com.ssafy.completionism.api.service.budget.dto.AddBudgetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +20,19 @@ import java.util.List;
 public class BudgetController {
 
     private final BudgetService budgetService;
+
+    @PostMapping
+    public ApiResponse<Long> addBudget(
+            @Valid @RequestBody AddBudgetRequest request
+    ) {
+        // 사용자 정보 가져오기
+        String phone = null;
+        log.debug("addBudget :: request = {}", request);
+        AddBudgetDto dto = AddBudgetDto.toDto(request);
+
+        Long budgetId = budgetService.addBudget(phone, dto);
+        return ApiResponse.ok(budgetId);
+    }
 
     @GetMapping
     public ApiResponse<List<MonthBudgetResponse>> getMonthAll() {
