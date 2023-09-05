@@ -76,6 +76,15 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
     @Override
     public void removeFutureSchedule(Long id) {
+        Optional<Schedule> findSchedule = scheduleRepository.findById(id);
 
+        if(findSchedule.isEmpty()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다.");
+        }
+//        else if(!findSchedule.get().getMember().getLoginId().equals(request.getLoginId())) {
+//            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+//        }
+
+        scheduleRepository.delete(findSchedule.get());
     }
 }
