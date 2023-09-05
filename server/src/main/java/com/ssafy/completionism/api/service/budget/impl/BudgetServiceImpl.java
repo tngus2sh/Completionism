@@ -1,8 +1,10 @@
 package com.ssafy.completionism.api.service.budget.impl;
 
 import com.ssafy.completionism.api.controller.budget.response.MonthBudgetResponse;
+import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.api.service.budget.BudgetService;
 import com.ssafy.completionism.api.service.budget.dto.AddBudgetDto;
+import com.ssafy.completionism.api.service.budget.dto.ModifyBudgetDto;
 import com.ssafy.completionism.domain.Category;
 import com.ssafy.completionism.domain.budget.Budget;
 import com.ssafy.completionism.domain.budget.repository.BudgetQueryRepository;
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,5 +73,21 @@ public class BudgetServiceImpl implements BudgetService {
         Member member = null;
 
         return budgetQueryRepository.getMonthBudget(member.getId(), startMonth, endMonth);
+    }
+
+    /**
+     * 해당 사용자의 예산 수정
+     * @param phone 사용자 전화번호
+     * @param dto 수정할 예산 정보
+     * @return 예산 식별키
+     */
+    @Override
+    public Long modifyBudget(String phone, ModifyBudgetDto dto) {
+
+//        Member member = memberRepository.findByPhone(phone).orElseThrow(NoSuchElementException::new);
+        Member member = null;
+
+        // TODO: 에산 정보 수정
+        return null;
     }
 }

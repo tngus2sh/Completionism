@@ -50,4 +50,10 @@ public class Budget extends TimeBaseEntity {
                 .category(category)
                 .build();
     }
+
+    public void updateBudget(LocalDate yearMonth, int totalBudget, Category category) {
+        this.yearMonth = yearMonth;
+        this.totalBudget = totalBudget;
+        this.category = category;
+    }
 }
