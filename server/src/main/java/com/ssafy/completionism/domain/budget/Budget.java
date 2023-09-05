@@ -41,4 +41,13 @@ public class Budget extends TimeBaseEntity {
         this.totalBudget = totalBudget;
         this.category = category;
     }
+
+    public static Budget toBudget(Member member, LocalDate yearMonth, int totalBudget, Category category) {
+        return Budget.builder()
+                .member(member)
+                .yearMonth(yearMonth)
+                .totalBudget(totalBudget)
+                .category(category)
+                .build();
+    }
 }
