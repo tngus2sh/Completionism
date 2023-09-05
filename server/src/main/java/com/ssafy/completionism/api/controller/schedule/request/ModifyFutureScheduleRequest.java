@@ -12,11 +12,15 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class CreateFutureScheduleRequest {
+public class ModifyFutureScheduleRequest {
 
     @NotBlank
     @ApiModelProperty(example = "shinhan")
     private String loginId;
+
+    @Range(min = 1)
+    @ApiModelProperty(example = "1")
+    private Long id;
 
     @NotBlank
     @ApiModelProperty(example = "2023-09-09")
@@ -31,22 +35,13 @@ public class CreateFutureScheduleRequest {
     @ApiModelProperty(example = "100")
     private int cost;
 
-    @NotNull
-    @ApiModelProperty(example = "true")
-    private boolean plus;
-
-    @NotNull
-    @ApiModelProperty(example = "true")
-    private boolean fixed;
-
 
     @Builder
-    public CreateFutureScheduleRequest(String loginId, String date, String todo, int cost, boolean plus, boolean fixed) {
+    public ModifyFutureScheduleRequest(String loginId, Long id, String date, String todo, int cost) {
         this.loginId = loginId;
+        this.id = id;
         this.date = date;
         this.todo = todo;
         this.cost = cost;
-        this.plus = plus;
-        this.fixed = fixed;
     }
 }
