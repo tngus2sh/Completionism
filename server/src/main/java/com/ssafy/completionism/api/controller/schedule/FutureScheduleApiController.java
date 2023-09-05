@@ -3,6 +3,7 @@ package com.ssafy.completionism.api.controller.schedule;
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
+import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
 import com.ssafy.completionism.api.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -58,5 +61,13 @@ public class FutureScheduleApiController {
         futureScheduleService.removeFutureSchedule(id);
 
         return ApiResponse.ok(null);
+    }
+
+    @ApiOperation(value = "미래 예상 소비 전체 조회")
+    @GetMapping
+    public ApiResponse<List<FutureScheduleResponse>> getFutureScheduleAll() {
+        log.debug("getFutureScheduleAll");
+
+        return null;
     }
 }
