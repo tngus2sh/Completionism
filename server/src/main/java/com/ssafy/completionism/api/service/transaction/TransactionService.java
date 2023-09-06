@@ -29,7 +29,6 @@ public class TransactionService {
     private final HistoryQueryRepository historyQueryRepository;
     private final MemberRepository memberRepository;
 
-    // TODO: 2023-09-06 예리 - 거래 등록을 어떻게 하기로 했더라
     public Long addTransaction(AddTransactionDto dto, String loginId, LocalDateTime transactionTime) {
         log.debug("[거래내역 등록((서비스))]");
         History todayHistory = null;
@@ -75,6 +74,5 @@ public class TransactionService {
                 .member(member)
                 .build();
         return historyRepository.save(history);
-
     }
 }
