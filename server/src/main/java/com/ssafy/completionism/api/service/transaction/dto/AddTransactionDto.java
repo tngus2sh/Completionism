@@ -5,21 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 public class AddTransactionDto {
 
-    private LocalDateTime time;
     private int cost;
     private boolean plus;
     private Category category;
     private String place;
 
     @Builder
-    private AddTransactionDto(LocalDateTime time, int cost, boolean plus, Category category, String place) {
-        this.time = time;
+    private AddTransactionDto(int cost, boolean plus, Category category, String place) {
         this.cost = cost;
         this.plus = plus;
         this.category = category;
