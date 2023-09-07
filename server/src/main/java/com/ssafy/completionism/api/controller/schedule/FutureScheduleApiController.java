@@ -4,7 +4,7 @@ import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
-import com.ssafy.completionism.api.exception.NotFoundException;
+import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

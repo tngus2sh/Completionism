@@ -2,9 +2,7 @@ package com.ssafy.completionism.api.service.schedule.impl;
 
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
-import com.ssafy.completionism.api.exception.NoAuthorizationException;
-import com.ssafy.completionism.api.exception.NotFoundException;
-import com.ssafy.completionism.domain.member.Member;
+import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.domain.schedule.Schedule;
 import com.ssafy.completionism.domain.schedule.repository.ScheduleRepository;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;

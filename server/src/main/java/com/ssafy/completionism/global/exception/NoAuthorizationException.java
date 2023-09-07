@@ -1,4 +1,4 @@
-package com.ssafy.completionism.api.exception;
+package com.ssafy.completionism.global.exception;
 
 import org.springframework.http.HttpStatus;
 
