@@ -38,10 +38,12 @@ public class TransactionService {
         LocalDate transactionDate = transactionTime.toLocalDate();
         Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, transactionDate.atStartOfDay());
 
+        // 거래 내역이 생성되어 있을 때
         if (registeredHistory.isEmpty()) {
             todayHistory = createHistoryEntity(member);
         }
 
+        // 거래 내역이 생성되어 있지 않을 때
         if (registeredHistory.isPresent()) {
             todayHistory = registeredHistory.get();
         }
