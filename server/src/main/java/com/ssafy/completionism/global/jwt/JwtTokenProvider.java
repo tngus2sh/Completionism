@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key;
-    private long accessTokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분
-    private long refreshTokenValidTime = 24 * 60 * 60 * 1000L; // 토큰 유효시간 1일
+    private long accessTokenValidTime = 60 * 60 * 1000L; // 토큰 유효시간 1시간
+    private long refreshTokenValidTime = 14 * 24 * 60 * 60 * 1000L; // 토큰 유효시간 2주
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
@@ -40,60 +40,32 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Claims claims = Jwts.claims();
+        Claims claims = Jwts.claims().setSubject(authentication.getName());
         claims.put("auth", authorities);
         claims.put("name", name);
         claims.put("phone", phone);
 
         // Access Token 생성
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // Refresh Token 생성
-        String refreshToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+//        String refreshToken = Jwts.builder()
+//                .setSubject(authentication.getName())
+//                .setClaims(claims)
+//                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))
+//                .signWith(key, SignatureAlgorithm.HS256)
+//                .compact();
 
         return JwtToken.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+//                .refreshToken(refreshToken)
                 .build();
     }
-
-//    public JwtToken generateToken(Authentication authentication) {
-//        String authorities = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-//
-//        // Access Token 생성
-//        String accessToken = Jwts.builder()
-//                .setSubject(authentication.getName())
-//                .claim("auth", authorities)
-//                .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidTime))
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
-//
-//        // Refresh Token 생성
-//        String refreshToken = Jwts.builder()
-//                .setSubject(authentication.getName())
-//                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
-//
-//        return JwtToken.builder()
-//                .grantType("Bearer")
-//                .accessToken(accessToken)
-//                .refreshToken(refreshToken)
-//                .build();
-//    }
 
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화

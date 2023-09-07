@@ -1,6 +1,5 @@
 package com.ssafy.completionism.api.controller.member.request;
 
-import com.ssafy.completionism.api.service.member.dto.LoginMemberDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class LoginMemberRequest {
+public class SignupMemberRequest {
 
     @NotBlank
     @Size(max = 15)
@@ -20,10 +19,18 @@ public class LoginMemberRequest {
     @Size(min = 8, max = 16)
     private String loginPwd;
 
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String phone;
+
 
     @Builder
-    public LoginMemberRequest(String loginId, String loginPwd) {
+    public SignupMemberRequest(String loginId, String loginPwd, String name, String phone) {
         this.loginId = loginId;
         this.loginPwd = loginPwd;
+        this.name = name;
+        this.phone = phone;
     }
 }
