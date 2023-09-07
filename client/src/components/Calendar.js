@@ -1,10 +1,10 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { format, addMonths, subMonths } from 'date-fns';
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from 'date-fns';
-import { isSameMonth, isSameDay, addDays, parseISO } from 'date-fns';
+import { isSameMonth, isSameDay, addDays,} from 'date-fns';
 import './Calendar.css';
-
+import {useNavigate } from 'react-router-dom';
 
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
     return (
@@ -40,7 +40,7 @@ const RenderDays = () => {
     return <div className="days row">{days}</div>;
 };
 
-const RenderCells = ({ currentMonth, selectedDate, onDateClick, data }) => {
+const RenderCells = ({ currentMonth, selectedDate, onDateClick, data ,isDiary }) => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
@@ -70,7 +70,7 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, data }) => {
                             : 'valid'
                     }`}
                     key={day}
-                    onClick={() => onDateClick(cloneDay)}
+                    onClick={() => onDateClick(cloneDay,isDiary)}
                 >
                     <span
                         className={
@@ -101,10 +101,11 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, data }) => {
     return <div className="body">{rows}</div>;
 };
 
-export const Calender = (props) => {
-    
+export const Calender = (props ) => {
+    const navigate = useNavigate();
+    console.log(props.isDiary)
     const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, ] = useState(new Date());
 
     const prevMonth = () => {
         setCurrentMonth(subMonths(currentMonth, 1));
@@ -112,9 +113,20 @@ export const Calender = (props) => {
     const nextMonth = () => {
         setCurrentMonth(addMonths(currentMonth, 1));
     };
-    const onDateClick = (day) => {
-        const parsedDate = parseISO(day.toISOString()); // 날짜를 문자열로 변환하고 다시 파싱
-        setSelectedDate(format(parsedDate, 'yyyyMMdd'));
+    const onDateClick = (input,isDiary) => {
+        const dateObj = new Date(input)
+        const year = dateObj.getFullYear()
+        const month = (dateObj.getMonth()+1).toString().padStart(2,'0')
+        const day = dateObj.getDate().toString().padStart(2,'0')
+        const id = `${year}${month}${day}`
+        // console.log(yyyymmdd)
+        if (isDiary){
+            navigate(`../diary/${id}`)
+        }
+        else{
+            navigate(`./${id}`)
+        }
+
     };
     return (
         <div className="calendar">
@@ -129,6 +141,7 @@ export const Calender = (props) => {
                 selectedDate={selectedDate}
                 onDateClick={onDateClick}
                 data={props.props}
+                isDiary = {props.isDiary}
             />
         </div>
     );

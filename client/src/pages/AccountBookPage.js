@@ -4,6 +4,7 @@ import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
 import { Calender } from "../components/Calendar";
+import { useState } from "react";
 
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
@@ -19,12 +20,18 @@ const AccountBookPage = () => {
         spend: 3000,
       },
       {
-        day: "2023-08-02",
+        day: "2023-08-15",
         income: 10000,
         spend: 3000,
       },
     ],
   };
+  
+  const [isDiary , setIsDiary] = useState(false)
+
+  const ToggleCalendar = () => {
+    setIsDiary(!isDiary)
+  }
 
   return (
     <Grid className="accountbook_page">
@@ -37,11 +44,11 @@ const AccountBookPage = () => {
       <Grid className="upper_information_box" container></Grid>
 
       <Grid className="toggle_container" container>
-        <Grid>toggle button</Grid>
+        <button onClick = {ToggleCalendar}>toggle</button>
       </Grid>
 
       <Grid className="calander_container" container>
-        <Calender props ={monthlyAccountBookData}/>
+        <Calender isDiary={isDiary} props ={monthlyAccountBookData}/>
       </Grid>
 
       <Grid className="undernavbar">

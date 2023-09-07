@@ -6,4 +6,7 @@
     background-color: aqua;
     width: 390px;
     height: 60px;
+    bottom: 0;
+    position: fixed;
+    z-index: 1000;
   }
