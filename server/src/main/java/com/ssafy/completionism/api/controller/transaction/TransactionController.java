@@ -6,7 +6,7 @@ import com.ssafy.completionism.api.service.transaction.TransactionService;
 import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.ssafy.completionism.security.SecurityUtil;
+//import com.ssafy.completionism.security.SecurityUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +25,9 @@ public class TransactionController {
 
     @PostMapping
     public ApiResponse<String> addTransaction(@RequestBody @Valid AddTransactionRequest request) {
-        String loginId = SecurityUtil.getCurrentLoginId();
+//        String loginId = SecurityUtil.getCurrentLoginId();
         AddTransactionDto dto = request.of();
-        Long savedTransactionId = transactionService.addTransaction(dto, loginId, LocalDateTime.now());
+        Long savedTransactionId = transactionService.addTransaction(dto, "loginId", LocalDateTime.now());
 
         return ApiResponse.ok("등록 성공");
     }
