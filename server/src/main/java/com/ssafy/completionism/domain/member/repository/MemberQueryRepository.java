@@ -23,7 +23,7 @@ public class MemberQueryRepository {
         Member findMember = queryFactory
                 .select(member)
                 .from(member)
-                .where(member.loginId.eq(loginId), member.active)
+                .where(member.loginId.eq(loginId), member.active.isTrue())
                 .fetchFirst();
 
         return Optional.ofNullable(findMember);

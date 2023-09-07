@@ -3,7 +3,6 @@ package com.ssafy.completionism.domain.member;
 import com.ssafy.completionism.domain.TimeBaseEntity;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +11,13 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
 public class Member extends TimeBaseEntity implements UserDetails {
 
     @Id
@@ -39,8 +37,8 @@ public class Member extends TimeBaseEntity implements UserDetails {
     @Column(unique = true, nullable = false, length = 13)
     private String phone;
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
+    @Column(name = "access_token")
+    private String accessToken;
 
     @Column(nullable = false)
     private boolean active;
@@ -50,16 +48,33 @@ public class Member extends TimeBaseEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
 
+    public Member() {}
+
     @Builder
-    public Member(Long id, String loginId, String loginPwd, String name, String phone, String refreshToken, boolean active, List<String> roles) {
+    public Member(Long id, String loginId, String loginPwd, String name, String phone, String accessToken, boolean active, List<String> roles) {
         this.id = id;
         this.loginId = loginId;
         this.loginPwd = loginPwd;
         this.name = name;
         this.phone = phone;
-        this.refreshToken = refreshToken;
+        this.accessToken = accessToken;
         this.active = active;
         this.roles = roles;
+    }
+
+    public static Member toMember(String loginId, String loginPwd, String name, String phone, boolean active, String role) {
+        return Member.builder()
+                .loginId(loginId)
+                .loginPwd(loginPwd)
+                .name(name)
+                .phone(phone)
+                .active(active)
+                .roles(Collections.singletonList(role))
+                .build();
+    }
+
+    public void updateAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
 

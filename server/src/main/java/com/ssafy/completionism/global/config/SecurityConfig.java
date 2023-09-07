@@ -32,7 +32,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT를 사용하기 때문에 session을 stateless로 설정한다. stateless로 설정 시 Spring Security는 세션을 사용하지 않는다.
                 .and()
                 .authorizeRequests() // 요청 url에 따라 접근 권한 설정
-//                .antMatchers("/api/**").permitAll()// /아래 모든 리소스의 접근을 인증절차 없이 허용한다
+                .antMatchers("/api/auth/signup").permitAll()// /아래 모든 리소스의 접근을 인증절차 없이 허용한다
+                .antMatchers("/api/auth/login").permitAll()
                 .anyRequest().authenticated() // 인증된 유저만 접근 허용
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // UsernamePasswordAuthenticationFilter: 아이디, 패스워드 기반의 인증을 담당하는 필터
