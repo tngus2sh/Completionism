@@ -1,6 +1,5 @@
 package com.ssafy.completionism.global.exception;
 
-import com.ssafy.completionism.api.exception.ServiceRuntimeException;
 import org.springframework.http.HttpStatus;
 
 public class NoAuthorizationException extends ServiceRuntimeException {

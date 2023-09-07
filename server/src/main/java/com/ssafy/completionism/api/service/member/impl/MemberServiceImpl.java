@@ -1,7 +1,7 @@
 package com.ssafy.completionism.api.service.member.impl;
 
 import com.ssafy.completionism.api.controller.member.request.LoginMemberRequest;
-import com.ssafy.completionism.api.exception.NotFoundException;
+import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.member.MemberService;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberQueryRepository;

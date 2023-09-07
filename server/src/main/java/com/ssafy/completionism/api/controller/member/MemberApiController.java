@@ -2,7 +2,7 @@ package com.ssafy.completionism.api.controller.member;
 
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.member.request.LoginMemberRequest;
-import com.ssafy.completionism.api.exception.NotFoundException;
+import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.member.MemberService;
 import com.ssafy.completionism.global.jwt.JwtToken;
 import io.swagger.annotations.Api;
