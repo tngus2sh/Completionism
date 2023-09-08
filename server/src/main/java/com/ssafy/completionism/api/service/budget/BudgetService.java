@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface BudgetService {
 
-    public Long addBudget(String phone, AddBudgetDto dto);
+    public Long addBudget(String loginId, AddBudgetDto dto);
 
-    public List<MonthBudgetResponse> searchMonthAll(String phone);
+    public List<MonthBudgetResponse> searchMonthAll(String loginId);
 
-    public List<MonthBudgetResponse> searchMonth(String phone, LocalDate startMonth, LocalDate endMonth);
+    public List<MonthBudgetResponse> searchMonth(String loginId, LocalDate startMonth, LocalDate endMonth);
 
-    public Long modifyBudget(String phone, ModifyBudgetDto dto);
+    public void modifyBudget(String loginId, ModifyBudgetDto dto);
 }
