@@ -5,24 +5,41 @@ import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./MainPage.css";
 
 const MainPage = ()=>{
+    const upper_navbar_name = "홈"
+
     return(
-        <Grid>
-            <Grid className="uppernavbar">
-                <UpperNavigationBar/>
+        <Grid className='main_page'>
+            <Grid className="uppernav_bar">
+                <UpperNavigationBar props = {upper_navbar_name}/>
             </Grid>
 
-            <Grid className="box1">
-                1
+            <Grid className="progressive_bar">
             </Grid>
-            <Grid className="box2">
-                2
+
+            <Grid className="daily_consumption_plan_box">
             </Grid>
-            <Grid className="box3">
-                3
+
+            <Grid className = "todays_ai_diary_container" container>
+                <Grid className="todays_ai_diary_title">          
+                </Grid>
+                <Grid className="todays_ai_diary">          
+                </Grid>
             </Grid>
-            <Grid className="box4">
-                4
+
+            <Grid className = "tomorrow_consumption_container" container>
+                <Grid  className="tomorrow_consumption_title">          
+                </Grid>
+                <Grid  className="tomorrow_consumption">          
+                </Grid>
             </Grid>
+
+            <Grid className = "todays_ai_consumption_feedback_container" container>
+                <Grid  className="todays_ai_consumption_feedback_title">          
+                </Grid>
+                <Grid  className="todays_ai_consumption_feedback">          
+                </Grid>
+            </Grid>
+
             
             
             <Grid className="undernavbar">
