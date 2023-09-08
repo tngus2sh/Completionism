@@ -5,6 +5,7 @@ import com.ssafy.completionism.api.controller.budget.request.AddBudgetRequest;
 import com.ssafy.completionism.api.controller.budget.response.MonthBudgetResponse;
 import com.ssafy.completionism.api.service.budget.BudgetService;
 import com.ssafy.completionism.api.service.budget.dto.AddBudgetDto;
+import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -26,20 +27,21 @@ public class BudgetController {
             @Valid @RequestBody AddBudgetRequest request
     ) {
         // 사용자 정보 가져오기
-        String phone = null;
+        String loginId = SecurityUtils.getCurrentLoginId();
         log.debug("addBudget :: request = {}", request);
+        log.info("addBudget :: request = {}", request);
         AddBudgetDto dto = AddBudgetDto.toDto(request);
 
-        Long budgetId = budgetService.addBudget(phone, dto);
+        Long budgetId = budgetService.addBudget(loginId, dto);
         return ApiResponse.ok(budgetId);
     }
 
     @GetMapping
     public ApiResponse<List<MonthBudgetResponse>> getMonthAll() {
         // 사용자 정보 가져오기
-        String phone = null;
+        String loginId = SecurityUtils.getCurrentLoginId();
 
-        List<MonthBudgetResponse> list = budgetService.searchMonthAll(phone);
+        List<MonthBudgetResponse> list = budgetService.searchMonthAll(loginId);
         return ApiResponse.ok(list);
     }
 
@@ -48,7 +50,7 @@ public class BudgetController {
             @PathVariable String period
     ) {
         // 사용자 정보 가져오기
-        String phone = null;
+        String loginId = SecurityUtils.getCurrentLoginId();
 
         String[] dates = period.split("_");
 
@@ -58,7 +60,7 @@ public class BudgetController {
         date = dates[1].split("-");
         LocalDate end = LocalDate.from(LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2])).atStartOfDay());
 
-        List<MonthBudgetResponse> list = budgetService.searchMonth(phone, start, end);
+        List<MonthBudgetResponse> list = budgetService.searchMonth(loginId, start, end);
         return ApiResponse.ok(list);
     }
 
