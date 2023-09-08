@@ -4,17 +4,25 @@ import com.ssafy.completionism.domain.Category;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 public class AddBudgetRequest {
 
+    @NotBlank
+    @FutureOrPresent
     private LocalDate yearMonth;
 
+    @NotNull
+    @Positive
     private int totalBudget;
 
+    @NotBlank
+    @Pattern(regexp = "^(ALL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
     private Category category;
 
     @Builder
