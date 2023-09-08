@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/budget")
 @Slf4j
-public class BudgetController {
+public class BudgetApiController {
 
     private final BudgetService budgetService;
 
