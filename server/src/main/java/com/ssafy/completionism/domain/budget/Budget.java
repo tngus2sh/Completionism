@@ -20,7 +20,7 @@ public class Budget extends TimeBaseEntity {
     @Column(name = "budget_id")
     private Long id;
 
-    @Column(name = "member_id")
+    @JoinColumn(name = "member_id")
     @ManyToOne
     private Member member;
 
@@ -51,8 +51,7 @@ public class Budget extends TimeBaseEntity {
                 .build();
     }
 
-    public void updateBudget(LocalDate yearMonth, int totalBudget, Category category) {
-        this.yearMonth = yearMonth;
+    public void updateBudget(int totalBudget, Category category) {
         this.totalBudget = totalBudget;
         this.category = category;
     }
