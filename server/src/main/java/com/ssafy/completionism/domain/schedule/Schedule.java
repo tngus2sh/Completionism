@@ -1,12 +1,10 @@
 package com.ssafy.completionism.domain.schedule;
 
+import com.ssafy.completionism.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,6 +15,10 @@ public class Schedule {
     @GeneratedValue
     @Column(name = "schedule_id")
     Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(nullable = false)
     private LocalDateTime date;
@@ -43,8 +45,9 @@ public class Schedule {
     public Schedule() {}
 
     @Builder
-    public Schedule(Long id, LocalDateTime date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+    public Schedule(Long id, Member member, LocalDateTime date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         this.id = id;
+        this.member = member;
         this.date = date;
         this.todo = todo;
         this.cost = cost;
