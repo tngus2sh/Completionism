@@ -20,11 +20,11 @@ public class Budget extends TimeBaseEntity {
     @Column(name = "budget_id")
     private Long id;
 
-    @JoinColumn(name = "member_id")
     @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "year_month")
+    @Column(name = "year_month", columnDefinition = "DATE")
     private LocalDate yearMonth;
 
     @Column(name = "total_budget")
