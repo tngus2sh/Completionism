@@ -8,13 +8,15 @@ import FeadbackPage from './pages/FeadbackPage';
 import AccountBookDetailPage from './pages/AccountBookDetailPage'
 import DiaryDetailPage from './pages/DiaryDetailPage';
 import {BrowserRouter as Router, Routes , Route} from "react-router-dom";
+import SignInPage from './pages/SignInPage';
 
 function App() {
   return (
     <Grid className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<MainPage/>}/>
+          <Route path="/" element={<SignInPage/>}/>
+          <Route path="/mainpage" element={<MainPage/>}/>
           <Route path="/accountbook" element={<AccountBookPage/>}/>
           <Route path="/setting" element={<SettingPage/>}/>
           <Route path="/feadback" element={<FeadbackPage/>}/>

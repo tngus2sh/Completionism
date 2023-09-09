@@ -101,9 +101,9 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, data ,isDiary })
     return <div className="body">{rows}</div>;
 };
 
-export const Calender = (props ) => {
+export const Calender = (props) => {
     const navigate = useNavigate();
-    console.log(props.isDiary)
+    // console.log(props.isDiary)
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, ] = useState(new Date());
 

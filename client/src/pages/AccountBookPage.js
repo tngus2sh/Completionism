@@ -5,6 +5,7 @@ import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
 import { Calender } from "../components/Calendar";
 import { useState } from "react";
+import SwipeableTemporaryDrawer from "../components/bottomDrawer";
 
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
@@ -50,6 +51,20 @@ const AccountBookPage = () => {
       <Grid className="calander_container" container>
         <Calender isDiary={isDiary} props ={monthlyAccountBookData}/>
       </Grid>
+
+      <Grid xs={12}>
+        <Grid>
+          <SwipeableTemporaryDrawer/>
+        </Grid>
+        <Grid>
+          <button>직접쓰기</button>
+        </Grid>
+        <Grid>
+        <button>AI자동일기</button>
+        </Grid>
+      </Grid>
+
+      
 
       <Grid className="undernavbar">
         <UnderNavigationBar />

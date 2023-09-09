@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 const AccoutBookDetailPage = ()=>{
     const {id} = useParams();
     // console.log ({id})
-    const upperNavbarName = id;
+    const upperNavbarName = `${id}일 가계부`;
 
     return(
         <Grid>
