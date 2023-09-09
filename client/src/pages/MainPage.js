@@ -8,6 +8,7 @@ const MainPage = ()=>{
     const upperNavbarName = "홈"
 
     return(
+        
         <Grid className='main_page'>
             <Grid className="uppernav_bar">
                 <UpperNavigationBar props = {upperNavbarName}/>
