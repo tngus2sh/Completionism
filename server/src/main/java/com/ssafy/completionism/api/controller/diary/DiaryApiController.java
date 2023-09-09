@@ -2,6 +2,7 @@ package com.ssafy.completionism.api.controller.diary;
 
 import com.ssafy.completionism.api.controller.diary.request.AddDiaryRequest;
 import com.ssafy.completionism.api.controller.diary.response.DiaryResponse;
+import com.ssafy.completionism.api.service.diary.DiaryService;
 import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/diary")
 public class DiaryApiController {
+
+    private final DiaryService diaryService;
 
     @PostMapping
     public void addDiary(
