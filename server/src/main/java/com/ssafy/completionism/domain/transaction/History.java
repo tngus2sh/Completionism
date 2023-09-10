@@ -9,7 +9,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -24,12 +25,6 @@ public class History extends TimeBaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime date;
-    // TODO: 2023-09-03 이거이넘? 
-    @Column(nullable = false)
-    private String type;
-
-    @Column(nullable = false)
     @ColumnDefault("0")
     private int income;
 
@@ -41,19 +36,31 @@ public class History extends TimeBaseEntity {
     @Lob
     private String diary;
 
+    @OneToMany(mappedBy = "history", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @Builder
-    private History(Long id, LocalDateTime date, String type, int income, int outcome, String diary, Member member) {
+    private History(Long id, int income, int outcome, String diary, Member member) {
         this.id = id;
-        this.date = date;
-        this.type = type;
         this.income = income;
         this.outcome = outcome;
         this.diary = diary;
         this.member = member;
+    }
+
+    public void updateHistory(int cost, boolean plus) {
+        if (plus) {
+            this.income += cost;
+        } else {
+            this.outcome += cost;
+        }
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
     }
 }

@@ -1,21 +1,2 @@
 /* MainPage.css */
 
-/* 바디 폭만 잡아주기 */
-.body {
-    width: 390px;
-    background-color: blueviolet;
-}
-
-/* 네비게이션 바 위치고정 */
-.undernavbar {
-  bottom: 0;
-  position: fixed;
-  z-index: 1000;
-}
-
-/* 상단네비게이션 바 위치고정 */
-.uppernavbar {
-  top: 0;
-  position: fixed;
-  z-index: 1000;
-}

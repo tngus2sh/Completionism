@@ -1,5 +1,6 @@
-package com.ssafy.completionism.domain.transaction;
+package com.ssafy.completionism.domain.transaction.repository;
 
+import com.ssafy.completionism.domain.transaction.History;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

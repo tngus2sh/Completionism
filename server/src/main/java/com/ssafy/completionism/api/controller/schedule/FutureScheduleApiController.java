@@ -4,8 +4,10 @@ import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
+import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
+import com.ssafy.completionism.global.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,7 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Api(tags = {"미래 예상 소비"})
-@RequestMapping("/api/transaction/future")
+@RequestMapping("/api/schedule/future")
 public class FutureScheduleApiController {
 
     private final FutureScheduleService futureScheduleService;
@@ -30,8 +32,10 @@ public class FutureScheduleApiController {
     public ApiResponse<Void> createFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody CreateFutureScheduleRequest request) {
         log.debug("CreateFutureScheduleRequest={}", request);
 
+        CreateFutureScheduleDto dto = CreateFutureScheduleDto.toDto(request);
+
         try {
-            Long futureScheduleId = futureScheduleService.createFutureSchedule(request);
+            Long futureScheduleId = futureScheduleService.createFutureSchedule(SecurityUtils.getCurrentLoginId(), dto);
         }
         catch(NotFoundException e) {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);

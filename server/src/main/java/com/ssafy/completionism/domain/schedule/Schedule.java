@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,7 +21,7 @@ public class Schedule {
     private Member member;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(nullable = false)
     private String todo;
@@ -45,7 +45,7 @@ public class Schedule {
     public Schedule() {}
 
     @Builder
-    public Schedule(Long id, Member member, LocalDateTime date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+    public Schedule(Long id, Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         this.id = id;
         this.member = member;
         this.date = date;
@@ -55,5 +55,16 @@ public class Schedule {
         this.fixed = fixed;
         this.periodType = periodType;
         this.period = period;
+    }
+
+    public static Schedule toFutureSchedule(Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed) {
+        return  Schedule.builder()
+                .member(member)
+                .date(date)
+                .todo(todo)
+                .cost(cost)
+                .plus(plus)
+                .fixed(fixed)
+                .build();
     }
 }
