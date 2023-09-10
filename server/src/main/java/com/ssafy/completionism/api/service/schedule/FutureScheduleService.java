@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface FutureScheduleService {
     Long createFutureSchedule(String loginId, CreateFutureScheduleDto dto);
     void modifyFutureSchedule(String loginId, ModifyFutureScheduleDto dto);
-    void removeFutureSchedule(Long id);
+    void removeFutureSchedule(String loginId, Long id);
 }
