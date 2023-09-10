@@ -15,10 +15,6 @@ import javax.validation.constraints.Size;
 public class CreateFutureScheduleRequest {
 
     @NotBlank
-    @ApiModelProperty(example = "shinhan")
-    private String loginId;
-
-    @NotBlank
     @ApiModelProperty(example = "2023-09-09")
     private String date;
 
@@ -41,8 +37,7 @@ public class CreateFutureScheduleRequest {
 
 
     @Builder
-    public CreateFutureScheduleRequest(String loginId, String date, String todo, int cost, boolean plus, boolean fixed) {
-        this.loginId = loginId;
+    public CreateFutureScheduleRequest(String date, String todo, int cost, boolean plus, boolean fixed) {
         this.date = date;
         this.todo = todo;
         this.cost = cost;

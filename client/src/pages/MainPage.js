@@ -5,12 +5,13 @@ import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./MainPage.css";
 
 const MainPage = ()=>{
-    const upper_navbar_name = "홈"
+    const upperNavbarName = "홈"
 
     return(
+        
         <Grid className='main_page'>
             <Grid className="uppernav_bar">
-                <UpperNavigationBar props = {upper_navbar_name}/>
+                <UpperNavigationBar props = {upperNavbarName}/>
             </Grid>
 
             <Grid className="progressive_bar">
