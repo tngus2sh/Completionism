@@ -29,7 +29,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     /**
      * 예산 등록
-     * @param loginId 사용자 전화번호
+     * @param loginId 사용자 아이디
      * @param dto 예산 등록 dto
      * @return 예산 식별키
      */
@@ -45,7 +45,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     /**
      * 해당 사용자의 매달 예산 비용 리스트
-     * @param loginId 사용자 전화번호
+     * @param loginId 사용자 아이디
      * @return 예산 비용 리스트
      */
     @Override
@@ -57,7 +57,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     /**
      * 해당 사용자의 해당 기간 매달 예산 비용 리스트
-     * @param loginId 사용자 전화번호
+     * @param loginId 사용자 아이디
      * @param startMonth 기간 시작월
      * @param endMonth 기간 끝월
      * @return 해당 사용자의 해당 기간 매달 예산 비용 리스트
@@ -71,7 +71,8 @@ public class BudgetServiceImpl implements BudgetService {
 
     /**
      * 해당 사용자의 예산 수정
-     * @param loginId 사용자 전화번호
+     * 년월, 예산, 에산의 카테고리(목록)
+     * @param loginId 사용자 아이디
      * @param dto 수정할 예산 정보
      */
     @Override
