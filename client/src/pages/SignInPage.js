@@ -2,6 +2,7 @@ import { Grid, TextField, Button } from "@mui/material";
 import React from "react";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import './SignInPage.css';
+import { Link } from "react-router-dom";
 
 const SignInPage = () => {
   const upperNavbarName = "로그인";
@@ -46,7 +47,9 @@ const SignInPage = () => {
                 color="primary"
                 fullWidth
               >
-                회원가입
+                <Link to = '/signup'>
+                  회원가입
+                </Link>
               </Button>
             </Grid>
             <Grid item xs={6}>

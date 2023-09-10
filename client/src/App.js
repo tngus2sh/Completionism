@@ -7,6 +7,7 @@ import SettingPage from './pages/SettingPage';
 import FeadbackPage from './pages/FeadbackPage';
 import AccountBookDetailPage from './pages/AccountBookDetailPage'
 import DiaryDetailPage from './pages/DiaryDetailPage';
+import SignUpPage from './pages/SignUpPage';
 import {BrowserRouter as Router, Routes , Route} from "react-router-dom";
 import SignInPage from './pages/SignInPage';
 
@@ -16,6 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<SignInPage/>}/>
+          <Route path="/signup" element={<SignUpPage/>}/>
           <Route path="/mainpage" element={<MainPage/>}/>
           <Route path="/accountbook" element={<AccountBookPage/>}/>
           <Route path="/setting" element={<SettingPage/>}/>
