@@ -1,6 +1,5 @@
-package com.ssafy.completionism.api.controller.diary.response;
+package com.ssafy.completionism.api.controller.gpt.response;
 
-import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompletionChatResponse {
+public class GPTCompletionChatResponse {
 
     private String id;
 
@@ -63,14 +62,14 @@ public class CompletionChatResponse {
         }
     }
 
-    public static List<CompletionChatResponse.Message> toResponseListBy(List<ChatCompletionChoice> choices) {
+    public static List<GPTCompletionChatResponse.Message> toResponseListBy(List<ChatCompletionChoice> choices) {
         return choices.stream()
                 .map(completionChoice -> Message.of(completionChoice.getMessage()))
                 .collect(Collectors.toList());
     }
 
-    public static CompletionChatResponse of(ChatCompletionResult result) {
-        return new CompletionChatResponse(
+    public static GPTCompletionChatResponse of(ChatCompletionResult result) {
+        return new GPTCompletionChatResponse(
                 result.getId(),
                 result.getObject(),
                 result.getCreated(),

@@ -1,8 +1,8 @@
-package com.ssafy.completionism.api.service.diary.impl;
+package com.ssafy.completionism.api.service.gpt.impl;
 
-import com.ssafy.completionism.api.controller.diary.request.GPTCompletionChatRequest;
-import com.ssafy.completionism.api.controller.diary.response.CompletionChatResponse;
-import com.ssafy.completionism.api.service.diary.GptService;
+import com.ssafy.completionism.api.controller.gpt.request.GPTCompletionChatRequest;
+import com.ssafy.completionism.api.controller.gpt.response.GPTCompletionChatResponse;
+import com.ssafy.completionism.api.service.gpt.GptService;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.service.OpenAiService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,14 @@ public class GptServiceImpl implements GptService {
     private final OpenAiService openAiService;
 
     @Override
-    public CompletionChatResponse completionChat(GPTCompletionChatRequest request) {
+    public GPTCompletionChatResponse completionChat(GPTCompletionChatRequest request) {
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(
                 GPTCompletionChatRequest.of(request));
 
-        CompletionChatResponse response = CompletionChatResponse.of(chatCompletion);
+        GPTCompletionChatResponse response = GPTCompletionChatResponse.of(chatCompletion);
 
         List<String> messages = response.getMessages().stream()
-                .map(CompletionChatResponse.Message::getMessage)
+                .map(GPTCompletionChatResponse.Message::getMessage)
                 .collect(Collectors.toList());
 
         log.info("messages={}", messages);

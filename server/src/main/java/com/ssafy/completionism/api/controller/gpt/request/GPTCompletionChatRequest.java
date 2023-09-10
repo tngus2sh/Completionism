@@ -1,30 +1,25 @@
-package com.ssafy.completionism.api.controller.diary.request;
+package com.ssafy.completionism.api.controller.gpt.request;
 
-import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 @Data
+@Builder
 public class GPTCompletionChatRequest {
 
     private String role;
 
     private String message;
 
-    private Integer maxTokens;
-
     public static ChatCompletionRequest of(GPTCompletionChatRequest request) {
         return ChatCompletionRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(convertChatMessage(request))
-                .maxTokens(request.getMaxTokens())
+                .maxTokens(1000)
                 .build();
     }
 
