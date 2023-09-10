@@ -25,7 +25,7 @@ public class HistoryService {
     private final HistoryQueryRepository historyQueryRepository;
     private final MemberRepository memberRepository;
 
-    private HistoryListResponse getHistoryListUsingPeriod(String loginId, HistoryPeriodSearchCond cond) {
+    public HistoryListResponse getHistoryListUsingPeriod(String loginId, HistoryPeriodSearchCond cond) {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         List<HistoryResponse> list = historyQueryRepository.getHistoryResponseForPeriod(loginId, cond);
