@@ -87,7 +87,7 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
         Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
 
-        List<FutureScheduleResponse> response = scheduleQueryRepository.getFutureSchedules(loginId);
+        List<FutureScheduleResponse> response = scheduleQueryRepository.getSchedules(loginId, false);
 
         return response;
     }

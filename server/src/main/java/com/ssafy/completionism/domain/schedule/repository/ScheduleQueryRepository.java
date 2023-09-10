@@ -28,7 +28,7 @@ public class ScheduleQueryRepository {
     }
 
 
-    public List<FutureScheduleResponse> getFutureSchedules(String loginId) {
+    public List<FutureScheduleResponse> getSchedules(String loginId, boolean fixed) {
         List<FutureScheduleResponse> futureSchedules = queryFactory
                 .select(Projections.fields(FutureScheduleResponse.class,
                         schedule.id,
@@ -37,7 +37,7 @@ public class ScheduleQueryRepository {
                         schedule.cost,
                         schedule.plus))
                 .from(schedule)
-                .where(schedule.member.loginId.eq(loginId))
+                .where(schedule.member.loginId.eq(loginId), schedule.fixed.eq(fixed))
                 .orderBy(
                         schedule.date.asc(),
                         schedule.todo.asc()
