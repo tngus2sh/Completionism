@@ -5,6 +5,7 @@ import com.ssafy.completionism.api.controller.schedule.request.CreateFutureSched
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
+import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import com.ssafy.completionism.global.utils.SecurityUtils;
@@ -48,8 +49,10 @@ public class FutureScheduleApiController {
     public ApiResponse<Void> modifyFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody ModifyFutureScheduleRequest request) {
         log.debug("ModifyFutureScheduleRequest={}", request);
 
+        ModifyFutureScheduleDto dto = ModifyFutureScheduleDto.toDto(request);
+
         try {
-            futureScheduleService.modifyFutureSchedule(request);
+            futureScheduleService.modifyFutureSchedule(SecurityUtils.getCurrentLoginId(), dto);
         }
         catch(NotFoundException e) {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
