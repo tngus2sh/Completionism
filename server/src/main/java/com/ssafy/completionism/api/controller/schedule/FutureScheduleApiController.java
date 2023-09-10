@@ -10,9 +10,6 @@ import com.ssafy.completionism.global.exception.NoAuthorizationException;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.api.service.schedule.FutureScheduleService;
 import com.ssafy.completionism.global.utils.SecurityUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -23,15 +20,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = {"미래 예상 소비"})
 @RequestMapping("/api/schedule/future")
 public class FutureScheduleApiController {
 
     private final FutureScheduleService futureScheduleService;
 
-    @ApiOperation(value = "미래 예상 소비 등록")
     @PostMapping
-    public ApiResponse<Void> createFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody CreateFutureScheduleRequest request) {
+    public ApiResponse<Void> createFutureSchedule(@RequestBody CreateFutureScheduleRequest request) {
         log.debug("CreateFutureScheduleRequest={}", request);
 
         CreateFutureScheduleDto dto = CreateFutureScheduleDto.toDto(request);
@@ -45,9 +40,8 @@ public class FutureScheduleApiController {
         return ApiResponse.ok(null);
     }
 
-    @ApiOperation(value = "미래 예상 소비 수정")
     @PatchMapping
-    public ApiResponse<Void> modifyFutureSchedule(@ApiParam(value = "future-schedule-dto") @RequestBody ModifyFutureScheduleRequest request) {
+    public ApiResponse<Void> modifyFutureSchedule(@RequestBody ModifyFutureScheduleRequest request) {
         log.debug("ModifyFutureScheduleRequest={}", request);
 
         ModifyFutureScheduleDto dto = ModifyFutureScheduleDto.toDto(request);
@@ -61,9 +55,8 @@ public class FutureScheduleApiController {
         return ApiResponse.ok(null);
     }
 
-    @ApiOperation(value = "미래 예상 소비 삭제")
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> removeFutureSchedule(@ApiParam(value = "schedule-id") @PathVariable(value = "id") Long id) {
+    public ApiResponse<Void> removeFutureSchedule(@PathVariable(value = "id") Long id) {
         log.debug("scheduleId={}", id);
 
         try {
@@ -75,7 +68,6 @@ public class FutureScheduleApiController {
         return ApiResponse.ok(null);
     }
 
-    @ApiOperation(value = "미래 예상 소비 전체 조회")
     @GetMapping
     public ApiResponse<List<FutureScheduleResponse>> searchFutureScheduleAll() {
         log.debug("getFutureScheduleAll");
