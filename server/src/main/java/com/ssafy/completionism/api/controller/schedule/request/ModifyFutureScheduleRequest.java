@@ -7,16 +7,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 public class ModifyFutureScheduleRequest {
-
-    @NotBlank
-    @ApiModelProperty(example = "shinhan")
-    private String loginId;
 
     @Range(min = 1)
     @ApiModelProperty(example = "1")
@@ -37,8 +32,7 @@ public class ModifyFutureScheduleRequest {
 
 
     @Builder
-    public ModifyFutureScheduleRequest(String loginId, Long id, String date, String todo, int cost) {
-        this.loginId = loginId;
+    public ModifyFutureScheduleRequest(Long id, String date, String todo, int cost) {
         this.id = id;
         this.date = date;
         this.todo = todo;

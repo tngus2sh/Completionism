@@ -1,10 +1,11 @@
 package com.ssafy.completionism.api.service.schedule.impl;
 
-import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
+import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberQueryRepository;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.global.exception.NoAuthorizationException;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.domain.schedule.Schedule;
 import com.ssafy.completionism.domain.schedule.repository.ScheduleRepository;
@@ -30,7 +31,8 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
     @Override
     public Long createFutureSchedule(String loginId, CreateFutureScheduleDto dto) {
-        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true).orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dto.getDate(), formatter);
@@ -42,39 +44,32 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
     }
 
     @Override
-    public void modifyFutureSchedule(ModifyFutureScheduleRequest request) {
-//        Optional<Member> findMember = memberRepository.findByIdAndActive(request.getLoginId(), ACTIVE);
-//
-//        if(findMember.isEmpty()) {
-//            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다.");
-//        }
+    public void modifyFutureSchedule(String loginId, ModifyFutureScheduleDto dto) {
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
 
-        Optional<Schedule> findSchedule = scheduleRepository.findById(request.getId());
+        Schedule schedule = scheduleRepository.findById(dto.getId())
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
 
-        if(findSchedule.isEmpty()) {
-            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다.");
+        if(!schedule.getMember().getLoginId().equals(loginId)) {
+            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
-//        else if(!findSchedule.get().getMember().getLoginId().equals(request.getLoginId())) {
-//            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
-//        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime date = LocalDateTime.parse(request.getDate(), formatter);
+        LocalDate date = LocalDate.parse(dto.getDate(), formatter);
 
-        scheduleRepository.updateFutureSchedule(request.getId(), date, request.getTodo(), request.getCost());
+        schedule.updateFutureSchedule(date, dto.getTodo(), dto.getCost());
     }
 
     @Override
-    public void removeFutureSchedule(Long id) {
-        Optional<Schedule> findSchedule = scheduleRepository.findById(id);
+    public void removeFutureSchedule(String loginId, Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
 
-        if(findSchedule.isEmpty()) {
-            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다.");
+        if(!schedule.getMember().getLoginId().equals(loginId)) {
+            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
         }
-//        else if(!findSchedule.get().getMember().getLoginId().equals(request.getLoginId())) {
-//            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
-//        }
 
-        scheduleRepository.delete(findSchedule.get());
+        scheduleRepository.delete(schedule);
     }
 }
