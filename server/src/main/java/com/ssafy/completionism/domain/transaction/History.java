@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -35,6 +36,10 @@ public class History extends TimeBaseEntity {
     @Column(nullable = false)
     @Lob
     private String diary;
+    @Enumerated(STRING)
+    @Column(length = 20, nullable = false)
+    private Feel feel;
+
 
     @OneToMany(mappedBy = "history", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
@@ -44,11 +49,13 @@ public class History extends TimeBaseEntity {
     private Member member;
 
     @Builder
-    private History(Long id, int income, int outcome, String diary, Member member) {
+    public History(Long id, int income, int outcome, String diary, Feel feel, List<Transaction> transactions, Member member) {
         this.id = id;
         this.income = income;
         this.outcome = outcome;
         this.diary = diary;
+        this.feel = feel;
+        this.transactions = transactions;
         this.member = member;
     }
 
