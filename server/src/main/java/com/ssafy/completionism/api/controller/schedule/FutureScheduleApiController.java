@@ -77,9 +77,15 @@ public class FutureScheduleApiController {
 
     @ApiOperation(value = "미래 예상 소비 전체 조회")
     @GetMapping
-    public ApiResponse<List<FutureScheduleResponse>> getFutureScheduleAll() {
+    public ApiResponse<List<FutureScheduleResponse>> searchFutureScheduleAll() {
         log.debug("getFutureScheduleAll");
 
-        return null;
+        try {
+            List<FutureScheduleResponse> response = futureScheduleService.searchFutureScheduleAll(SecurityUtils.getCurrentLoginId());
+            return ApiResponse.ok(response);
+        }
+        catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
     }
 }
