@@ -9,22 +9,18 @@ import lombok.NoArgsConstructor;
 public class FutureScheduleResponse {
 
     private Long id;
-    private String memberId;
     private String date;
     private String todo;
     private int cost;
     private boolean plus;
-    private boolean fixed;
 
 
     @Builder
-    public FutureScheduleResponse(Long id, String memberId, String date, String todo, int cost, boolean plus, boolean fixed) {
+    public FutureScheduleResponse(Long id, String date, String todo, int cost, boolean plus) {
         this.id = id;
-        this.memberId = memberId;
         this.date = date;
         this.todo = todo;
         this.cost = cost;
         this.plus = plus;
-        this.fixed = fixed;
     }
 }
