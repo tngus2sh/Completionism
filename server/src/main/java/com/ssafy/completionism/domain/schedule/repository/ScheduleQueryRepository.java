@@ -4,7 +4,6 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
 import org.springframework.stereotype.Repository;
@@ -28,7 +27,7 @@ public class ScheduleQueryRepository {
     }
 
 
-    public List<FutureScheduleResponse> getSchedules(String loginId, boolean fixed) {
+    public List<FutureScheduleResponse> getFutureSchedules(String loginId) {
         List<FutureScheduleResponse> futureSchedules = queryFactory
                 .select(Projections.fields(FutureScheduleResponse.class,
                         schedule.id,
@@ -37,7 +36,7 @@ public class ScheduleQueryRepository {
                         schedule.cost,
                         schedule.plus))
                 .from(schedule)
-                .where(schedule.member.loginId.eq(loginId), schedule.fixed.eq(fixed))
+                .where(schedule.member.loginId.eq(loginId), schedule.fixed.isFalse())
                 .orderBy(
                         schedule.date.asc(),
                         schedule.todo.asc()

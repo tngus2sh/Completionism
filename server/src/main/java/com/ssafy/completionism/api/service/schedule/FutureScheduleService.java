@@ -13,4 +13,5 @@ public interface FutureScheduleService {
     void modifyFutureSchedule(String loginId, ModifyFutureScheduleDto dto);
     void removeFutureSchedule(String loginId, Long id);
     List<FutureScheduleResponse> searchFutureScheduleAll(String loginId);
+    FutureScheduleResponse searchFutureSchedule(String loginId, Long id);
 }
