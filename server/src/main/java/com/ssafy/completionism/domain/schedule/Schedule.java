@@ -67,4 +67,10 @@ public class Schedule {
                 .fixed(fixed)
                 .build();
     }
+
+    public void updateFutureSchedule(LocalDate date, String todo, int cost) {
+        this.date = date;
+        this.todo = todo;
+        this.cost = cost;
+    }
 }
