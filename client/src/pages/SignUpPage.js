@@ -5,13 +5,25 @@ import UpperNavigationBar from "../components/UpperNavigationBar";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    loginId: "",
+    loginPwd: "",
     name: "",
-    email: "",
+    phone: "",
   });
 
   const upperNavbarName = "회원가입";
+  const [missingField, setMissingField] = useState(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [stepMessage, setStepMessage] = useState("");
+
+  const steps = [
+    { fieldName: "loginId", label: "아이디", message: "아이디를 입력해주세요." },
+    { fieldName: "loginPwd", label: "비밀번호", message: "비밀번호를 입력해주세요." },
+    { fieldName: "name", label: "이름", message: "이름을 입력해주세요." },
+    { fieldName: "phone", label: "전화번호", message: "전화번호를 입력해주세요." },
+  ];
+
+  const currentStepData = steps[currentStep];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,29 +33,44 @@ const SignUpPage = () => {
     });
   };
 
+  const handleNextStep = () => {
+    const { fieldName, label, message } = currentStepData;
+    if (!formData[fieldName]) {
+      setMissingField(fieldName);
+    } else {
+      if (currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1);
+        setMissingField(null);
+        setStepMessage(message);
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      // 회원가입 요청을 보내기 전에 입력 데이터를 확인하고 유효성 검사를 수행할 수 있습니다.
-      // 이 예제에서는 간단한 데이터 유효성 검사만 수행합니다.
-      if (!formData.username || !formData.password || !formData.name || !formData.email) {
-        alert("모든 필드를 채워주세요.");
-        return;
-      }
+    // 필수 입력 필드 목록
+    const requiredFields = ["loginId", "loginPwd", "name", "phone"];
 
-      // Axios를 사용하여 회원가입 요청을 보냅니다.
-      const response = await axios.post("/api/signup", formData);
+    // 누락된 필드를 찾습니다.
+    const missing = requiredFields.filter((field) => !formData[field]);
 
-      // 회원가입 성공 시 처리할 코드를 여기에 추가할 수 있습니다.
-
-      // 예를 들어, 회원가입 성공 메시지를 출력하거나 다른 페이지로 이동할 수 있습니다.
-
-      alert("회원가입이 성공적으로 완료되었습니다.");
-    } catch (error) {
-      // 회원가입 실패 시 처리할 코드를 여기에 추가할 수 있습니다.
-      alert("회원가입 중 오류가 발생했습니다.");
+    if (missing.length > 0) {
+      const missingFieldNames = missing.map((field) => {
+        const stepData = steps.find((step) => step.fieldName === field);
+        return stepData.label;
+      });
+      setMissingField(missingFieldNames[0]);
+      return;
     }
+
+    try {
+        const res = await axios.post("/api/auth/signup", formData);
+        console.log(res.data);
+      } catch (error) {
+        console.log("회원가입 중 오류가 발생했습니다.");
+      }
+      
   };
 
   return (
@@ -51,40 +78,39 @@ const SignUpPage = () => {
       <Grid item xs={12}>
         <UpperNavigationBar props={upperNavbarName} />
       </Grid>
-      <Grid item xs={12} className="progressive_bar">
+      <Grid className="progressive_bar" />
+      <Grid item xs={12} style={{ maxWidth: "390px" }}>
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+            {currentStepData.label}을(를) 입력해주세요.
+          </p>
+          {stepMessage && <p style={{ fontSize: "14px", color: "gray" }}>{stepMessage}</p>}
+        </div>
         <form onSubmit={handleSubmit}>
+          {missingField && (
+            <p style={{ color: "red" }}>{`${missingField}을(를) 입력하세요.`}</p>
+          )}
           <TextField
-            label="아이디"
-            name="username"
+            label={currentStepData.label}
+            name={currentStepData.fieldName}
             fullWidth
-            value={formData.username}
+            value={formData[currentStepData.fieldName]}
             onChange={handleChange}
           />
-          <TextField
-            label="비밀번호"
-            name="password"
-            type="password"
-            fullWidth
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <TextField
-            label="이름"
-            name="name"
-            fullWidth
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <TextField
-            label="이메일"
-            name="email"
-            fullWidth
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <Button type="submit" variant="contained" color="primary">
-            회원가입
-          </Button>
+          {currentStep < steps.length - 1 && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNextStep}
+            >
+              다음 단계
+            </Button>
+          )}
+          {currentStep === steps.length - 1 && (
+            <Button type="submit" variant="contained" color="primary">
+              회원가입
+            </Button>
+          )}
         </form>
       </Grid>
     </Grid>
