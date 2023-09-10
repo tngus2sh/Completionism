@@ -4,8 +4,10 @@ import UpperNavigationBar from "../components/UpperNavigationBar";
 import './SignInPage.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const SignInPage = () => {
+  const navigate = useNavigate();
   const upperNavbarName = "로그인";
   const [formData, setFormData] = useState({
     loginId: "",
@@ -28,6 +30,7 @@ const SignInPage = () => {
 
       // accessToken 상태 업데이트
       setAccessToken(response.data.dataBody.accessToken);
+      navigate('/mainpage')
 
       setFormData({
         loginId: "",
