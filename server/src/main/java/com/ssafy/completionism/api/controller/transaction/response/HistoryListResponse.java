@@ -1,4 +1,25 @@
 package com.ssafy.completionism.api.controller.transaction.response;
 
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 public class HistoryListResponse {
+    private String startDay;
+    private String endDay;
+    private int income;
+    private int spend;
+
+    private List<HistoryResponse> day;
+
+    @Builder
+    public HistoryListResponse(LocalDateTime startDay, LocalDateTime endDay, int income, int spend, List<HistoryResponse> day) {
+        this.startDay = startDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.endDay = endDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.income = income;
+        this.spend = spend;
+        this.day = day;
+    }
 }
