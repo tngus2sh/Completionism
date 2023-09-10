@@ -18,18 +18,10 @@ const SignUpPage = () => {
   const [stepMessage, setStepMessage] = useState("");
   const steps = [
     { fieldName: "loginId", label: "아이디", message: "아이디를 입력해주세요." },
-    {
-      fieldName: "loginPwd",
-      label: "비밀번호",
-      message: "비밀번호를 입력해주세요.",
-    },
+    { fieldName: "loginPwd",label: "비밀번호", message: "비밀번호를 입력해주세요.",},
     { fieldName: "name", label: "이름", message: "이름을 입력해주세요." },
-    {
-      fieldName: "phone",
-      label: "전화번호",
-      message: "전화번호를 입력해주세요.",
-    },
-  ];
+    { fieldName: "phone", label: "전화번호",message: "전화번호를 입력해주세요.",},
+  ]; 
 
   const currentStepData = steps[currentStep];
 
