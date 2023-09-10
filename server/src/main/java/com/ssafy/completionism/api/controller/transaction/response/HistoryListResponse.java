@@ -15,7 +15,7 @@ public class HistoryListResponse {
     private List<HistoryResponse> day;
 
     @Builder
-    public HistoryListResponse(LocalDateTime startDay, LocalDateTime endDay, int income, int spend, List<HistoryResponse> day) {
+    private HistoryListResponse(LocalDateTime startDay, LocalDateTime endDay, int income, int spend, List<HistoryResponse> day) {
         this.startDay = startDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.endDay = endDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.income = income;
