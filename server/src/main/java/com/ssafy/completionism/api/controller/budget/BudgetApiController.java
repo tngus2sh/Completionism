@@ -8,11 +8,15 @@ import com.ssafy.completionism.api.service.budget.dto.AddBudgetDto;
 import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import static com.ssafy.completionism.global.common.Constants.NOT_FOUND_MEMBER;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +36,12 @@ public class BudgetApiController {
         log.info("addBudget :: request = {}", request);
         AddBudgetDto dto = AddBudgetDto.toDto(request);
 
-        Long budgetId = budgetService.addBudget(loginId, dto);
-        return ApiResponse.ok(budgetId);
+        try {
+            Long budgetId = budgetService.addBudget(loginId, dto);
+            return ApiResponse.ok(budgetId);
+        } catch (NoSuchElementException e) {
+            return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        }
     }
 
     @GetMapping
@@ -41,8 +49,12 @@ public class BudgetApiController {
         // 사용자 정보 가져오기
         String loginId = SecurityUtils.getCurrentLoginId();
 
-        List<MonthBudgetResponse> list = budgetService.searchMonthAll(loginId);
-        return ApiResponse.ok(list);
+        try {
+            List<MonthBudgetResponse> list = budgetService.searchMonthAll(loginId);
+            return ApiResponse.ok(list);
+        } catch (NoSuchElementException e) {
+            return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        }
     }
 
     @GetMapping("/{period}")
@@ -60,8 +72,11 @@ public class BudgetApiController {
         date = dates[1].split("-");
         LocalDate end = LocalDate.from(LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2])).atStartOfDay());
 
-        List<MonthBudgetResponse> list = budgetService.searchMonth(loginId, start, end);
-        return ApiResponse.ok(list);
+        try {
+            List<MonthBudgetResponse> list = budgetService.searchMonth(loginId, start, end);
+            return ApiResponse.ok(list);
+        } catch (NoSuchElementException e) {
+            return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        }
     }
-
 }
