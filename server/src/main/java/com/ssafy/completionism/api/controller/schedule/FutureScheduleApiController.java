@@ -70,13 +70,29 @@ public class FutureScheduleApiController {
 
     @GetMapping
     public ApiResponse<List<FutureScheduleResponse>> searchFutureScheduleAll() {
-        log.debug("getFutureScheduleAll");
+        log.debug("searchFutureScheduleAll");
 
         try {
             List<FutureScheduleResponse> response = futureScheduleService.searchFutureScheduleAll(SecurityUtils.getCurrentLoginId());
             return ApiResponse.ok(response);
         }
         catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<FutureScheduleResponse> searchFutureSchedule(@PathVariable("id") Long id) {
+        log.debug("searchFutureSchedule");
+
+        try {
+            FutureScheduleResponse response = futureScheduleService.searchFutureSchedule(SecurityUtils.getCurrentLoginId(), id);
+            return ApiResponse.ok(response);
+        }
+        catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
+        catch(NoAuthorizationException e) {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
         }
     }
