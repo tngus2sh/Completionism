@@ -4,6 +4,7 @@ import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.transaction.response.HistoryListResponse;
 import com.ssafy.completionism.api.service.transaction.HistoryService;
 import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
+import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,9 @@ public class HistoryController {
 
     private final HistoryService historyService;
 
-    @GetMapping("/{loginId}/{period}")
-    public ApiResponse<HistoryListResponse> getHistoryListForPeriod(@PathVariable String loginId, @PathVariable String period) {
-
+    @GetMapping("/{period}")
+    public ApiResponse<HistoryListResponse> getHistoryListForPeriod(@PathVariable String period) {
+        String loginId = SecurityUtils.getCurrentLoginId();
 
         HistoryPeriodSearchCond cond = getSearchCond(period);
 
