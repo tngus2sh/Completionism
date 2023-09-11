@@ -9,12 +9,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Data
-@NoArgsConstructor
-public class CreatePinnedScheduleRequest {
+import static lombok.AccessLevel.PROTECTED;
 
-    @NotBlank
-    private String date;
+@Data
+@NoArgsConstructor(access = PROTECTED)
+public class CreatePinnedScheduleRequest {
 
     @NotBlank
     @Size(max = 300)
@@ -37,8 +36,7 @@ public class CreatePinnedScheduleRequest {
 
 
     @Builder
-    public CreatePinnedScheduleRequest(String date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
-        this.date = date;
+    private CreatePinnedScheduleRequest(String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         this.todo = todo;
         this.cost = cost;
         this.plus = plus;

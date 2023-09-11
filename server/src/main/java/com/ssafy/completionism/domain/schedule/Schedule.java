@@ -24,7 +24,7 @@ public class Schedule {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate date;
 
     @Column(nullable = false)
@@ -70,10 +70,9 @@ public class Schedule {
                 .build();
     }
 
-    public static Schedule toPinnedSchedule(Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+    public static Schedule toPinnedSchedule(Member member, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         return  Schedule.builder()
                 .member(member)
-                .date(date)
                 .todo(todo)
                 .cost(cost)
                 .plus(plus)
