@@ -4,7 +4,10 @@ import { format, addMonths, subMonths } from 'date-fns';
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from 'date-fns';
 import { isSameMonth, isSameDay, addDays,} from 'date-fns';
 import './Calendar.css';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSelectedYearAndMonth } from '../redux/authSlice';
+
 
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
     return (
@@ -103,15 +106,22 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, data ,isDiary })
 
 export const Calender = (props) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     // console.log(props.isDiary)
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, ] = useState(new Date());
+    const payload = currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0')
 
     const prevMonth = () => {
         setCurrentMonth(subMonths(currentMonth, 1));
+        // console.log(currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0'));
+        dispatch(setSelectedYearAndMonth(payload))
     };
     const nextMonth = () => {
         setCurrentMonth(addMonths(currentMonth, 1));
+        // console.log(currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0'));
+        dispatch(setSelectedYearAndMonth(payload))
+
     };
     const onDateClick = (input,isDiary) => {
         const dateObj = new Date(input)
