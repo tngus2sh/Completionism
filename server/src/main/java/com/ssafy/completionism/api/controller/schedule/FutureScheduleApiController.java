@@ -3,7 +3,7 @@ package com.ssafy.completionism.api.controller.schedule;
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
-import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
+import com.ssafy.completionism.api.controller.schedule.response.ScheduleResponse;
 import com.ssafy.completionism.api.service.schedule.ScheduleService;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
 import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
@@ -71,11 +71,11 @@ public class FutureScheduleApiController {
     }
 
     @GetMapping
-    public ApiResponse<List<FutureScheduleResponse>> searchFutureScheduleAll() {
+    public ApiResponse<List<ScheduleResponse>> searchFutureScheduleAll() {
         log.debug("searchFutureScheduleAll");
 
         try {
-            List<FutureScheduleResponse> response = futureScheduleService.searchFutureScheduleAll(SecurityUtils.getCurrentLoginId());
+            List<ScheduleResponse> response = futureScheduleService.searchFutureScheduleAll(SecurityUtils.getCurrentLoginId());
             return ApiResponse.ok(response);
         }
         catch(NotFoundException e) {
@@ -84,11 +84,11 @@ public class FutureScheduleApiController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<FutureScheduleResponse> searchFutureSchedule(@PathVariable("id") Long id) {
+    public ApiResponse<ScheduleResponse> searchFutureSchedule(@PathVariable("id") Long id) {
         log.debug("searchFutureSchedule");
 
         try {
-            FutureScheduleResponse response = futureScheduleService.searchFutureSchedule(SecurityUtils.getCurrentLoginId(), id);
+            ScheduleResponse response = futureScheduleService.searchFutureSchedule(SecurityUtils.getCurrentLoginId(), id);
             return ApiResponse.ok(response);
         }
         catch(NotFoundException e) {

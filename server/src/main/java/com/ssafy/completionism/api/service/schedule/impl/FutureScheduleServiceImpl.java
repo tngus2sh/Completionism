@@ -1,6 +1,6 @@
 package com.ssafy.completionism.api.service.schedule.impl;
 
-import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
+import com.ssafy.completionism.api.controller.schedule.response.ScheduleResponse;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
 import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
 import com.ssafy.completionism.domain.member.Member;
@@ -66,17 +66,17 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
     }
 
     @Override
-    public List<FutureScheduleResponse> searchFutureScheduleAll(String loginId) {
+    public List<ScheduleResponse> searchFutureScheduleAll(String loginId) {
         Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
 
-        List<FutureScheduleResponse> response = scheduleQueryRepository.getFutureSchedules(loginId);
+        List<ScheduleResponse> response = scheduleQueryRepository.getFutureSchedules(loginId);
 
         return response;
     }
 
     @Override
-    public FutureScheduleResponse searchFutureSchedule(String loginId, Long id) {
+    public ScheduleResponse searchFutureSchedule(String loginId, Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
 
@@ -89,6 +89,6 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
             throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "조회 권한이 없습니다.");
         }
 
-        return FutureScheduleResponse.toResponse(schedule);
+        return ScheduleResponse.toResponse(schedule);
     }
 }
