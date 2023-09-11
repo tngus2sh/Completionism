@@ -4,6 +4,7 @@ import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.schedule.request.CreateFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.request.ModifyFutureScheduleRequest;
 import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
+import com.ssafy.completionism.api.service.schedule.ScheduleService;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
 import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
 import com.ssafy.completionism.global.exception.NoAuthorizationException;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequestMapping("/api/schedule/future")
 public class FutureScheduleApiController {
 
+    private final ScheduleService scheduleService;
     private final FutureScheduleService futureScheduleService;
 
     @PostMapping
@@ -60,7 +62,7 @@ public class FutureScheduleApiController {
         log.debug("scheduleId={}", id);
 
         try {
-            futureScheduleService.removeFutureSchedule(SecurityUtils.getCurrentLoginId(), id);
+            scheduleService.removeSchedule(SecurityUtils.getCurrentLoginId(), id);
         }
         catch(NoAuthorizationException e) {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);

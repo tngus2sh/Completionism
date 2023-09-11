@@ -1,20 +1,20 @@
 package com.ssafy.completionism.api.service.schedule.impl;
 
 import com.ssafy.completionism.api.service.schedule.PinnedScheduleService;
+import com.ssafy.completionism.api.service.schedule.ScheduleService;
 import com.ssafy.completionism.api.service.schedule.dto.CreatePinnedScheduleDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberQueryRepository;
 import com.ssafy.completionism.domain.schedule.Schedule;
 import com.ssafy.completionism.domain.schedule.repository.ScheduleQueryRepository;
 import com.ssafy.completionism.domain.schedule.repository.ScheduleRepository;
+import com.ssafy.completionism.global.exception.NoAuthorizationException;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @Transactional
