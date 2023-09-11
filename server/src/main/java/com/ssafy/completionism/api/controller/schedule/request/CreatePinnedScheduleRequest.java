@@ -13,10 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Data
 @NoArgsConstructor(access = PROTECTED)
-public class CreateFutureScheduleRequest {
-
-    @NotBlank
-    private String date;
+public class CreatePinnedScheduleRequest {
 
     @NotBlank
     @Size(max = 300)
@@ -31,13 +28,20 @@ public class CreateFutureScheduleRequest {
     @NotNull
     private boolean fixed;
 
+    @NotNull
+    private boolean periodType;
+
+    @Range(min = 1, max = 31)
+    private int period;
+
 
     @Builder
-    private CreateFutureScheduleRequest(String date, String todo, int cost, boolean plus, boolean fixed) {
-        this.date = date;
+    private CreatePinnedScheduleRequest(String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         this.todo = todo;
         this.cost = cost;
         this.plus = plus;
         this.fixed = fixed;
+        this.periodType = periodType;
+        this.period = period;
     }
 }
