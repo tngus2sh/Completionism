@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class CreateFutureScheduleDto {
 
     private String date;
@@ -17,7 +19,7 @@ public class CreateFutureScheduleDto {
 
 
     @Builder
-    public CreateFutureScheduleDto(String date, String todo, int cost, boolean plus, boolean fixed) {
+    private CreateFutureScheduleDto(String date, String todo, int cost, boolean plus, boolean fixed) {
         this.date = date;
         this.todo = todo;
         this.cost = cost;

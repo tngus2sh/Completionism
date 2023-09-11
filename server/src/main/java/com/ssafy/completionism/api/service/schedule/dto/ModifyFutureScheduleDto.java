@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class ModifyFutureScheduleDto {
 
     private Long id;
@@ -16,7 +18,7 @@ public class ModifyFutureScheduleDto {
 
 
     @Builder
-    public ModifyFutureScheduleDto(Long id, String date, String todo, int cost) {
+    private ModifyFutureScheduleDto(Long id, String date, String todo, int cost) {
         this.id = id;
         this.date = date;
         this.todo = todo;

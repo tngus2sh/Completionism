@@ -3,12 +3,16 @@ package com.ssafy.completionism.domain.schedule;
 import com.ssafy.completionism.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class Schedule {
 
     @Id
@@ -42,10 +46,8 @@ public class Schedule {
     private int period;
 
 
-    public Schedule() {}
-
     @Builder
-    public Schedule(Long id, Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+    private Schedule(Long id, Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
         this.id = id;
         this.member = member;
         this.date = date;
@@ -65,6 +67,19 @@ public class Schedule {
                 .cost(cost)
                 .plus(plus)
                 .fixed(fixed)
+                .build();
+    }
+
+    public static Schedule toPinnedSchedule(Member member, LocalDate date, String todo, int cost, boolean plus, boolean fixed, boolean periodType, int period) {
+        return  Schedule.builder()
+                .member(member)
+                .date(date)
+                .todo(todo)
+                .cost(cost)
+                .plus(plus)
+                .fixed(fixed)
+                .periodType(periodType)
+                .period(period)
                 .build();
     }
 

@@ -9,8 +9,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class CreateFutureScheduleRequest {
 
     @NotBlank
@@ -31,7 +33,7 @@ public class CreateFutureScheduleRequest {
 
 
     @Builder
-    public CreateFutureScheduleRequest(String date, String todo, int cost, boolean plus, boolean fixed) {
+    private CreateFutureScheduleRequest(String date, String todo, int cost, boolean plus, boolean fixed) {
         this.date = date;
         this.todo = todo;
         this.cost = cost;
