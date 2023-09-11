@@ -11,7 +11,6 @@ import java.util.List;
 public interface FutureScheduleService {
     Long createFutureSchedule(String loginId, CreateFutureScheduleDto dto);
     void modifyFutureSchedule(String loginId, ModifyFutureScheduleDto dto);
-    void removeFutureSchedule(String loginId, Long id);
     List<FutureScheduleResponse> searchFutureScheduleAll(String loginId);
     FutureScheduleResponse searchFutureSchedule(String loginId, Long id);
 }
