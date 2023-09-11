@@ -1,10 +1,12 @@
 package com.ssafy.completionism.api.service.schedule.impl;
 
+import com.ssafy.completionism.api.controller.schedule.response.FutureScheduleResponse;
 import com.ssafy.completionism.api.service.schedule.dto.CreateFutureScheduleDto;
 import com.ssafy.completionism.api.service.schedule.dto.ModifyFutureScheduleDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberQueryRepository;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.domain.schedule.repository.ScheduleQueryRepository;
 import com.ssafy.completionism.global.exception.NoAuthorizationException;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.domain.schedule.Schedule;
@@ -16,9 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,6 +29,7 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
     private final MemberRepository memberRepository;
     private final MemberQueryRepository memberQueryRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleQueryRepository scheduleQueryRepository;
 
     @Override
     public Long createFutureSchedule(String loginId, CreateFutureScheduleDto dto) {
@@ -45,13 +47,15 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
     @Override
     public void modifyFutureSchedule(String loginId, ModifyFutureScheduleDto dto) {
-        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
-                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
-
         Schedule schedule = scheduleRepository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
 
-        if(!schedule.getMember().getLoginId().equals(loginId)) {
+        Member member = schedule.getMember();
+
+        if(!member.isActive()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다.");
+        }
+        else if(!member.getLoginId().equals(loginId)) {
             throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
 
@@ -62,14 +66,29 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
     }
 
     @Override
-    public void removeFutureSchedule(String loginId, Long id) {
+    public List<FutureScheduleResponse> searchFutureScheduleAll(String loginId) {
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
+
+        List<FutureScheduleResponse> response = scheduleQueryRepository.getFutureSchedules(loginId);
+
+        return response;
+    }
+
+    @Override
+    public FutureScheduleResponse searchFutureSchedule(String loginId, Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
 
-        if(!schedule.getMember().getLoginId().equals(loginId)) {
-            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        Member member = schedule.getMember();
+
+        if(!member.isActive()) {
+            throw new NotFoundException("401", HttpStatus.UNAUTHORIZED, "탈퇴한 회원입니다.");
+        }
+        else if(!member.getLoginId().equals(loginId)) {
+            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "조회 권한이 없습니다.");
         }
 
-        scheduleRepository.delete(schedule);
+        return FutureScheduleResponse.toResponse(schedule);
     }
 }
