@@ -1,6 +1,7 @@
 package com.ssafy.completionism.api.service.transaction;
 
 import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
+import com.ssafy.completionism.api.service.transaction.dto.WriteDiaryDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
 import com.ssafy.completionism.domain.transaction.History;
@@ -28,6 +29,21 @@ public class TransactionService {
     private final HistoryRepository historyRepository;
     private final HistoryQueryRepository historyQueryRepository;
     private final MemberRepository memberRepository;
+
+    public String writeDiary(String loginId, Long transactionId, WriteDiaryDto dto) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(NoSuchElementException::new);
+
+        if (!transaction.getHistory().getMember().getId().equals(member.getId())) {
+            return null;
+        }
+
+        transaction.writeOneLineDiary(dto.getContent());
+
+        return transaction.getDiary();
+    }
 
     public Long addTransaction(AddTransactionDto dto, String loginId, LocalDateTime transactionTime) {
         log.debug("[거래내역 등록((서비스))]");
