@@ -66,23 +66,6 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
     }
 
     @Override
-    public void removeFutureSchedule(String loginId, Long id) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 소비 일정이 존재하지 않습니다."));
-
-        Member member = schedule.getMember();
-
-        if(!member.isActive()) {
-            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다.");
-        }
-        else if(!member.getLoginId().equals(loginId)) {
-            throw new NoAuthorizationException("401", HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
-        }
-
-        scheduleRepository.delete(schedule);
-    }
-
-    @Override
     public List<FutureScheduleResponse> searchFutureScheduleAll(String loginId) {
         Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
