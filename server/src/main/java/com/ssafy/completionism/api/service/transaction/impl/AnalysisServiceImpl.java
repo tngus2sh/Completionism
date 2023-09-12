@@ -20,11 +20,15 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class AnalysisServiceImpl implements AnalysisService {
 
-    // TODO : 지출 많이 한 순서대로 정렬, (한달 기준)과소비 지수
-
     private final MemberRepository memberRepository;
     private final TransactionQueryRepository transactionQueryRepository;
 
+    /**
+     * 지출 많이 한 순서대로 정렬
+     * @param loginId 사용자 아이디
+     * @param resultDate 지출 조회 날짜
+     * @return 거래내역
+     */
     public TransactionListResponse getTransactions(String loginId, LocalDateTime resultDate) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
@@ -37,6 +41,19 @@ public class AnalysisServiceImpl implements AnalysisService {
                 .day(startDay)
                 .transactions(transactionsOneDay)
                 .build();
+    }
+
+    /**
+     * 과소비 지수 측정
+     * @param loginId 사용자 아이디
+     * @param resultDate 조회 날짜
+     * @return 과소비 지수에 따른 문구 출력
+     */
+    public String getOverConsumptionRate(String loginId, LocalDateTime resultDate) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        return null;
     }
 
     @Scheduled(cron = "* * 12 * * ?")
