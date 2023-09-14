@@ -1,6 +1,7 @@
 package com.ssafy.completionism.api.service.transaction;
 
 import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
+import com.ssafy.completionism.api.service.transaction.dto.WriteDiaryDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
 import com.ssafy.completionism.domain.transaction.History;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -29,6 +31,21 @@ public class TransactionService {
     private final HistoryQueryRepository historyQueryRepository;
     private final MemberRepository memberRepository;
 
+    public String writeDiary(String loginId, Long transactionId, WriteDiaryDto dto) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(NoSuchElementException::new);
+
+        if (!transaction.getHistory().getMember().getId().equals(member.getId())) {
+            return null;
+        }
+
+        transaction.writeOneLineDiary(dto.getContent());
+
+        return transaction.getDiary();
+    }
+
     public Long addTransaction(AddTransactionDto dto, String loginId, LocalDateTime transactionTime) {
         log.debug("[거래내역 등록((서비스))]");
         History todayHistory = null;
@@ -38,12 +55,14 @@ public class TransactionService {
         LocalDate transactionDate = transactionTime.toLocalDate();
         Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, transactionDate.atStartOfDay());
 
-        // 거래 내역이 생성되어 있을 때
+        // 거래 내역이 생성되어 있지 않을 때
         if (registeredHistory.isEmpty()) {
+            log.debug("[거래내역 등록((서비스))] 거래내역 없음");
             todayHistory = createHistoryEntity(member);
+            log.debug("[거래내역 등록((서비스))] 거래내역 만듦 = {}",todayHistory.getId());
         }
 
-        // 거래 내역이 생성되어 있지 않을 때
+        // 거래 내역이 생성되어 있을 때
         if (registeredHistory.isPresent()) {
             todayHistory = registeredHistory.get();
         }
@@ -74,6 +93,7 @@ public class TransactionService {
                 .outcome(0)
                 .diary("")
                 .member(member)
+                .transactions(new ArrayList<>())
                 .build();
         return historyRepository.save(history);
     }

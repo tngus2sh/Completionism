@@ -58,4 +58,8 @@ public class Transaction extends TimeBaseEntity {
         this.history = todayHistory;
         this.history.addTransaction(this);
     }
+
+    public void writeOneLineDiary(String diary) {
+        this.diary = diary;
+    }
 }
