@@ -1,5 +1,8 @@
 package com.ssafy.completionism.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
     TRAFFIC("교통"),
     FOOD("식비"),
