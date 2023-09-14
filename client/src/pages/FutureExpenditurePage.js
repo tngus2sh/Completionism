@@ -150,21 +150,21 @@ const FutureExpenditurePage = () => {
           />
         </div>
         <div>
-          <label>Plus:</label>
+          <label>Plus(체크하면 수입):</label>
           <input
             type="checkbox"
             checked={plus}
             onChange={(e) => setPlus(e.target.checked)}
           />
         </div>
-        <div>
+        {/* <div>
           <label>Fixed:</label>
           <input
             type="checkbox"
             checked={fixed}
             onChange={(e) => setFixed(e.target.checked)}
           />
-        </div>
+        </div> */}
         <button onClick={createData}>미래소비 생성하기</button>
         <hr />
       </Grid>
