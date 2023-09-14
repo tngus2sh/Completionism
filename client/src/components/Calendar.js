@@ -110,18 +110,19 @@ export const Calender = (props) => {
     // console.log(props.isDiary)
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, ] = useState(new Date());
-    const payload = currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0')
 
     const prevMonth = () => {
-        setCurrentMonth(subMonths(currentMonth, 1));
-        // console.log(currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0'));
-        dispatch(setSelectedYearAndMonth(payload))
+        const previousMonth = subMonths(currentMonth, 1);
+        const payload = `${previousMonth.getFullYear()}-${(previousMonth.getMonth() + 1).toString().padStart(2, '0')}`;
+        setCurrentMonth(previousMonth);
+        dispatch(setSelectedYearAndMonth(payload));
     };
-    const nextMonth = () => {
-        setCurrentMonth(addMonths(currentMonth, 1));
-        // console.log(currentMonth.getFullYear().toString()+'-'+(currentMonth.getMonth()+1).toString().padStart(2,'0'));
-        dispatch(setSelectedYearAndMonth(payload))
 
+    const nextMonth = () => {
+        const nextMonthDate = addMonths(currentMonth, 1);
+        const payload = `${nextMonthDate.getFullYear()}-${(nextMonthDate.getMonth() + 1).toString().padStart(2, '0')}`;
+        setCurrentMonth(nextMonthDate);
+        dispatch(setSelectedYearAndMonth(payload));
     };
     const onDateClick = (input,isDiary) => {
         const dateObj = new Date(input)

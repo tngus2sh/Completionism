@@ -20,11 +20,16 @@ export const authSlice = createSlice({
     },
     setSelectedYearAndMonth: (state,action) => {
       state.selectedYearAndMonth = action.payload
-    }
-
+    },
+    fatchFutureData: (state,action) => {
+      state.FutureExpenditureList = action.payload
+    },
+    fatchPinnedData: (state,action) => {
+      state.fixedExpenditureList = action.payload
+    },
   },
 });
 
-export const { loginState, logoutState ,setSelectedYearAndMonth } = authSlice.actions;
+export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData } = authSlice.actions;
 
 export default authSlice.reducer;
