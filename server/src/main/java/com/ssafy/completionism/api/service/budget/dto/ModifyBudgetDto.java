@@ -1,5 +1,6 @@
 package com.ssafy.completionism.api.service.budget.dto;
 
+import com.ssafy.completionism.api.controller.budget.request.ModifyBudgetRequest;
 import com.ssafy.completionism.domain.Category;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,13 @@ public class ModifyBudgetDto {
         this.yearMonth = yearMonth;
         this.totalBudget = totalBudget;
         this.category = category;
+    }
+
+    public static ModifyBudgetDto toDto(ModifyBudgetRequest request) {
+        return ModifyBudgetDto.builder()
+                .yearMonth(request.getYearMonth())
+                .totalBudget(request.getTotalBudget())
+                .category(request.getCategory())
+                .build();
     }
 }
