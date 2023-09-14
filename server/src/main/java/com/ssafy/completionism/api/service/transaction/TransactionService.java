@@ -1,5 +1,6 @@
 package com.ssafy.completionism.api.service.transaction;
 
+import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
 import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
 import com.ssafy.completionism.api.service.transaction.dto.WriteDiaryDto;
 import com.ssafy.completionism.domain.member.Member;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -31,7 +33,7 @@ public class TransactionService {
     private final HistoryQueryRepository historyQueryRepository;
     private final MemberRepository memberRepository;
 
-    public String writeDiary(String loginId, Long transactionId, WriteDiaryDto dto) {
+    public TransactionResponse writeDiary(String loginId, Long transactionId, WriteDiaryDto dto) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
@@ -41,9 +43,9 @@ public class TransactionService {
             return null;
         }
 
-        transaction.writeOneLineDiary(dto.getContent());
+        transaction.writeOneLineDiary(dto.getContent(), dto.getFeel());
 
-        return transaction.getDiary();
+        return createResponse(transaction);
     }
 
     public Long addTransaction(AddTransactionDto dto, String loginId, LocalDateTime transactionTime) {
@@ -59,7 +61,7 @@ public class TransactionService {
         if (registeredHistory.isEmpty()) {
             log.debug("[거래내역 등록((서비스))] 거래내역 없음");
             todayHistory = createHistoryEntity(member);
-            log.debug("[거래내역 등록((서비스))] 거래내역 만듦 = {}",todayHistory.getId());
+            log.debug("[거래내역 등록((서비스))] 거래내역 만듦 = {}", todayHistory.getId());
         }
 
         // 거래 내역이 생성되어 있을 때
@@ -96,5 +98,18 @@ public class TransactionService {
                 .transactions(new ArrayList<>())
                 .build();
         return historyRepository.save(history);
+    }
+
+    private TransactionResponse createResponse(Transaction transaction) {
+        return TransactionResponse.builder()
+                .id(transaction.getId())
+                .time(transaction.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))
+                .cost(transaction.getCost())
+                .isPlus(transaction.isPlus())
+                .category(transaction.getCategory().getText())
+                .place(transaction.getPlace())
+                .diary(transaction.getDiary())
+                .feel(transaction.getFeel().getText())
+                .build();
     }
 }
