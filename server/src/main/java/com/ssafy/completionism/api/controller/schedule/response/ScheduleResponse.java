@@ -1,5 +1,6 @@
 package com.ssafy.completionism.api.controller.schedule.response;
 
+import com.ssafy.completionism.api.service.schedule.dto.SearchPinnedScheduleDto;
 import com.ssafy.completionism.domain.schedule.Schedule;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
-public class FutureScheduleResponse {
+public class ScheduleResponse {
 
     private Long id;
     private String date;
@@ -19,7 +20,7 @@ public class FutureScheduleResponse {
 
 
     @Builder
-    public FutureScheduleResponse(Long id, String date, String todo, int cost, boolean plus) {
+    public ScheduleResponse(Long id, String date, String todo, int cost, boolean plus) {
         this.id = id;
         this.date = date;
         this.todo = todo;
@@ -27,15 +28,25 @@ public class FutureScheduleResponse {
         this.plus = plus;
     }
 
-    public static FutureScheduleResponse toResponse(Schedule schedule) {
+    public static ScheduleResponse toResponse(Schedule schedule) {
         String date = schedule.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        return FutureScheduleResponse.builder()
+        return ScheduleResponse.builder()
                 .id(schedule.getId())
                 .date(date)
                 .todo(schedule.getTodo())
                 .cost(schedule.getCost())
                 .plus(schedule.isPlus())
+                .build();
+    }
+
+    public static ScheduleResponse toResponse(String date, SearchPinnedScheduleDto dto) {
+        return ScheduleResponse.builder()
+                .id(dto.getId())
+                .date(date)
+                .todo(dto.getTodo())
+                .cost(dto.getCost())
+                .plus(dto.isPlus())
                 .build();
     }
 }

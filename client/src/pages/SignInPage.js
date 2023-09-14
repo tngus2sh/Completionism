@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 const SignInPage = () => {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated); // state.user는 Redux 스토어의 user 상태를 나타냅니다.
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
   const navigate = useNavigate();
   const upperNavbarName = "로그인";
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const SignInPage = () => {
 
   // accessToken 상태 추가
   const [accessToken, setAccessToken] = useState("");
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
