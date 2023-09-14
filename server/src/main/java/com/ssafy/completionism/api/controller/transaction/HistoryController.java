@@ -22,6 +22,11 @@ public class HistoryController {
 
     private final HistoryService historyService;
 
+    /**
+     *
+     * @param period
+     * @return
+     */
     @GetMapping("/{period}")
     public ApiResponse<HistoryListResponse> getHistoryListForPeriod(@PathVariable String period) {
         String loginId = SecurityUtils.getCurrentLoginId();

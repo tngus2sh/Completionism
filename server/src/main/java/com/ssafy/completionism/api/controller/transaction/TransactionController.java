@@ -2,6 +2,7 @@ package com.ssafy.completionism.api.controller.transaction;
 
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.transaction.request.AddTransactionRequest;
+import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
 import com.ssafy.completionism.api.service.transaction.TransactionService;
 import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
 import com.ssafy.completionism.global.utils.SecurityUtils;
@@ -24,6 +25,14 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+//    @PostMapping("/{transactionId}/diary")
+//    public ApiResponse<TransactionResponse>
+
+    /**
+     * 거래내역 등록
+     * @param request
+     * @return
+     */
     @PostMapping
     public ApiResponse<String> addTransaction(@RequestBody @Valid AddTransactionRequest request) {
         String loginId = SecurityUtils.getCurrentLoginId();
