@@ -67,6 +67,8 @@ public class ScheduleQueryRepository {
                 .fetch();
 
         return pinnedSchedules;
+    }
+
     public Integer countDailyFutureSchedule(String loginId, LocalDate date) {
         List<Integer> result = queryFactory
                 .select(schedule.cost.sum())
