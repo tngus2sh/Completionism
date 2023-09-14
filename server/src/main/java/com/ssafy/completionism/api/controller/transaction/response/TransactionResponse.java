@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class TransactionResponse {
 
+    private Long transactionId;
     private String time;
     private int cost;
     private boolean isPlus;
@@ -15,7 +16,8 @@ public class TransactionResponse {
     private String feel;
 
     @Builder
-    private TransactionResponse(String time, int cost, boolean isPlus, String category, String place, String diary, String feel) {
+    public TransactionResponse(Long id, String time, int cost, boolean isPlus, String category, String place, String diary, String feel) {
+        this.transactionId = id;
         this.time = time;
         this.cost = cost;
         this.isPlus = isPlus;
