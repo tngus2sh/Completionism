@@ -6,6 +6,7 @@ import "./AccountBookPage.css";
 import { Calender } from "../components/Calendar";
 import { useState } from "react";
 import SwipeableTemporaryDrawer from "../components/bottomDrawer";
+import { Link } from "react-router-dom";
 
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
@@ -57,10 +58,10 @@ const AccountBookPage = () => {
           <SwipeableTemporaryDrawer/>
         </Grid>
         <Grid>
-          <button>직접쓰기</button>
+        <Link to ="/future">미래예상소비등록</Link>
         </Grid>
         <Grid>
-        <button>AI자동일기</button>
+          <Link to ="/fixed">고정지출등록</Link>
         </Grid>
       </Grid>
 

@@ -1,6 +1,7 @@
 package com.ssafy.completionism.domain.transaction.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.completionism.api.controller.transaction.response.DiaryResponse;
 import com.ssafy.completionism.api.controller.transaction.response.HistoryResponse;
 import com.ssafy.completionism.domain.transaction.History;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,22 @@ public class HistoryQueryRepository {
         return Optional.ofNullable(findHistory);
     }
 
+    public List<DiaryResponse> getDiaryResponse(String loginId) {
+        return queryFactory.select(constructor(DiaryResponse.class,
+                        history.id,
+                        history.diary))
+                .from(history)
+                .where(history.member.loginId.eq(loginId))
+                .orderBy(history.createdDate.asc())
+                .fetch();
+    }
+    public Optional<DiaryResponse> getRegisteredDiary(String loginId, LocalDateTime transactionTime) {
+        return Optional.ofNullable(queryFactory.select(constructor(DiaryResponse.class,
+                        history.id,
+                        history.diary))
+                .from(history)
+                .where(history.member.loginId.eq(loginId),
+                        history.createdDate.between(transactionTime, transactionTime.plusDays(1)))
+                .fetchFirst());
+    }
 }

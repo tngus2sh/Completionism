@@ -67,6 +67,10 @@ public class History extends TimeBaseEntity {
         }
     }
 
+    public void updateDiary(String diary) {
+        this.diary = diary;
+    }
+
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
     }
