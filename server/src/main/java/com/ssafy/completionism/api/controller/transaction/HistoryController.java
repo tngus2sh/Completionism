@@ -23,7 +23,6 @@ public class HistoryController {
     private final HistoryService historyService;
 
     /**
-     *
      * @param period
      * @return
      */
@@ -35,13 +34,16 @@ public class HistoryController {
 
         HistoryListResponse response = historyService.getHistoryListUsingPeriod(loginId, cond);
 
+        log.debug("[기간별 +- 조회] Controller. res = {}", response.getDay().get(0).getDay());
         return ApiResponse.ok(response);
     }
 
     private static HistoryPeriodSearchCond getSearchCond(String period) {
         String[] days = period.split("_");
-        String[] start = days[0].split("_");
+        String[] start = days[0].split("-");
         String[] end = days[1].split("-");
+        log.debug("[기간별 +- 조회] start => {}, {}, {}", start[0], start[1], start[2]);
+        log.debug("[기간별 +- 조회] end => {}, {}, {}", end[0], end[1], end[2]);
         LocalDate startDay = LocalDate.of(Integer.parseInt(start[0]), Integer.parseInt(start[1]), Integer.parseInt(start[2]));
         LocalDate endDay = LocalDate.of(Integer.parseInt(end[0]), Integer.parseInt(end[1]), Integer.parseInt(end[2]));
         return HistoryPeriodSearchCond.builder()

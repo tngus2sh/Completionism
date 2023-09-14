@@ -1,11 +1,13 @@
 package com.ssafy.completionism.api.controller.transaction.response;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Data
 public class HistoryListResponse {
     private String startDay;
     private String endDay;
