@@ -30,6 +30,7 @@ public class Budget extends TimeBaseEntity {
     @Column(name = "total_budget")
     private int totalBudget;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private Category category;
 

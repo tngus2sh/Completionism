@@ -8,6 +8,8 @@ import FeadbackPage from './pages/FeadbackPage';
 import AccountBookDetailPage from './pages/AccountBookDetailPage'
 import DiaryDetailPage from './pages/DiaryDetailPage';
 import SignUpPage from './pages/SignUpPage';
+import FixedExpenditurePage from './pages/FixedExpenditurePage';
+import FutureExpenditurePage from './pages/FutureExpenditurePage';
 import {BrowserRouter as Router, Routes , Route} from "react-router-dom";
 import SignInPage from './pages/SignInPage';
 
@@ -24,6 +26,8 @@ function App() {
           <Route path="/feadback" element={<FeadbackPage/>}/>
           <Route path ="/accountbook/:id" element={<AccountBookDetailPage/>}/>
           <Route path ="/diary/:id" element={<DiaryDetailPage/>}/>
+          <Route path ="/fixed" element={<FixedExpenditurePage/>}/>
+          <Route path ="/future" element={<FutureExpenditurePage/>}/>
         </Routes>
       </Router>
     </Grid>

@@ -91,4 +91,21 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
         return ScheduleResponse.toResponse(schedule);
     }
+
+    @Override
+    public Integer countDailyFutureSchedule(String loginId, String date) {
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate target = LocalDate.parse(date, formatter);
+
+        Integer total = scheduleQueryRepository.countDailyFutureSchedule(loginId, target);
+
+        if(total == null) {
+            return 0;
+        }
+
+        return total;
+    }
 }

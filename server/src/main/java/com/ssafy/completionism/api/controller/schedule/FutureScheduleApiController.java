@@ -98,4 +98,17 @@ public class FutureScheduleApiController {
             return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
         }
     }
+
+    @GetMapping("/daily/{date}")
+    public ApiResponse<Integer> countDailyFutureSchedule(@PathVariable("date") String date) {
+        log.debug("countDailyFutureSchedule={}", date);
+
+        try {
+            Integer total = futureScheduleService.countDailyFutureSchedule(SecurityUtils.getCurrentLoginId(), date);
+            return ApiResponse.ok(total);
+        }
+        catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
+    }
 }

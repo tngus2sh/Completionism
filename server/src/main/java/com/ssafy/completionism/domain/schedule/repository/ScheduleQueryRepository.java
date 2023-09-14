@@ -11,6 +11,7 @@ import com.ssafy.completionism.api.service.schedule.dto.SearchPinnedScheduleDto;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.ssafy.completionism.domain.schedule.QSchedule.schedule;
@@ -66,5 +67,12 @@ public class ScheduleQueryRepository {
                 .fetch();
 
         return pinnedSchedules;
+    public Integer countDailyFutureSchedule(String loginId, LocalDate date) {
+        List<Integer> result = queryFactory
+                .select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId), schedule.fixed.isFalse(), schedule.date.eq(date))
+                .fetch();
+        return result.get(0);
     }
 }
