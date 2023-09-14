@@ -2,6 +2,7 @@ package com.ssafy.completionism.domain.transaction.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.completionism.api.controller.transaction.response.HistoryResponse;
+import com.ssafy.completionism.api.controller.transaction.response.StatisticsResponse;
 import com.ssafy.completionism.api.service.transaction.dto.OneMonthIncomeExpenseDto;
 import com.ssafy.completionism.domain.transaction.History;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,19 @@ public class HistoryQueryRepository {
                         history.createdDate.between(transactionTime, transactionTime.plusDays(1)))
                 .fetchFirst();
         return Optional.ofNullable(findHistory);
+    }
+
+    public Optional<StatisticsResponse> getHistoryResponseForPeriodStatistics(String loginId, HistoryPeriodSearchCond cond) {
+        return Optional.ofNullable(queryFactory.select(constructor(StatisticsResponse.class,
+                        history.income.sum(),
+                        history.outcome.sum()
+                ))
+                .from(history)
+                .where(history.member.loginId.eq(loginId),
+                        history.createdDate.between(cond.getStartDay(), cond.getEndDay()))
+                .orderBy(history.createdDate.asc())
+                .groupBy(history.member)
+                .fetchOne());
     }
 
     public Optional<OneMonthIncomeExpenseDto> getOneMonthIncomeExpense(String loginId, LocalDateTime resultDate) {

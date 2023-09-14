@@ -1,20 +1,23 @@
 package com.ssafy.completionism.api.service.transaction.impl;
 
-import com.ssafy.completionism.api.controller.transaction.response.TransactionListResponse;
-import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
+import com.ssafy.completionism.api.ApiResponse;
+import com.ssafy.completionism.api.controller.transaction.response.*;
 import com.ssafy.completionism.api.service.transaction.AnalysisService;
 import com.ssafy.completionism.api.service.transaction.dto.OneMonthIncomeExpenseDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.domain.transaction.StatisticsType;
+import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
 import com.ssafy.completionism.domain.transaction.repository.HistoryQueryRepository;
 import com.ssafy.completionism.domain.transaction.repository.TransactionQueryRepository;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,6 +30,57 @@ public class AnalysisServiceImpl implements AnalysisService {
     private final MemberRepository memberRepository;
     private final TransactionQueryRepository transactionQueryRepository;
     private final HistoryQueryRepository historyQueryRepository;
+
+
+    @Override
+    public FeedBackResponse getFeedBack(String loginId, StatisticsType type) {
+        memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+
+        if (type.equals(StatisticsType.DAY)) {
+            StatisticsResponse statistics = historyQueryRepository.getHistoryResponseForPeriodStatistics(loginId
+                    , HistoryPeriodSearchCond.builder()
+                            .startDay(now.minusDays(1))
+                            .endDay(now)
+                            .build()).orElseThrow(NoSuchElementException::new);
+
+            return FeedBackResponse.builder()
+                    .income(statistics.getIncome())
+                    .outcome(statistics.getOutcome())
+                    .type(StatisticsType.DAY.name())
+                    .build();
+
+        } else if (type.equals(StatisticsType.MONTH)) {
+            StatisticsResponse statistics = historyQueryRepository.getHistoryResponseForPeriodStatistics(loginId
+                    , HistoryPeriodSearchCond.builder()
+                            .startDay(now.minusMonths(1))
+                            .endDay(now)
+                            .build()).orElseThrow(NoSuchElementException::new);
+
+            return FeedBackResponse.builder()
+                    .income(statistics.getIncome())
+                    .outcome(statistics.getOutcome())
+                    .type(StatisticsType.MONTH.name())
+                    .build();
+
+        } else if (type.equals(StatisticsType.YEAR)) {
+            StatisticsResponse statistics = historyQueryRepository.getHistoryResponseForPeriodStatistics(loginId
+                    , HistoryPeriodSearchCond.builder()
+                            .startDay(now.minusYears(1))
+                            .endDay(now)
+                            .build()).orElseThrow(NoSuchElementException::new);
+
+            return FeedBackResponse.builder()
+                    .income(statistics.getIncome())
+                    .outcome(statistics.getOutcome())
+                    .type(StatisticsType.YEAR.name())
+                    .build();
+
+        } else {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 통계를 찾을 수 없습니다.");
+        }
+    }
 
     /**
      * 지출 많이 한 순서대로 정렬
@@ -78,10 +132,5 @@ public class AnalysisServiceImpl implements AnalysisService {
         } else {
             return "알뜰 소비입니다.";
         }
-    }
-
-    @Scheduled(cron = "* * 12 * * ?")
-    private void showOneDayStatistics() {
-
     }
 }
