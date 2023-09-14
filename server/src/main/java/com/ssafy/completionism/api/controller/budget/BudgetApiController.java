@@ -2,9 +2,11 @@ package com.ssafy.completionism.api.controller.budget;
 
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.budget.request.AddBudgetRequest;
+import com.ssafy.completionism.api.controller.budget.request.ModifyBudgetRequest;
 import com.ssafy.completionism.api.controller.budget.response.MonthBudgetResponse;
 import com.ssafy.completionism.api.service.budget.BudgetService;
 import com.ssafy.completionism.api.service.budget.dto.AddBudgetDto;
+import com.ssafy.completionism.api.service.budget.dto.ModifyBudgetDto;
 import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +77,21 @@ public class BudgetApiController {
         try {
             List<MonthBudgetResponse> list = budgetService.searchMonth(loginId, start, end);
             return ApiResponse.ok(list);
+        } catch (NoSuchElementException e) {
+            return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        }
+    }
+
+    @PatchMapping
+    public ApiResponse<Long> modifyBudget(
+            @Valid @RequestBody ModifyBudgetRequest request
+            ) {
+        // 사용자 정보 가져오기
+        String loginId = SecurityUtils.getCurrentLoginId();
+
+        try {
+            budgetService.modifyBudget(loginId, ModifyBudgetDto.toDto(request));
+            return ApiResponse.ok(null);
         } catch (NoSuchElementException e) {
             return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
         }
