@@ -1,16 +1,17 @@
-import { Grid } from '@mui/material';
+import { Grid } from "@mui/material";
 import React from "react";
 import "./UpperNavigationBar.css";
 
 const UpperNavigationBar = (props) => {
-    console.log(props)
-    const upper_navbar_name = props.props
+  const upperNavbarName = props.props;
 
-    return(
-        <Grid className ="uppernavbar">
-            {upper_navbar_name}
-        </Grid>
-    )
-}
+  return (
+    <Grid className="uppernavbar">
+      <span>
+        <strong>{upperNavbarName}</strong>
+      </span>
+    </Grid>
+  );
+};
 
-export default UpperNavigationBar
+export default UpperNavigationBar;
