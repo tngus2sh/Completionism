@@ -29,7 +29,7 @@ public class HistoryService {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         List<HistoryResponse> list = historyQueryRepository.getHistoryResponseForPeriod(loginId, cond);
-
+        log.debug("[기간조회 서비스] 리스트 불러옴 사이즈 = {}", list.size());
         int incomeSum = 0;
         int outcomeSum = 0;
 
@@ -37,7 +37,8 @@ public class HistoryService {
             incomeSum += history.getIncome();
             outcomeSum += history.getSpend();
         }
-
+        log.debug("[기간조회 서비스] in = {}, out = {}", incomeSum, outcomeSum);
+        log.debug("[기간조회 서비스] list = {}", list.get(0).getFeel());
         return getHistoryListResponse(cond, list, incomeSum, outcomeSum);
     }
 
