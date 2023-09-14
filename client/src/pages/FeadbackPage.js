@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+
 import React from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
@@ -6,19 +6,19 @@ import "./AccountBookPage.css";
 
 const FeadbackPage = ()=>{
     return(
-        <Grid>
-            <Grid className="uppernavbar">
+        <div>
+            <div className="uppernavbar">
                 <UpperNavigationBar/>
-            </Grid>
+            </div>
 
-            <Grid className="body">
+            <div className="body">
                 this is FeadbackPage
-            </Grid>
+            </div>
             
-            <Grid className="undernavbar">
+            <div className="undernavbar">
                 <UnderNavigationBar/>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     )
 }
 

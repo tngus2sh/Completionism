@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+
 import React, { useState } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
@@ -114,16 +114,16 @@ const FutureExpenditurePage = () => {
   };
 
   return (
-    <Grid>
-      <Grid className="uppernavbar">
+    <div>
+      <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
-      </Grid>
+      </div>
 
-      <Grid className="progressive_bar" />
+      <div className="progressive_bar" />
 
-      <Grid className="body">this is FutureExpenditurePage</Grid>
+      <div className="body">this is FutureExpenditurePage</div>
 
-      <Grid>
+      <div>
         
         <DatePicker
           selected={startDate}
@@ -167,14 +167,14 @@ const FutureExpenditurePage = () => {
         </div> */}
         <button onClick={createData}>미래소비 생성하기</button>
         <hr />
-      </Grid>
+      </div>
 
-      <Grid>
+      <div>
         {FutureExpenditureList.map((item, index) => {
 
             if(item.date.slice(0,7)===selectedYearAndMonth.slice(0,7)){
                 return (
-                    <Grid>
+                    <div>
                       id: {item.id}|{item.date}|{item.todo}|{item.cost}|{item.plus}
                       <button
                         onClick={() => {
@@ -185,17 +185,17 @@ const FutureExpenditurePage = () => {
                         삭제
                       </button>
                       <hr />
-                    </Grid>
+                    </div>
                   );
             }
           
         })}
-      </Grid>
+      </div>
 
-      <Grid className="undernavbar">
+      <div className="undernavbar">
         <UnderNavigationBar />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 
