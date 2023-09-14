@@ -37,7 +37,7 @@ public class History extends TimeBaseEntity {
     @Lob
     private String diary;
     @Enumerated(STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = true)
     private Feel feel;
 
 

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -54,12 +55,14 @@ public class TransactionService {
         LocalDate transactionDate = transactionTime.toLocalDate();
         Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, transactionDate.atStartOfDay());
 
-        // 거래 내역이 생성되어 있을 때
+        // 거래 내역이 생성되어 있지 않을 때
         if (registeredHistory.isEmpty()) {
+            log.debug("[거래내역 등록((서비스))] 거래내역 없음");
             todayHistory = createHistoryEntity(member);
+            log.debug("[거래내역 등록((서비스))] 거래내역 만듦 = {}",todayHistory.getId());
         }
 
-        // 거래 내역이 생성되어 있지 않을 때
+        // 거래 내역이 생성되어 있을 때
         if (registeredHistory.isPresent()) {
             todayHistory = registeredHistory.get();
         }
@@ -90,6 +93,7 @@ public class TransactionService {
                 .outcome(0)
                 .diary("")
                 .member(member)
+                .transactions(new ArrayList<>())
                 .build();
         return historyRepository.save(history);
     }
