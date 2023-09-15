@@ -6,6 +6,7 @@ const initialState = {
   selectedYearAndMonth : null,
   fixedExpenditureList : [] ,
   FutureExpenditureList : [] ,
+  MonthTransactionData : [],
   isDiary : false,
 };
 
@@ -30,10 +31,13 @@ export const authSlice = createSlice({
     },
     setIsDiary: (state) => {
       state.isDiary = !state.isDiary
+    },
+    fatchMonthTransactionData: (state,action) => {
+      state.MonthTransactionData = action.payload;
     }
   },
 });
 
-export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,setIsDiary } = authSlice.actions;
+export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,setIsDiary,fatchMonthTransactionData} = authSlice.actions;
 
 export default authSlice.reducer;
