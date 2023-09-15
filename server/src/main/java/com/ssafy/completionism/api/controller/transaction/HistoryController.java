@@ -2,17 +2,16 @@ package com.ssafy.completionism.api.controller.transaction;
 
 import com.ssafy.completionism.api.ApiResponse;
 import com.ssafy.completionism.api.controller.transaction.response.HistoryListResponse;
+import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
 import com.ssafy.completionism.api.service.transaction.HistoryService;
 import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
 import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,6 +20,21 @@ import java.time.LocalDate;
 public class HistoryController {
 
     private final HistoryService historyService;
+
+    @GetMapping
+    public ApiResponse<List<TransactionResponse>> getTransactionList(@RequestParam String date) {
+        String loginId = SecurityUtils.getCurrentLoginId();
+
+        String[] day = date.split("-");
+        LocalDate searchDay = LocalDate.of(Integer.parseInt(day[0]), Integer.parseInt(day[1]), Integer.parseInt(day[2]));
+
+        List<TransactionResponse> responses = historyService.getTransactionList(loginId, searchDay);
+
+        if (responses.size() == 0) {
+            return ApiResponse.ok(null);
+        }
+        return ApiResponse.ok(responses);
+    }
 
     /**
      * @param period
