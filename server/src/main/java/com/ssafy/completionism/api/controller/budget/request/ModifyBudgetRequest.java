@@ -19,7 +19,7 @@ public class ModifyBudgetRequest {
     private int totalBudget;
 
     @NotBlank
-    @Pattern(regexp = "^(ALL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
+    @Pattern(regexp = "^(TOTAL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
     private Category category;
 
     @Builder

@@ -1,6 +1,8 @@
 package com.ssafy.completionism.domain;
 
 public enum Category {
+
+    TOTAL("전체"),
     TRAFFIC("교통"),
     FOOD("식비"),
     SHOPPING("쇼핑"),

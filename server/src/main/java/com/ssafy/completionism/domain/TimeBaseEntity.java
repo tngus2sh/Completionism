@@ -13,10 +13,11 @@ import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
+
 @Getter
+@MappedSuperclass
 @NoArgsConstructor(access = PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class TimeBaseEntity {
 
     @CreatedDate
@@ -27,3 +28,4 @@ public class TimeBaseEntity {
     @Column(nullable = false)
     private LocalDateTime lastModifiedDate;
 }
+

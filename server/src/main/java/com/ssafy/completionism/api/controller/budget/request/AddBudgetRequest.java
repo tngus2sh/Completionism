@@ -14,19 +14,18 @@ import java.time.LocalDate;
 public class AddBudgetRequest {
 
     @NotBlank
-    @FutureOrPresent
-    private LocalDate yearMonth;
+    private String yearMonth;
 
     @NotNull
     @Positive
     private int totalBudget;
 
     @NotBlank
-    @Pattern(regexp = "^(ALL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
-    private Category category;
+    @Pattern(regexp = "^(TOTAL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
+    private String category;
 
     @Builder
-    public AddBudgetRequest(LocalDate yearMonth, int totalBudget, Category category) {
+    public AddBudgetRequest(String yearMonth, int totalBudget, String category) {
         this.yearMonth = yearMonth;
         this.totalBudget = totalBudget;
         this.category = category;

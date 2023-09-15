@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +30,11 @@ public class BudgetQueryRepository {
      */
     public List<MonthBudgetResponse> getMonthBudgetAll(Long memberId) {
         return queryFactory.select(constructor(MonthBudgetResponse.class,
-                budget.id,
-                budget.member.id,
-                budget.yearMonth,
-                budget.totalBudget,
-                budget.category
+                        budget.id,
+                        budget.member.id,
+                        budget.yearMonth,
+                        budget.totalBudget,
+                        budget.category
                 ))
                 .from(budget)
                 .where(budget.member.id.eq(memberId))
@@ -51,11 +50,11 @@ public class BudgetQueryRepository {
      */
     public List<MonthBudgetResponse> getMonthBudget(Long memberId, LocalDate startMonth, LocalDate endMonth) {
         return queryFactory.select(constructor(MonthBudgetResponse.class,
-                budget.id,
-                budget.member.id,
-                budget.yearMonth,
-                budget.totalBudget,
-                budget.category
+                        budget.id,
+                        budget.member.id,
+                        budget.yearMonth,
+                        budget.totalBudget,
+                        budget.category
                 ))
                 .from(budget)
                 .where(budget.member.id.eq(memberId),
