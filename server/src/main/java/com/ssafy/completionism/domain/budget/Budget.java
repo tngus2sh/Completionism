@@ -3,16 +3,14 @@ package com.ssafy.completionism.domain.budget;
 import com.ssafy.completionism.domain.Category;
 import com.ssafy.completionism.domain.TimeBaseEntity;
 import com.ssafy.completionism.domain.member.Member;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Budget extends TimeBaseEntity {
 
     @Id
@@ -20,11 +18,11 @@ public class Budget extends TimeBaseEntity {
     @Column(name = "budget_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "year_month", columnDefinition = "DATE")
+    @Column(name = "year_month")
     private LocalDate yearMonth;
 
     @Column(name = "total_budget")

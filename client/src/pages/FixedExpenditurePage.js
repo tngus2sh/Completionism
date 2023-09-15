@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+
 import React, { useState } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
@@ -111,16 +111,16 @@ const FixedExpenditurePage = () => {
 
 
   return (
-    <Grid>
-      <Grid className="uppernavbar">
+    <div>
+      <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
-      </Grid>
+      </div>
 
-      <Grid className="progressive_bar" />
+      <div className="progressive_bar" />
 
-      <Grid className="body">this is FixedExpenditurePage</Grid>
+      <div className="body">this is FixedExpenditurePage</div>
 
-      <Grid>
+      <div>
         <div>
           <label>Todo:</label>
           <input
@@ -171,13 +171,13 @@ const FixedExpenditurePage = () => {
         </div>
         <button onClick={createData}>고정지출 생성하기</button>
         <hr />
-      </Grid>
+      </div>
 
-      <Grid>
+      <div>
         {fixedExpenditureList.map((item, index) => {
           
             return (
-              <Grid>
+              <div>
                 id: {item.id}|{item.date}|{item.todo}|{item.cost}|{item.plus}
                 <button
                   onClick={() => {
@@ -188,16 +188,16 @@ const FixedExpenditurePage = () => {
                   삭제
                 </button>
                 <hr />
-              </Grid>
+              </div>
             );
           
         })}
-      </Grid>
+      </div>
 
-      <Grid className="undernavbar">
+      <div className="undernavbar">
         <UnderNavigationBar />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 

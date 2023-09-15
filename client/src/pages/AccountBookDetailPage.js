@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+
 import React from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
@@ -11,24 +11,24 @@ const AccoutBookDetailPage = ()=>{
     const upperNavbarName = `${id}일 가계부`;
 
     return(
-        <Grid>
-            <Grid className="uppernavbar"> 
+        <div>
+            <div className="uppernavbar"> 
                 <UpperNavigationBar props={upperNavbarName}/>
-            </Grid>
+            </div>
 
-            <Grid className="progressive_bar"></Grid>
+            <div className="progressive_bar"></div>
 
-            <Grid className="daily_consumption_plan_box">
-            </Grid>
+            <div className="daily_consumption_plan_box">
+            </div>
 
-            <Grid className="body">
+            <div className="body">
                 this is AccountBookDetailPage
-            </Grid>
+            </div>
              
-            <Grid className="undernavbar">
+            <div className="undernavbar">
                 <UnderNavigationBar/>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     )
 }
 
