@@ -43,10 +43,10 @@ public class DiaryServiceImpl implements DiaryService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        String sendMessage = "나는 " + dto.getCategory() + "로 "
+        String sendMessage = "나는 " + dto.getCategory().getText()+ "로 "
                 + dto.getCost() + "를 썼고, "
                 + dto.getDesc() + " 와 같은 마음이 들었어."
-                + "이 정보들을 가지고 일기를 써줘.";
+                + "이 정보들을 가지고 사실만을 바탕으로 일기를 써줘.";
 
         GPTCompletionChatResponse gptAnswer = gptService.completionChat(GPTCompletionChatRequest.builder()
                 .role("user")
