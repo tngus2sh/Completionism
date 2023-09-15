@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 public class AddDiaryDto {
@@ -27,11 +28,14 @@ public class AddDiaryDto {
     }
 
     public static AddDiaryDto toDto(AddDiaryRequest request) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime createdDate = LocalDateTime.parse(request.getCreatedDate(), dateTimeFormatter);
+
         return AddDiaryDto.builder()
-                .category(request.getCategory())
+                .category(Category.valueOf(request.getCategory()))
                 .cost(request.getCost())
                 .desc(request.getDesc())
-                .createdDate(request.getCreatedDate())
+                .createdDate(createdDate)
                 .build();
     }
 
