@@ -1,5 +1,6 @@
 package com.ssafy.completionism.api.controller.budget.response;
 
+import com.ssafy.completionism.domain.Category;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,21 +12,21 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class MonthBudgetResponse {
 
-    private String id;
+    private Long id;
 
-    private String memberId;
+    private Long memberId;
 
-    private String yearMonth;
+    private LocalDate yearMonth;
 
     private int totalBudget;
 
-    private String category;
+    private Category category;
 
     @Builder
-    public MonthBudgetResponse(Long id, Long memberId, LocalDate yearMonth, int totalBudget, String category) {
-        this.id = id + "";
-        this.memberId = memberId + "";
-        this.yearMonth = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+    public MonthBudgetResponse(Long id, Long memberId, LocalDate yearMonth, int totalBudget, Category category) {
+        this.id = id;
+        this.memberId = memberId;
+        this.yearMonth = yearMonth;
         this.totalBudget = totalBudget;
         this.category = category;
     }
