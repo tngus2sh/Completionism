@@ -11,8 +11,7 @@ import java.time.LocalDate;
 public class ModifyBudgetRequest {
 
     @NotBlank
-    @FutureOrPresent
-    private LocalDate yearMonth;
+    private String yearMonth;
 
     @NotNull
     @Positive
@@ -20,10 +19,10 @@ public class ModifyBudgetRequest {
 
     @NotBlank
     @Pattern(regexp = "^(TOTAL|TRAFFIC|FOOD|SHOPPING|LIFE|ETC)$")
-    private Category category;
+    private String category;
 
     @Builder
-    public ModifyBudgetRequest(LocalDate yearMonth, int totalBudget, Category category) {
+    public ModifyBudgetRequest(String yearMonth, int totalBudget, String category) {
         this.yearMonth = yearMonth;
         this.totalBudget = totalBudget;
         this.category = category;

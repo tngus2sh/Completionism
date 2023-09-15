@@ -21,33 +21,11 @@ const AccountBookPage = () => {
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
-  const [useAxios, setUseAxios] = useState(false);
-
-  useEffect(() => {
-    loadData();
-  }, []);
+  
 
   const dispatch = useDispatch();
 
-  // const monthlyAccountBookData = {
-  //   startDay: "2023-08-01",
-  //   endDay: "2023-08-31",
-  //   income: 3000000,
-  //   spend: 2800000,
-  //   day: [
-  //     {
-  //       day: "2023-08-01",
-  //       income: 10000,
-  //       spend: 3000,
-  //     },
-  //     {
-  //       day: "2023-08-15",
-  //       income: 10000,
-  //       spend: 3000,
-  //     },
-  //   ],
-  // };
-  
+
   const diaryData = {
     startDay: "2023-08-01",
     endDay: "2023-08-31",
@@ -86,7 +64,7 @@ const AccountBookPage = () => {
         `/api/history/${firstDayOfMonth}_${lastDayOfMonth}`,
         { headers }
       );
-      console.log(response.data);
+      // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
       console.error(error);
@@ -114,10 +92,11 @@ const AccountBookPage = () => {
       </div>
 
       <div className="calander_container" container>
+        
         {isDiary ? (
-          <Calender isDiary={isDiary} props={diaryData} />
+          <Calender isDiary={isDiary} props={diaryData} loadData={loadData}/>
         ) : (
-          <Calender isDiary={isDiary} props={MonthTransactionData} />
+          <Calender isDiary={isDiary} props={MonthTransactionData} loadData={loadData}/>
         )}
       </div>
 

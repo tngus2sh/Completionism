@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 
 @Data
 public class AddDiaryRequest {
-    private Category category;
+    private String category;
 
     private int cost;
 
     private String desc;
 
-    private LocalDateTime createdDate;
+    private String createdDate;
 
     @Builder
-    public AddDiaryRequest(Category category, int cost, String desc, LocalDateTime createdDate) {
+    public AddDiaryRequest(String category, int cost, String desc, String createdDate) {
         this.category = category;
         this.cost = cost;
         this.desc = desc;

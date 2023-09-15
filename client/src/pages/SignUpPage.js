@@ -3,6 +3,7 @@ import { Grid, TextField, Button } from "@mui/material";
 import axios from "axios";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import { useNavigate } from "react-router-dom";
+import "./SignUpPage.css";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -18,10 +19,10 @@ const SignUpPage = () => {
   const [stepMessage, setStepMessage] = useState("");
   const steps = [
     { fieldName: "loginId", label: "아이디", message: "아이디를 입력해주세요." },
-    { fieldName: "loginPwd",label: "비밀번호", message: "비밀번호를 입력해주세요.",},
+    { fieldName: "loginPwd", label: "비밀번호", message: "비밀번호를 입력해주세요." },
     { fieldName: "name", label: "이름", message: "이름을 입력해주세요." },
-    { fieldName: "phone", label: "전화번호",message: "전화번호를 입력해주세요.",},
-  ]; 
+    { fieldName: "phone", label: "전화번호", message: "전화번호를 입력해주세요." },
+  ];
 
   const currentStepData = steps[currentStep];
 
@@ -56,37 +57,50 @@ const SignUpPage = () => {
     }
   };
 
+  function setScreenSize() {
+    //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
+    let vh = window.innerHeight * 0.01;
+    //그런 다음 --vh 사용자 정의 속성의 값을 문서의 루트로 설정합니다.
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+  setScreenSize();
+  window.addEventListener("resize", setScreenSize);
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <UpperNavigationBar props={upperNavbarName} />
+    <div className="signup-page">
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <UpperNavigationBar props={upperNavbarName} />
+        </Grid>
+        <Grid className="progressive_bar" />
+        <Grid item xs={12} sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "1.3rem", fontWeight: "bold" }}>{currentStepData.label}을(를) 입력해주세요.</p>
+            {/* <p style={{ fontSize: "14px", color: "gray" }}>{stepMessage}</p> */}
+          </div>
+          <div className="form-container" style={{ width: "90%", marginTop: "1rem" }}>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <div className="signup-input-container">
+                <TextField
+                  variant="standard"
+                  InputProps={{ disableUnderline: true, sx: { height: "2.3rem", padding: "0 1rem" } }}
+                  InputLabelProps={{ sx: { textIndent: "1.5rem" } }}
+                  label={currentStepData.label}
+                  name={currentStepData.fieldName}
+                  fullWidth
+                  value={formData[currentStepData.fieldName]}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <Button variant="contained" fullWidth onClick={handleNextStep} sx={{ height: "3rem", borderRadius: "1rem", backgroundColor: "#0046FF", ":focus": { backgroundColor: "#0046FF" } }}>
+                <strong>{currentStep === steps.length - 1 ? "회원가입" : "다음 단계"}</strong>
+              </Button>
+            </form>
+          </div>
+        </Grid>
       </Grid>
-      <Grid className="progressive_bar" />
-      <Grid item xs={12} style={{ maxWidth: "390px" }}>
-        <div style={{ textAlign: "center", marginBottom: "16px" }}>
-          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
-            {currentStepData.label}을(를) 입력해주세요.
-          </p>
-          <p style={{ fontSize: "14px", color: "gray" }}>{stepMessage}</p>
-        </div>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <TextField
-            label={currentStepData.label}
-            name={currentStepData.fieldName}
-            fullWidth
-            value={formData[currentStepData.fieldName]}
-            onChange={handleChange}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNextStep}
-          >
-            {currentStep === steps.length - 1 ? "회원가입" : "다음 단계"}
-          </Button>
-        </form>
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 
