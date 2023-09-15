@@ -58,7 +58,7 @@ const SignInPage = () => {
   window.addEventListener("resize", setScreenSize);
 
   return (
-    <div style={{ display: "inline-block", width: "100%", height: "calc(var(--vh, 1vh) * 100)", backgroundColor: "#F9F9FC" }}>
+    <div style={{ display: "inline-block", width: "100%", height: "calc(var(--vh, 1vh) * 100)", backgroundColor: "#F0F1F4" }}>
       <Grid container spacing={2} direction="row" justifyContent="center" alignItems="center">
         <Grid item xs={12}>
           <UpperNavigationBar props={upperNavbarName} />
