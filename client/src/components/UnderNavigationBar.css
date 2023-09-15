@@ -3,10 +3,28 @@
 
 /* 하단 네비게이션 바 스타일 */
 .undernavbar {
-    background-color: aqua;
-    width: 390px;
-    height: 60px;
-    bottom: 0;
-    position: fixed;
-    z-index: 1000;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  height: 4rem;
+  bottom: 0;
+  position: fixed;
+  z-index: 1000;
+}
+
+.footer-link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+a {
+  text-decoration: none; color: black;
+}
+a:visited, a:hover, a:focus, a:active { 
+  text-decoration: none;
+}

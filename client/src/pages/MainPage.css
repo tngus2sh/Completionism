@@ -59,6 +59,7 @@
 
 .tomorrow-consumption-container {
   margin-bottom: 1.5rem;
+  background-color: #F0F1F4;
 }
 
 .todays_ai_diary-content-container {
@@ -77,6 +78,10 @@
   height: 2.5rem;
   background-color: white;
   border-radius: 0.8rem;
+}
+
+.todays-ai-consumption-feedback-container {
+  background-color: #F0F1F4;
 }
 
 .todays-ai-consumption-feedback-content-container {
