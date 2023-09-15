@@ -109,7 +109,7 @@ public class TransactionService {
                 .category(transaction.getCategory().getText())
                 .place(transaction.getPlace())
                 .diary(transaction.getDiary())
-                .feel(transaction.getFeel().getText())
+                .feel(transaction.getFeel())
                 .build();
     }
 }
