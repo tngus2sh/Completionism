@@ -87,8 +87,9 @@ public class BudgetServiceImpl implements BudgetService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate yearMonth = LocalDate.from(LocalDate.parse(day, dateTimeFormatter).atStartOfDay());
+        LocalDate yearMonth = LocalDate.parse(day, dateTimeFormatter).withDayOfMonth(1);
 
         Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndMember(yearMonth, member);
 
@@ -123,7 +124,7 @@ public class BudgetServiceImpl implements BudgetService {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate yearMonthLocalDate = LocalDate.from(LocalDate.parse(yearMonth, dateTimeFormatter).atStartOfDay());
+        LocalDate yearMonthLocalDate = LocalDate.parse(yearMonth, dateTimeFormatter).withDayOfMonth(1);
         Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndMember(yearMonthLocalDate, member);
 
         if (budgetOptional.isEmpty()) {
