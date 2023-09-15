@@ -45,7 +45,7 @@ public class BudgetServiceImpl implements BudgetService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        Optional<Long> alreadyBudget = budgetRepository.findByYearMonth(dto.getYearMonth());
+        Optional<Long> alreadyBudget = budgetRepository.findByYearMonthAndCategory(dto.getYearMonth(), dto.getCategory());
 
         if (alreadyBudget.isPresent()) {
             throw new AlreadyExistException("409", HttpStatus.CONFLICT, "이미 있는 예산입니다.");
@@ -112,10 +112,13 @@ public class BudgetServiceImpl implements BudgetService {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         // 목표 예산 수정
-        budgetQueryRepository.findByYearMonthAndMember(dto.getYearMonth(), member)
-                .ifPresent((budget) -> {
-                    budget.updateBudget(dto.getTotalBudget(), dto.getCategory());
-        });
+        Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndMember(dto.getYearMonth(), member);
+
+        if (budgetOptional.isEmpty()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 예산을 찾을 수 없습니다.");
+        }
+
+        budgetOptional.get().updateBudget(dto.getTotalBudget(), dto.getCategory());
     }
 
     @Override
@@ -124,7 +127,7 @@ public class BudgetServiceImpl implements BudgetService {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate yearMonthLocalDate = LocalDate.parse(yearMonth, dateTimeFormatter).withDayOfMonth(1);
+        LocalDate yearMonthLocalDate = LocalDate.parse(yearMonth, dateTimeFormatter);
         Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndMember(yearMonthLocalDate, member);
 
         if (budgetOptional.isEmpty()) {

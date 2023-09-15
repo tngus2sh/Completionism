@@ -34,7 +34,7 @@ public class ModifyBudgetDto {
 
     public static ModifyBudgetDto toDto(ModifyBudgetRequest request) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate yearMonthLocalDate = LocalDate.parse(request.getYearMonth(), dateTimeFormatter).withDayOfMonth(1);
+        LocalDate yearMonthLocalDate = LocalDate.parse(request.getYearMonth(), dateTimeFormatter);
         return ModifyBudgetDto.builder()
                 .yearMonth(yearMonthLocalDate)
                 .totalBudget(request.getTotalBudget())

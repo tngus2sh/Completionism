@@ -116,6 +116,8 @@ public class BudgetApiController {
             return ApiResponse.ok(null);
         } catch (NoSuchElementException e) {
             return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        } catch (NotFoundException e) {
+            return ApiResponse.of(Integer.parseInt(e.getResultCode()), e.getHttpStatus(), e.getResultMessage(), null);
         }
     }
 
