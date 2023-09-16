@@ -19,6 +19,7 @@ const FutureExpenditurePage = () => {
   const FutureExpenditureList = useSelector(
     (state) => state.auth.FutureExpenditureList
   );
+  // console.log('여기는제대로 되니?',FutureExpenditureList)
   const dispatch = useDispatch();
 
   const [useAxios, setUseAxios] = useState(false);

@@ -4,9 +4,10 @@ const initialState = {
   userName: null,
   isAuthenticated: false,
   selectedYearAndMonth : null,
-  fixedExpenditureList : [] ,
-  FutureExpenditureList : [] ,
-  MonthTransactionData : [],
+  fixedExpenditureList : [] , //고정지출
+  FutureExpenditureList : [] , //미래소비
+  MonthTransactionData : [], //달력에 띄울 수입지출데이터
+  MonthHistoryData : [],  //계좌 상세조회
   isDiary : false,
 };
 
@@ -34,10 +35,14 @@ export const authSlice = createSlice({
     },
     fatchMonthTransactionData: (state,action) => {
       state.MonthTransactionData = action.payload;
+    },
+    fatchMonthHistoryData: (state,action) => {
+      state.MonthHistoryData = action.payload;
     }
   },
 });
 
-export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,setIsDiary,fatchMonthTransactionData} = authSlice.actions;
+export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,
+  setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData} = authSlice.actions;
 
 export default authSlice.reducer;
