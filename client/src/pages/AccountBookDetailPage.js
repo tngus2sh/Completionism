@@ -28,12 +28,41 @@ const emotions = [
 // 모달 스타일을 설정합니다.
 const modalStyle = {
   content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
+    position: "absolute",
+    // bottom: "0",
+    // left: "0",
+    // right: "0",
+    // width: "100%",
+    // height: "15rem",
+    // padding: "0",
+    // borderRadius: "1rem 1rem 0 0",
+    // boxShadow: 20,
+    // textAlign: "center",
+    // overflowY: "auto", // 스크롤바 추가
+    // outline: "none",
+    // backdropFilter: "blur(5px)",
+    top: '35rem',
+    left: '0px',
+    right: '0px',
+    bottom: '0px',
+    // border: '1px solid #ccc',
+    background: '#fff',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+    borderRadius: '1rem',
+    outline: 'none',
+    padding: '20px'
+    // bottom: "auto",
+    // marginRight: "-50%",
+    // transform: "translate(-50%, -50%)",
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.1)'
   },
 };
 
@@ -159,6 +188,7 @@ const AccoutBookDetailPage = () => {
                         </div>
                       </button>
                     </div>
+                    <div visible={isModalOpen} className="modal-overlay"/>
                     <Modal
                       isOpen={isModalOpen}
                       onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
@@ -229,6 +259,7 @@ const AccoutBookDetailPage = () => {
                         onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
                         style={modalStyle}
                         contentLabel="일기 작성 모달"
+                        overlayClassName="modal-overlay"
                       >
                         <h2>일기 작성</h2>
                         <select
@@ -237,7 +268,21 @@ const AccoutBookDetailPage = () => {
                         >
                           {emotions.map((emotion) => (
                             <option key={emotion} value={emotion}>
-                              {emotion}
+                              {/*{emotion}*/}
+                              {
+                              {
+                                DESIRE: <span>😍</span>,
+                                GRATITUDE: <span>🙏</span>,
+                                JOY: <span>😃</span>,
+                                ANGER: <span>😡</span>,
+                                DISGUST: <span>🤮</span>,
+                                FEAR: <span>😨</span>,
+                                GRIEF: <span>😰</span>,
+                                CURIOSITY: <span>🤔</span>,
+                                SURPRISE: <span>😲</span>,
+                                NEUTRAL: <span>😶</span>,
+                              }[emotion]
+                              }
                             </option>
                           ))}
                         </select>
@@ -246,8 +291,8 @@ const AccoutBookDetailPage = () => {
                           value={diaryContent}
                           onChange={(e) => setDiaryContent(e.target.value)}
                         />
-                        <button onClick={() => createDiary(transactionId)}>작성완료</button>
-                        <button onClick={() => setIsModalOpen(false)}>취소</button>
+                        <button className="writeDiaryPageBtn" onClick={() => createDiary(transactionId)}>작성완료</button>
+                        <button className="writeDiaryPageBtn" onClick={() => setIsModalOpen(false)}>취소</button>
                       </Modal>
                     </div>
                   </div>
@@ -274,7 +319,6 @@ const AccoutBookDetailPage = () => {
                           NEUTRAL: <span style={{ fontSize: "3rem", width: "4rem" }}>😶</span>,
                         }[item.feel]
                       }
-                      {item.feel}
                       <div style={{ flex: "1", textAlign: "left", paddingLeft: "1rem" }}>
                         | {item.diary}
                       </div>
