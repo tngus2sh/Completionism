@@ -70,12 +70,12 @@ const RenderCells = ({
       //     (item) => {
       //       if(item.day !==null){
       //         item.day.split("-").pop() === format(cloneDay, "dd")
-      //       }
+            
       //     }
       //   );
       // }
 
-      // const cellData = data.day.find(item => item.day.split('-').pop() === format(cloneDay, 'dd'));
+      // const cellData = MonthTransactionData.day.find(item => item.day.split('-').pop() === format(cloneDay, 'dd'));
 
       days.push(
         <div
@@ -101,14 +101,14 @@ const RenderCells = ({
             {formattedDate}
           </span>
 
-          {/* <div className="cellData">
+          <div className="cellData">
             {cellData && (
               <div className="income-spend">
                 <div className="income">+{cellData.income}</div>
                 <div className="spend">-{cellData.spend}</div>
               </div>
             )}
-          </div> */}
+          </div>
 
         </div>
       );
