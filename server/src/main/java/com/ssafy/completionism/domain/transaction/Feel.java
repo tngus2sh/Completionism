@@ -1,5 +1,6 @@
 package com.ssafy.completionism.domain.transaction;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -22,4 +23,19 @@ public enum Feel {
     Feel(String text) {
         this.text = text;
     }
+
+    public static Feel fromText(String text) {
+        for (Feel feel : Feel.values()) {
+            if (feel.getText().equals(text)) {
+                return feel;
+            }
+        }
+        throw new IllegalArgumentException("Invalid text: " + text);
+    }
+
+    public String getText() {
+        return text;
+    }
+
+
 }
