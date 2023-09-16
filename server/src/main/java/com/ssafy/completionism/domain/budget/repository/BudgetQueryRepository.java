@@ -96,12 +96,8 @@ public class BudgetQueryRepository {
     }
 
     public Optional<Budget> findByYearMonthAndCategoryForUpdate(Long memberId, LocalDate yearMonth, Category category) {
-        return Optional.ofNullable((Budget) queryFactory
-                .select(
-                        budget.id,
-                        budget.yearMonth,
-                        budget.totalBudget,
-                        budget.category)
+        return Optional.ofNullable(queryFactory
+                .select(budget)
                 .from(budget)
                 .where(budget.member.id.eq(memberId),
                         budget.yearMonth.eq(yearMonth),
