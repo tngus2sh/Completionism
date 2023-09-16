@@ -38,8 +38,17 @@ const MainPage = () => {
     }
   };
 
+  function setScreenSize() {
+    //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
+    let vh = window.innerHeight * 0.01;
+    //그런 다음 --vh 사용자 정의 속성의 값을 문서의 루트로 설정합니다.
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+  setScreenSize();
+  window.addEventListener("resize", setScreenSize);
+
   return (
-    <div className="main_page">
+    <div className="main-page">
       <div className="uppernav_bar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
@@ -76,7 +85,15 @@ const MainPage = () => {
           <div className="main-page-title-container">
             <strong>오늘의 ai 일기</strong>
           </div>
-          <div className="todays_ai_diary-content-container">(이모티콘) 이른아침 나는 오전 8시 45분에..</div>
+          <div className="todays_ai_diary-content-container">
+            <div className='todays_ai_diary-content-date'>
+              {year}.{month}.{day}
+            </div>
+            <div className="todays_ai_diary-content-feel">
+              😍
+            </div>
+            (이모티콘) 이른아침 나는 오전 8시 45분에..
+          </div>
         </div>
       </div>
 
@@ -85,7 +102,9 @@ const MainPage = () => {
           <div className="main-page-title-container">
             <strong>내일 나는 얼마나 쓸까?</strong>
           </div>
-          <div className="tomorrow-consumption-content-container">user님은 00000원 소비할 예정입니다.</div>
+          <div className="tomorrow-consumption-content-container">
+            user님은 00000원 소비할 예정입니다.
+          </div>
         </div>
       </div>
 
@@ -98,12 +117,21 @@ const MainPage = () => {
             <div className="todays-ai-consumption-feedback-content-icon-container">
               <SmartToyOutlinedIcon sx={{ fontSize: "2.7rem", color: "#21BD08" }} />
             </div>
-            <div className="todays-ai-consumption-feedback-content-text-container">너무 많이 사드셨어요</div>
+            <div className="todays-ai-consumption-feedback-content-text-container">
+              너무 많이 사드셨어요
+            </div>
           </div>
         </div>
       </div>
 
-      <div style={{ display: "inline-block", width: "100%", height: "6rem", backgroundColor: "#F0F1F4" }}></div>
+      <div
+        style={{
+          display: "inline-block",
+          width: "100%",
+          height: "6rem",
+          backgroundColor: "#F0F1F4",
+        }}
+      ></div>
 
       <div className="undernavbar">
         <UnderNavigationBar />

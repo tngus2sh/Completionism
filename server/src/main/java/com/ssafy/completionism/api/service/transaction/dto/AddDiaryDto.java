@@ -12,36 +12,44 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class AddDiaryDto {
 
-    private Category category;
+    private LocalDateTime time;
 
     private int cost;
 
-    private String desc;
+    private Category category;
 
-    private LocalDateTime createdDate;
+    private String place;
+
+    private String diary;
 
     private Feel feel;
 
+    private boolean plus;
+
     @Builder
-    public AddDiaryDto(Category category, int cost, String desc, LocalDateTime createdDate, Feel feel) {
-        this.category = category;
+    public AddDiaryDto(LocalDateTime time, int cost, Category category, String place, String diary, Feel feel, boolean plus) {
+        this.time = time;
         this.cost = cost;
-        this.desc = desc;
-        this.createdDate = createdDate;
+        this.category = category;
+        this.place = place;
+        this.diary = diary;
         this.feel = feel;
+        this.plus = plus;
     }
+
 
     public static AddDiaryDto toDto(AddDiaryRequest request) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime createdDate = LocalDateTime.parse(request.getCreatedDate(), dateTimeFormatter);
+        LocalDateTime time = LocalDateTime.parse(request.getTime(), dateTimeFormatter);
 
         return AddDiaryDto.builder()
-                .category(Category.valueOf(request.getCategory()))
+                .time(time)
                 .cost(request.getCost())
-                .desc(request.getDesc())
-                .createdDate(createdDate)
+                .category(Category.valueOf(request.getCategory()))
+                .place(request.getPlace())
+                .diary(request.getDiary())
                 .feel(Feel.valueOf(request.getFeel()))
+                .plus(request.isPlus())
                 .build();
     }
-
 }

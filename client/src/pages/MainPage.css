@@ -1,5 +1,5 @@
 /* MainPage.css */
-.main_page{
+.main-page{
   display: inline-block;
   width: 100%;
   height: calc(var(--vh, 1vh) * 100);
@@ -69,6 +69,18 @@
   height: 8rem;
   background-color: white;
   border-radius: 0.8rem;
+  position: relative;
+}
+
+.todays_ai_diary-content-date{
+  position: absolute;
+  top: 0.4rem;
+  left: 0.7rem;
+  color: rgb(150, 150, 150);
+}
+
+.todays_ai_diary-content-feel{
+  font-size: 2.5rem;
 }
 
 .tomorrow-consumption-content-container {

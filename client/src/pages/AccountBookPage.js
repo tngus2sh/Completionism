@@ -12,20 +12,15 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
 import { fatchMonthTransactionData } from "../redux/authSlice";
+import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
   const isDiary = useSelector((state) => state.auth.isDiary);
-  const selectedYearAndMonth = useSelector(
-    (state) => state.auth.selectedYearAndMonth
-  );
-  const MonthTransactionData = useSelector(
-    (state) => state.auth.MonthTransactionData
-  );
-  
+  const selectedYearAndMonth = useSelector((state) => state.auth.selectedYearAndMonth);
+  const MonthTransactionData = useSelector((state) => state.auth.MonthTransactionData);
 
   const dispatch = useDispatch();
-
 
   const diaryData = {
     startDay: "2023-08-01",
@@ -55,16 +50,9 @@ const AccountBookPage = () => {
     const year = selectedYearAndMonth.split("-")[0];
     const month = selectedYearAndMonth.split("-")[1];
     const firstDayOfMonth = `${year}-${month}-01`;
-    const lastDayOfMonth = `${year}-${month}-${new Date(
-      year,
-      month,
-      0
-    ).getDate()}`;
+    const lastDayOfMonth = `${year}-${month}-${new Date(year, month, 0).getDate()}`;
     try {
-      const response = await axios.get(
-        `/api/history/${firstDayOfMonth}_${lastDayOfMonth}`,
-        { headers }
-      );
+      const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, { headers });
       // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
@@ -76,38 +64,55 @@ const AccountBookPage = () => {
     dispatch(setIsDiary());
   };
 
+  function setScreenSize() {
+    //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
+    let vh = window.innerHeight * 0.01;
+    //그런 다음 --vh 사용자 정의 속성의 값을 문서의 루트로 설정합니다.
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+  setScreenSize();
+  window.addEventListener("resize", setScreenSize);
+
   return (
-    <div className="accountbook_page">
+    <div className="accountbook-page">
       <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
 
       <div className="progressive_bar"></div>
 
-      <div className="upper_information_box" container></div>
+      <div className="accountbook-info-container">
+        <div style={{ marginTop: "1.7rem" }}>
+          <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
+          <span>현재 잔액 : 원</span>
+        </div>
+        <div style={{ marginBottom: "1.7rem" }}>
+          <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
+          <span>이번 달 나갈 예정인 금액 : 원</span>
+        </div>
+      </div>
 
-      <div className="toggle_container" container>
-        <button onClick={ToggleCalendar}>
+      <div className="toggle-container">
+        <button className="toggle-button" onClick={ToggleCalendar}>
           <div>{isDiary ? "일기달력" : "가계부달력"}</div>
         </button>
       </div>
 
-      <div className="calander_container" container>
-        
-          {isDiary? (<CalenderForDiary/>):(<Calendar/>)}
-          
-          
-      </div>
+      <div className="calendar-container">{isDiary ? <CalenderForDiary /> : <Calendar />}</div>
 
-      <div>
-        <div>
+      <div className="accountbook-button-container">
+        {/* <div>
           <SwipeableTemporaryDrawer />
+        </div> */}
+        <div className="accountbook-button">
+          <Link to="/future" className="accountbook-link">
+            미래 예상소비 등록
+          </Link>
         </div>
-        <div>
-          <Link to="/future">미래예상소비등록</Link>
-        </div>
-        <div>
-          <Link to="/fixed">고정지출등록</Link>
+        <div className="accountbook-button">
+          <Link to="/fixed" className="accountbook-link">
+            고정 지출 등록
+          </Link>
         </div>
       </div>
 

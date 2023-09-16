@@ -1,26 +1,36 @@
 package com.ssafy.completionism.api.controller.transaction.request;
 
+import com.ssafy.completionism.domain.Category;
+import com.ssafy.completionism.domain.transaction.Feel;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class AddDiaryRequest {
-    private String category; // 카테고리
+    private String time;
 
-    private int cost; // 비용
+    private int cost;
 
-    private String desc; // 한 줄 일기
+    private String category;
 
-    private String createdDate; // 거래내역 날짜
+    private String place;
+
+    private String diary;
 
     private String feel;
 
+    private boolean plus;
+
     @Builder
-    public AddDiaryRequest(String category, int cost, String desc, String createdDate, String feel) {
-        this.category = category;
+    public AddDiaryRequest(String time, int cost, String category, String place, String diary, String feel, boolean plus) {
+        this.time = time;
         this.cost = cost;
-        this.desc = desc;
-        this.createdDate = createdDate;
+        this.category = category;
+        this.place = place;
+        this.diary = diary;
         this.feel = feel;
+        this.plus = plus;
     }
 }
