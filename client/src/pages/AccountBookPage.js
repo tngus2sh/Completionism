@@ -12,11 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import {
-  fatchMonthTransactionData,
-  fatchTotalBudgetData,
-  fatchMonthTransactionData500,
-} from "../redux/authSlice";
+import { fatchMonthTransactionData, fatchTotalBudgetData, fatchMonthTransactionData500 } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
 
@@ -29,27 +25,30 @@ const modalStyle = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    border: "1px solid #919191",
+  },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backdropFilter: "blur(2px)",
   },
 };
 
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
   const isDiary = useSelector((state) => state.auth.isDiary);
-  const selectedYearAndMonth = useSelector(
-    (state) => state.auth.selectedYearAndMonth
-  );
+  const selectedYearAndMonth = useSelector((state) => state.auth.selectedYearAndMonth);
 
-  const MonthTransactionData = useSelector(
-    (state) => state.auth.MonthTransactionData
-  );
+  const MonthTransactionData = useSelector((state) => state.auth.MonthTransactionData);
   const totalBudgetData = useSelector((state) => state.auth.totalBudgetData);
   const [useAxios, setUseAxios] = useState(false);
 
   const todayDate = new Date();
-  const temp =
-    todayDate.getFullYear().toString() +
-    "-" +
-    (todayDate.getMonth() + 1).toString().padStart(2, "0");
+  const temp = todayDate.getFullYear().toString() + "-" + (todayDate.getMonth() + 1).toString().padStart(2, "0");
   const dispatch = useDispatch();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -88,25 +87,17 @@ const AccountBookPage = () => {
       Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
     };
 
-
-    let firstDayOfMonth = null
-    let lastDayOfMonth = null
+    let firstDayOfMonth = null;
+    let lastDayOfMonth = null;
     if (selectedYearAndMonth) {
       const year = selectedYearAndMonth.split("-")[0];
       const month = selectedYearAndMonth.split("-")[1];
       firstDayOfMonth = `${year}-${month}-01`;
-      lastDayOfMonth = `${year}-${month}-${new Date(
-        year,
-        month,
-        0
-      ).getDate()}`;
+      lastDayOfMonth = `${year}-${month}-${new Date(year, month, 0).getDate()}`;
     }
 
     try {
-      const response = await axios.get(
-        `/api/history/${firstDayOfMonth}_${lastDayOfMonth}`,
-        { headers }
-      );
+      const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, { headers });
       // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
@@ -147,9 +138,7 @@ const AccountBookPage = () => {
   const openEditModal = (selectedCategory) => {
     setBudgetData({
       yearMonth: selectedYearAndMonth + "-" + "01",
-      totalBudget: totalBudgetData.find(
-        (item) => item.category === selectedCategory
-      )?.totalBudget,
+      totalBudget: totalBudgetData.find((item) => item.category === selectedCategory)?.totalBudget,
       category: selectedCategory,
     });
     setIsEditModalOpen(true);
@@ -244,31 +233,15 @@ const AccountBookPage = () => {
       <div>
         <button onClick={openCreateModal}>예산(budget) 작성하기</button>
       </div>
-      <Modal
-        isOpen={isCreateModalOpen}
-        onRequestClose={() => setIsCreateModalOpen(false)}
-        style={modalStyle}
-        contentLabel="예산 작성 모달"
-      >
+      <Modal isOpen={isCreateModalOpen} onRequestClose={() => setIsCreateModalOpen(false)} style={modalStyle} contentLabel="예산 작성 모달">
         <h2>{selectedYearAndMonth} 예산 생성</h2>
         <div>
           <label htmlFor="totalBudget">총 예산</label>
-          <input
-            type="text"
-            id="totalBudget"
-            name="totalBudget"
-            value={budgetData.totalBudget || ""}
-            onChange={handleInputChange}
-          />
+          <input type="text" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
         </div>
         <div>
           <label htmlFor="category">카테고리</label>
-          <select
-            id="category"
-            name="category"
-            value={budgetData.category || "TOTAL"}
-            onChange={handleCategoryChange}
-          >
+          <select id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
             <option value="TOTAL">전체</option>
             <option value="TRAFFIC">교통</option>
             <option value="FOOD">식비</option>
@@ -280,31 +253,15 @@ const AccountBookPage = () => {
         <button onClick={createBudget}>예산 생성하기</button>
       </Modal>
 
-      <Modal
-        isOpen={isEditModalOpen}
-        onRequestClose={() => setIsEditModalOpen(false)}
-        style={modalStyle}
-        contentLabel="예산 수정 모달"
-      >
+      <Modal isOpen={isEditModalOpen} onRequestClose={() => setIsEditModalOpen(false)} style={modalStyle} contentLabel="예산 수정 모달">
         <h2>{selectedYearAndMonth} 예산 수정</h2>
         <div>
           <label htmlFor="totalBudget">총 예산</label>
-          <input
-            type="text"
-            id="totalBudget"
-            name="totalBudget"
-            value={budgetData.totalBudget || ""}
-            onChange={handleInputChange}
-          />
+          <input type="text" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
         </div>
         <div>
           <label htmlFor="category">카테고리</label>
-          <select
-            id="category"
-            name="category"
-            value={budgetData.category || "TOTAL"}
-            onChange={handleCategoryChange}
-          >
+          <select id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
             <option value="TOTAL">전체</option>
             <option value="TRAFFIC">교통</option>
             <option value="FOOD">식비</option>
@@ -327,11 +284,7 @@ const AccountBookPage = () => {
           if (item.yearMonth.slice(0, 7) === selectedYearAndMonth.slice(0, 7)) {
             return (
               <div key={item.id}>
-                {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|
-                {item.category}|
-                <button onClick={() => openEditModal(item.category)}>
-                  수정
-                </button>
+                {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|{item.category}|<button onClick={() => openEditModal(item.category)}>수정</button>
               </div>
             );
           }
