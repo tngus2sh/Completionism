@@ -114,7 +114,7 @@ const AccoutBookDetailPage = () => {
       {/*<div className="body">this is AccountBookDetailPage</div>*/}
 
       <div className="account-detail-manual">
-        🥺 😀 가계부에 이모지와 함께 한 줄 일기를 작성해보세요! 😉 😣
+        😀 가계부에 이모지와 함께 한 줄 일기를 작성해보세요! 😉
       </div>
 
 
