@@ -21,10 +21,10 @@ const UnderNavigationBar = () => {
           <span>가계부</span>
         </div>
       </Link>
-      <Link to="/feadback">
+      <Link to="/diary">
         <div className="footer-link-container">
           <PsychologyAltRoundedIcon sx={{ fontSize: "2rem" }} />
-          <span>피드백</span>
+          <span>다이어리</span>
         </div>
       </Link>
 

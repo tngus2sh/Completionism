@@ -4,7 +4,7 @@ import { Grid } from "@mui/material"; //mui에 의한 의존성 문제 해결!
 import MainPage from "./pages/MainPage";
 import AccountBookPage from "./pages/AccountBookPage";
 import SettingPage from "./pages/SettingPage";
-import FeadbackPage from "./pages/FeadbackPage";
+import DiaryPage from "./pages/DiaryPage";
 import AccountBookDetailPage from "./pages/AccountBookDetailPage";
 import DiaryDetailPage from "./pages/DiaryDetailPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -23,7 +23,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/accountbook" element={<AccountBookPage />} />
           <Route path="/setting" element={<SettingPage />} />
-          <Route path="/feadback" element={<FeadbackPage />} />
+          <Route path="/diary" element={<DiaryPage />} />
           <Route path="/accountbook/:id" element={<AccountBookDetailPage />} />
           <Route path="/diary/:id" element={<DiaryDetailPage />} />
           <Route path="/fixed" element={<FixedExpenditurePage />} />

@@ -3,18 +3,26 @@ import React from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
+import { CalenderForDiary } from "../components/CalendarForDiary";
 
-const FeadbackPage = ()=>{
+const DiaryPage = ()=>{
+    const upperNavbarName = "일기"
+
     return(
         <div>
             <div className="uppernavbar">
-                <UpperNavigationBar/>
+                <UpperNavigationBar props={upperNavbarName}/>
             </div>
 
+
             <div className="body">
-                this is FeadbackPage
+                this is DiaryPage
             </div>
             
+            <div>
+                <CalenderForDiary/>
+            </div>
+
             <div className="undernavbar">
                 <UnderNavigationBar/>
             </div>
@@ -22,4 +30,4 @@ const FeadbackPage = ()=>{
     )
 }
 
-export default FeadbackPage
+export default DiaryPage

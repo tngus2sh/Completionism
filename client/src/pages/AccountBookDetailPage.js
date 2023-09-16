@@ -54,10 +54,11 @@ const AccoutBookDetailPage = () => {
       Authorization: `Bearer ${accessToken}`,
     };
     try {
-      const response = await axios.get(`/api/history?date=2023-09-16`, {
+      const response = await axios.get(`/api/history?date=${id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,9)}`, {
         headers,
       });
       dispatch(fatchMonthHistoryData(response.data.dataBody));
+      console.log(id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,9))
       console.log(response.data.dataBody);
     } catch (error) {
       console.error(error);

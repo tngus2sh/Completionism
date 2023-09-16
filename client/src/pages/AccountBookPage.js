@@ -92,11 +92,13 @@ const AccountBookPage = () => {
         </div>
       </div>
 
-      <div className="toggle-container">
+
+      {/* 일기달력 하단 네비게이션 바로 이동 */}
+      {/* <div className="toggle-container">
         <button className="toggle-button" onClick={ToggleCalendar}>
           <div>{isDiary ? "일기달력" : "가계부달력"}</div>
         </button>
-      </div>
+      </div> */}
 
       <div className="calendar-container">{isDiary ? <CalenderForDiary /> : <Calendar />}</div>
 
