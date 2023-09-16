@@ -32,6 +32,7 @@ const FutureExpenditurePage = () => {
   const [plus, setPlus] = useState(false);
   const [fixed, setFixed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [futureScheduleId, setFutureScheduleId] = useState(-1);
 
   //데이트 피커 전용 변수
   const [startDate, setStartDate] = useState(new Date());
@@ -232,13 +233,17 @@ const FutureExpenditurePage = () => {
                       open={open}
                       onClose={handleClose}
                       TransitionComponent={Fade}
+                      elevation={2}
                     >
                       {/* <MenuItem onClick={deleteFutureItem}>삭제</MenuItem> */}
                       <MenuItem
                         onClick={() => {
-                          deleteData(item.id);
+                          console.log(item.id);
+                          setFutureScheduleId(item.id);
+                          deleteData(futureScheduleId);
                           setUseAxios(!useAxios);
                         }}
+                        sx={{ padding: "0 0.7rem" }}
                       >
                         삭제
                       </MenuItem>
