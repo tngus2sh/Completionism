@@ -32,9 +32,12 @@ const MainPage = () => {
   const userName = useSelector((state) => state.auth.userName);
 
   //daily_consumption_plan_box 관련 데이터들
-  const [plannedAmount, setPlannedAmount] = useState(0);
+  // const [plannedAmount, setPlannedAmount] = useState(0);
   const [tomorrowPlannedAmount, setTomorrowPlannedAmount] = useState(0);
-  const [actualUsageAmount, setActualUsageAmount] = useState(0);
+  // const [actualUsageAmount, setActualUsageAmount] = useState(0);
+
+  const actualUsageAmount = 50000;
+  const plannedAmount = 44000;
   const amountSpentMoreThanPlanned = 0;
 
   const [todayFutureAmount, setTodayFutureAmount] = useState(0);
@@ -92,7 +95,7 @@ const MainPage = () => {
       console.log("고정지출", response.data.dataBody);
       setTodayPinnedAmount(response.data.dataBody);
       // setNextPinnedAmount = response.data.dataBody;
-      setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+      // setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
     } catch (error) {
       console.error(error);
     }
@@ -111,7 +114,7 @@ const MainPage = () => {
     try {
       const response = await axios.get(`/api/schedule/pinned/daily/${parsingToday}`, { headers });
       console.log("고정지출", response.data.dataBody);
-      setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+      // setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
     } catch (error) {
       console.error(error);
     }
@@ -130,7 +133,7 @@ const MainPage = () => {
       const response = await axios.get(`/api/schedule/future/daily/${parsingToday}`, { headers });
       console.log("미래지출", response.data.dataBody);
       setTodayFutureAmount(response.data.dataBody);
-      setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+      // setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
     } catch (error) {
       console.error(error);
     }
@@ -155,7 +158,7 @@ const MainPage = () => {
           temp += item.cost;
         // console.log('요놈을빼야해요',temp)
       });
-      setActualUsageAmount(temp);
+      // setActualUsageAmount(temp);
     } catch (error) {
       console.error(error);
     }
@@ -215,8 +218,8 @@ const MainPage = () => {
         <div className="main-header-content-text-container">
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            {/* &nbsp;오늘 계획한 소비 : {plannedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원 */}
-            &nbsp;오늘 계획한 소비 : {todayFutureAmount + todayPinnedAmount}원
+             &nbsp;오늘 계획한 소비 : {plannedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+            {/*&nbsp;오늘 계획한 소비 : {todayFutureAmount + todayPinnedAmount}원*/}
           </div>
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
@@ -241,7 +244,7 @@ const MainPage = () => {
           </div>
           <div className="todays_ai_diary-content-container">
             <div className="todays_ai_diary-content-feel">😍</div>
-            (이모티콘) 이른아침 나는 오전 8시 45분에..
+            이른아침 나는 오전 8시 45분에..
           </div>
         </div>
       </div>
@@ -264,7 +267,7 @@ const MainPage = () => {
             <div className="todays-ai-consumption-feedback-content-icon-container">
               <SmartToyOutlinedIcon sx={{ fontSize: "2.7rem", color: "#21BD08" }} />
             </div>
-            <div className="todays-ai-consumption-feedback-content-text-container">너무 많이 사드셨어요</div>
+            <div className="todays-ai-consumption-feedback-content-text-container">너무 많이 드셨어요</div>
           </div>
         </div>
       </div>

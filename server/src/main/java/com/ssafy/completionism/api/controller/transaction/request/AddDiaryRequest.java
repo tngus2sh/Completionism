@@ -31,6 +31,6 @@ public class AddDiaryRequest {
         this.place = place;
         this.diary = diary;
         this.feel = feel;
-        this.plus = plus;
+        this.plus = !plus;
     }
 }
