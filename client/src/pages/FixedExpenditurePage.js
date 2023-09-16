@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
@@ -8,18 +7,21 @@ import axios from "axios"; // axios 라이브러리 추가
 import { useDispatch } from "react-redux";
 import { fatchPinnedData } from "../redux/authSlice";
 import { useEffect } from "react";
+import EditCalendarRoundedIcon from "@mui/icons-material/EditCalendarRounded";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
 
 const FixedExpenditurePage = () => {
-  const selectedYearAndMonth = useSelector(
-    (state) => state.auth.selectedYearAndMonth
-  );
-  const upperNavbarName = `${selectedYearAndMonth} 고정지출`;
+  const selectedYearAndMonth = useSelector((state) => state.auth.selectedYearAndMonth);
+  const upperNavbarName = `${selectedYearAndMonth.split("-")[0]}년 ${selectedYearAndMonth.split("-")[1]}월 고정지출`;
   const dispatch = useDispatch();
   const [useAxios, setUseAxios] = useState(false);
 
-  const fixedExpenditureList = useSelector(
-    (state) => state.auth.fixedExpenditureList
-  );
+  const fixedExpenditureList = useSelector((state) => state.auth.fixedExpenditureList);
 
   // 입력 필드와 연결된 state 변수들
   const [todo, setTodo] = useState("");
@@ -89,7 +91,6 @@ const FixedExpenditurePage = () => {
     }
   };
 
-
   const deleteData = async (id) => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
     const accessToken = localStorage.getItem("accessToken");
@@ -109,88 +110,135 @@ const FixedExpenditurePage = () => {
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  function setScreenSize() {
+    //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
+    let vh = window.innerHeight * 0.01;
+    //그런 다음 --vh 사용자 정의 속성의 값을 문서의 루트로 설정합니다.
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+  setScreenSize();
+  window.addEventListener("resize", setScreenSize);
 
   return (
-    <div>
+    <div className="fixed-page">
       <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
 
       <div className="progressive_bar" />
 
-      <div className="body">this is FixedExpenditurePage</div>
-
-      <div>
+      {/* <div>
         <div>
           <label>Todo:</label>
-          <input
-            type="text"
-            value={todo}
-            onChange={(e) => setTodo(e.target.value)}
-          />
+          <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
         </div>
         <div>
           <label>Cost:</label>
-          <input
-            type="number"
-            value={cost}
-            onChange={(e) => setCost(parseFloat(e.target.value))}
-          />
+          <input type="number" value={cost} onChange={(e) => setCost(parseFloat(e.target.value))} />
         </div>
-        {/* <div>
-          <label>Fixed:</label>
-          <input
-            type="checkbox"
-            checked={fixed}
-            onChange={(e) => setFixed(e.target.checked)}
-          />
-        </div> */}
         <div>
           <label>Plus:</label>
-          <input
-            type="checkbox"
-            checked={plus}
-            onChange={(e) => setPlus(e.target.checked)}
-          />
+          <input type="checkbox" checked={plus} onChange={(e) => setPlus(e.target.checked)} />
         </div>
         <div>
           <label>Period Type(체크하면 월 지출):</label>
-          <input
-            type="checkbox"
-            checked={periodType}
-            onChange={(e) => setPeriodType(e.target.checked)}
-          />
+          <input type="checkbox" checked={periodType} onChange={(e) => setPeriodType(e.target.checked)} />
         </div>
         <div>
           <label>Period:</label>
-          <input
-            type="number"
-            value={period}
-            onChange={(e) => setPeriod(parseInt(e.target.value))}
-          />
+          <input type="number" value={period} onChange={(e) => setPeriod(parseInt(e.target.value))} />
         </div>
         <button onClick={createData}>고정지출 생성하기</button>
         <hr />
+      </div> */}
+
+      <div className="fixed-info-container">
+        <div className="balloon">
+          <span>
+            💡 고정적으로 나가는 지출을 작성해서
+            <br />
+            현명하게 소비해요!
+          </span>
+        </div>
+      </div>
+
+      <div className="fixed-button-size-container">
+        <div className="fixed-button-container">
+          <span>
+            <strong>작성하기&nbsp;</strong>
+          </span>
+          <div className="fixed-button-icon-container">
+            <div className="fixed-button-icon-flex-container">
+              <EditCalendarRoundedIcon sx={{ color: "#0046FF" }} />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div>
         {fixedExpenditureList.map((item, index) => {
-          
-            return (
-              <div>
-                id: {item.id}|{item.date}|{item.todo}|{item.cost}|{item.plus}
-                <button
-                  onClick={() => {
-                    deleteData(item.id);
-                    setUseAxios(!useAxios);
-                  }}
-                >
-                  삭제
-                </button>
-                <hr />
+          const handleClose = () => {
+            setAnchorEl(null);
+          };
+
+          const deleteFutureItem = () => {
+            deleteData(item.id);
+            setUseAxios(!useAxios);
+          };
+
+          return (
+            <div className="fixed-item-container">
+              <div className="fixed-item-flex-container">
+                <div className="fixed-item-main-container">
+                  <div className="fixed-item-main-flex-container">
+                    <div>{item.todo}</div>
+                    <div style={{ fontSize: "0.85rem", color: "#696969" }}>
+                      {item.date.split("-")[0]}년 {item.date.split("-")[1]}월 {item.date.split("-")[2]}일
+                    </div>
+                  </div>
+                </div>
+
+                <div className="fixed-item-cost-container">{item.cost}원</div>
+
+                <div className="fixed-item-info-container">
+                  <Button id="fade-button" aria-controls={open ? "fade-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
+                    <MoreVertRoundedIcon sx={{ color: "#696969" }} />
+                  </Button>
+                  <Menu
+                    id="fade-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "fade-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Fade}
+                  >
+                    <MenuItem onClick={deleteFutureItem}>삭제</MenuItem>
+                  </Menu>
+                </div>
               </div>
-            );
-          
+            </div>
+
+            // <div>
+            //   id: {item.id}|{item.date}|{item.todo}|{item.cost}|{item.plus}
+            //   <button
+            //     onClick={() => {
+            //       deleteData(item.id);
+            //       setUseAxios(!useAxios);
+            //     }}
+            //   >
+            //     삭제
+            //   </button>
+            //   <hr />
+            // </div>
+          );
         })}
       </div>
 
