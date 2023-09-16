@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.completionism.domain.schedule.QSchedule.schedule;
 
@@ -69,12 +71,50 @@ public class ScheduleQueryRepository {
         return pinnedSchedules;
     }
 
-    public Integer countDailyFutureSchedule(String loginId, LocalDate date) {
-        List<Integer> result = queryFactory
+    public Optional<Integer> countExpenseDailyFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory
                 .select(schedule.cost.sum())
                 .from(schedule)
-                .where(schedule.member.loginId.eq(loginId), schedule.fixed.isFalse(), schedule.date.eq(date))
-                .fetch();
-        return result.get(0);
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isFalse(),
+                        schedule.fixed.isFalse(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
     }
+
+    public Optional<Integer> countIncomeDailyFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory
+                .select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isTrue(),
+                        schedule.fixed.isFalse(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
+    public Optional<Integer> countExpenseMonthlyFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isFalse(),
+                        schedule.fixed.isFalse(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
+    public Optional<Integer> countIncomeMonthlyFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isTrue(),
+                        schedule.fixed.isFalse(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
 }
