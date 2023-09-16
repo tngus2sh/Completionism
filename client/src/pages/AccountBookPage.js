@@ -12,7 +12,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import { fatchMonthTransactionData, fatchTotalBudgetData } from "../redux/authSlice";
+import { fatchMonthTransactionData, fatchTotalBudgetData ,fatchMonthTransactionData500
+} from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
 
@@ -34,6 +35,7 @@ const AccountBookPage = () => {
   const selectedYearAndMonth = useSelector(
     (state) => state.auth.selectedYearAndMonth
   );
+
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
@@ -58,12 +60,18 @@ const AccountBookPage = () => {
   });
 
   useEffect(() => {
-    dispatch(setSelectedYearAndMonth(temp));
-    loadBudgetData();
+    const fetchData = async () => {
+      await dispatch(setSelectedYearAndMonth(temp));
+      await loadBudgetData();
+      await loadData();
+    };
   }, []);
 
   useEffect(() => {
-    loadBudgetData();
+    const fetchData = async () => {
+      await loadBudgetData();
+      await loadData();
+    };
   }, [useAxios,selectedYearAndMonth]);
 
   const loadData = async () => {
@@ -91,6 +99,7 @@ const AccountBookPage = () => {
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
       console.error(error);
+      dispatch(fatchMonthTransactionData500());
     }
   };
 
@@ -296,7 +305,8 @@ const AccountBookPage = () => {
       </Modal>
 
       <div className="calendar-container">
-        {isDiary ? <CalenderForDiary /> : <Calendar />}
+        <Calendar/>
+        {/* {isDiary ? <CalenderForDiary /> : <Calendar />} */}
       </div>
 
       <div>

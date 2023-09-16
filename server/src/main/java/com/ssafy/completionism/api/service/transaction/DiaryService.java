@@ -12,7 +12,7 @@ public interface DiaryService {
     // 일기(다이어리) 등록
     public DiaryResponse addDiary(String loginId, AddDiaryDtoList dto);
 
-    public DiaryResponse addDiaryInPersion(String loginId, AddDiaryInPersonDto dto);
+    public void addDiaryInPersion(String loginId, AddDiaryInPersonDto dto);
 
     // 일기 전체 조회
     public List<DiaryResponse> showDiarys(String loginId);

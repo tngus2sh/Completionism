@@ -7,6 +7,7 @@ import SettingPage from "./pages/SettingPage";
 import DiaryPage from "./pages/DiaryPage";
 import AccountBookDetailPage from "./pages/AccountBookDetailPage";
 import DiaryDetailPage from "./pages/DiaryDetailPage";
+import DiaryWritePage from './pages/DiaryWritePage';
 import SignUpPage from "./pages/SignUpPage";
 import FixedExpenditurePage from "./pages/FixedExpenditurePage";
 import FutureExpenditurePage from "./pages/FutureExpenditurePage";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/diary" element={<DiaryPage />} />
           <Route path="/accountbook/:id" element={<AccountBookDetailPage />} />
           <Route path="/diary/:id" element={<DiaryDetailPage />} />
+          <Route path="/diary/write" element={<DiaryWritePage />} />
           <Route path="/fixed" element={<FixedExpenditurePage />} />
           <Route path="/future" element={<FutureExpenditurePage />} />
         </Routes>

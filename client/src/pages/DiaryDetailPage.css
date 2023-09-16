@@ -1,0 +1,14 @@
+.diary-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.7rem;
+  width: 11rem;
+  height: 2.7rem;
+  background-color: #0046ff;
+  border-radius: 1rem;
+}
+
+.diary-link {
+  color: white;
+}
