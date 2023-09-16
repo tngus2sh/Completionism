@@ -84,3 +84,120 @@
   width: 2rem;
   padding-right: 1rem;
 }
+
+.fixed-create-flex-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.fixed-create-info-container {
+  width: 5rem;
+}
+
+.fixed-create-content-container {
+  flex: 1;
+}
+
+.fixed-create-button-container {
+  margin-top: 1rem;
+  display: inline-block;
+  width: 90%;
+  height: 3rem;
+  background-color: #0046FF;
+  border-radius: 1.5rem;
+  color: white;
+}
+
+.fixed-create-button-flex-container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.fixed-create-border-container {
+  display: inline-block;
+  width: 80%;
+  height: 2rem;
+  border: 1px solid #919191;
+  border-radius: 1rem;
+}
+
+.fixed-create-border-radio-container {
+  display: inline-block;
+  width: 80%;
+  height: 2rem;
+}
+
+.fixed-create-border-flex-container {
+  /* width: 100%; */
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 0.9rem;
+}
+
+.fixed-create-border-radio-flex-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+/* .react-datepicker__input-container::before {
+  content: '\e99c';
+  display: inline-block;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  font-size: 1rem;
+} */
+
+input {
+  border: none;
+  outline: none;
+}
+
+.select {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.select div {
+  padding: 0 0.3rem;
+}
+
+.select input[type=radio]{
+  display: none;
+}
+
+.select input[type=radio]+label{
+  display: inline-block;
+  cursor: pointer;
+  height: 2rem;
+  width: 5.3rem;
+  border: 1px solid #919191;
+  border-radius: 1rem;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.select input[type=radio]+label{
+  background-color: #fff;
+}
+.select input[type=radio]:checked+label{
+  border: 1px solid #0046FF;
+  background-color: #0046FF;
+  color: #fff;
+}
+
+.period-select {
+  width: 95%;
+  border: none;
+}
