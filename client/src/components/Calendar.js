@@ -41,7 +41,12 @@ const RenderDays = () => {
   return <div className="days row">{days}</div>;
 };
 
-const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
+const RenderCells = ({
+  currentMonth,
+  selectedDate,
+  onDateClick,
+  MonthTransactionData,
+}) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -51,12 +56,19 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
   let days = [];
   let day = startDate;
   let formattedDate = "";
+  let cellData = null;
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
       const cloneDay = day;
 
+      // console.log('dd',MonthTransactionData)
+      if (MonthTransactionData.day !== undefined) {
+        cellData = MonthTransactionData.day.find(
+          (item) => item.day.split("-").pop() === format(cloneDay, "dd")
+        );
+      }
       // const cellData = data.day.find(item => item.day.split('-').pop() === format(cloneDay, 'dd'));
 
       days.push(
@@ -82,12 +94,14 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
           >
             {formattedDate}
           </span>
-          {/* {cellData && (
-                        <div className="income-spend">
-                            <span className="income">Income: {cellData.income}</span>
-                            <span className="spend">Spend: {cellData.spend}</span>
-                        </div>
-                    )} */}
+          <div className="cellData">
+            {cellData && (
+              <div className="income-spend">
+                <div className="income">+{cellData.income}</div>
+                <div className="spend">-{cellData.spend}</div>
+              </div>
+            )}
+          </div>
         </div>
       );
       day = addDays(day, 1);
@@ -103,11 +117,9 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
 };
 
 export const Calendar = () => {
-  // useEffect(()=>{
-  //     loadData();
-  // },[])
-  // console.log('props',props)
-
+  const MonthTransactionData = useSelector(
+    (state) => state.auth.MonthTransactionData
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -142,7 +154,6 @@ export const Calendar = () => {
     const id = `${year}${month}${day}`;
     //   navigate(`../diary/${id}`);
     navigate(`./${id}`);
-    
   };
   return (
     <div className="calendar">
@@ -157,6 +168,7 @@ export const Calendar = () => {
         currentMonth={currentMonth}
         selectedDate={selectedDate}
         onDateClick={onDateClick}
+        MonthTransactionData={MonthTransactionData}
       />
     </div>
   );

@@ -12,7 +12,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import { fatchMonthTransactionData, fatchTotalBudgetData } from "../redux/authSlice";
+import { fatchMonthTransactionData, fatchTotalBudgetData ,fatchMonthTransactionData500
+} from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
 
@@ -60,10 +61,12 @@ const AccountBookPage = () => {
   useEffect(() => {
     dispatch(setSelectedYearAndMonth(temp));
     loadBudgetData();
+    loadData();
   }, []);
 
   useEffect(() => {
     loadBudgetData();
+    loadData();
   }, [useAxios,selectedYearAndMonth]);
 
   const loadData = async () => {
@@ -91,6 +94,7 @@ const AccountBookPage = () => {
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
       console.error(error);
+      dispatch(fatchMonthTransactionData500());
     }
   };
 
