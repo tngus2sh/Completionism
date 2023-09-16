@@ -58,7 +58,7 @@ public class PinnedScheduleServiceImpl implements PinnedScheduleService {
         for(SearchPinnedScheduleDto dto: dtoList) {
             if(dto.isPeriodType()) {
                 String date = dto.getPeriod() < 10? yearMonth + "0" + dto.getPeriod(): yearMonth + dto.getPeriod();
-
+                System.out.println("date: " + date);
                 ScheduleResponse scheduleResponse = ScheduleResponse.toResponse(date, dto);
                 response.add(scheduleResponse);
             }

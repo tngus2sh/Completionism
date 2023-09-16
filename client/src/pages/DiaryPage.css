@@ -32,3 +32,61 @@
   font-family: Tahoma, Arial, sans-serif;
   color: white; /* 링크 텍스트 컬러 설정 */
 }
+
+.diary-page-size{
+  display: inline-block;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #F0F1F4;
+}
+
+.diary-page-container{
+  padding: 1rem;
+}
+
+.diary-page-content-container{
+/*  흰 배경 */
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.diary-content-area{
+/* 일기 구역 */
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.diary-page-flex{
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.diarypage-button{
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background-color: #0046FF;
+  padding: 0.5rem;
+  width: 8rem;
+  height: 1.8rem;
+  border-radius: 0.7rem;
+  /*border-style: 1px solid #0046FF;*/
+}
+
+.diarypage-link{
+  color: white;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.ai-diary-button {
+  border: none;
+  background-color: #0046FF;
+}
+
+.ai-diary-manual{
+  background-color: #e8e8e8;
+  padding: 1rem;
+  border-radius: 1rem;
+}

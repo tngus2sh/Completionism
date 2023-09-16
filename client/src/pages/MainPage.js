@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import LibraryBooksRoundedIcon from "@mui/icons-material/LibraryBooksRounded";
@@ -6,20 +6,44 @@ import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import "./MainPage.css";
 import axios from "axios";
+import { fatchPinnedData } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { UseSelector } from "react-redux";
+import { fatchFutureData } from "../redux/authSlice";
+import { fatchMonthHistoryData } from "../redux/authSlice";
 
 const MainPage = () => {
+  const today = new Date()
+  const parsingToday = today.getFullYear().toString()+'-'+(today.getMonth()+1).toString().padStart(2, "0")+'-'+today.getDate().toString().padStart(2, "0")
+
+  const dispatch = useDispatch();
   const upperNavbarName = "홈";
   const currentDate = new Date();
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const month = currentDate.getMonth()+1;
   const day = currentDate.getDate();
 
+  const fixedExpenditureList = useSelector(state=>state.auth.fixedExpenditureList)
+  const FutureExpenditureList = useSelector(state=>state.auth.FutureExpenditureList)
+  const MonthHistoryData = useSelector(state=>state.auth.MonthHistoryData)
+  
+
   //daily_consumption_plan_box 관련 데이터들
-  const plannedAmount = 0;
-  const actualUsageAmount = 0;
+  const [plannedAmount,setPlannedAmount] = useState(0);
+  const [actualUsageAmount,setActualUsageAmount] = useState(0);
   const amountSpentMoreThanPlanned = 0;
 
   //daily_consumption_plan_box 관련 데이터들
+
+  useEffect(() => {
+    
+      loadData();
+      loadFutureData();
+      loadDataTodayExpend();
+    
+  }, []); // 빈 의존
+
 
   const functionName = async (e) => {
     //e.preventDefault();
@@ -31,10 +55,10 @@ const MainPage = () => {
     };
     try {
       const response = await axios.get("/api/auth/logout", { headers });
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
-      console.log(accessToken);
+      // console.log(accessToken);
     }
   };
 
@@ -47,13 +71,86 @@ const MainPage = () => {
   setScreenSize();
   window.addEventListener("resize", setScreenSize);
 
+
+
+  // 고정지출 데이터를 가져와서
+const loadData = async () => {
+  // 로컬 스토리지에서 엑세스 토큰 가져오기
+  const accessToken = localStorage.getItem("accessToken");
+
+  // Axios 요청 헤더 설정
+  const headers = {
+    Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+  };
+
+  try {
+    const response = await axios.get(`/api/schedule/pinned/daily/${parsingToday}`, { headers });
+
+    console.log('고정지출', response.data.dataBody);
+    setPlannedAmount((prevAmount) => prevAmount - response.data.dataBody); // 현재 값에 더하기
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 미래지출 데이터를 가져와서
+const loadFutureData = async () => {
+  // 로컬 스토리지에서 엑세스 토큰 가져오기
+  const accessToken = localStorage.getItem("accessToken");
+
+  // Axios 요청 헤더 설정
+  const headers = {
+    Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+  };
+
+  try {
+    const response = await axios.get(`/api/schedule/future/daily/${parsingToday}`, { headers });
+    console.log('미래지출', response.data.dataBody);
+    setPlannedAmount((prevAmount) => prevAmount - response.data.dataBody); // 현재 값에 더하기
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+  const loadDataTodayExpend = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+   
+    try {
+      const response = await axios.get(
+        `/api/history?date=${parsingToday}`,
+        {
+          headers,
+        }
+      );
+      // dispatch(fatchMonthHistoryData(response.data.dataBody));
+      console.log(response.data);
+      let temp = 0 
+      response.data.dataBody.map((item, index)=>{
+      if(item.time.slice(0,10) === parsingToday)
+        // console.log('요놈을빼야해요',item.cost)
+        temp += item.cost
+        // console.log('요놈을빼야해요',temp)
+      })
+      setActualUsageAmount(temp)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
   return (
     <div className="main-page">
       <div className="uppernav_bar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
 
-      <div className="progressive_bar"></div>
+      {/*<div className="progressive_bar"></div>*/}
 
       <div className="daily_consumption_plan_box">
         <div className="main-header-info-text-container">
