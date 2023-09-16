@@ -9,7 +9,7 @@ import java.util.List;
 public interface DiaryService {
 
     // 일기(다이어리) 등록
-    public void addDiary(String loginId, AddDiaryDtoList dto);
+    public DiaryResponse addDiary(String loginId, AddDiaryDtoList dto);
 
     // 일기 전체 조회
     public List<DiaryResponse> showDiarys(String loginId);

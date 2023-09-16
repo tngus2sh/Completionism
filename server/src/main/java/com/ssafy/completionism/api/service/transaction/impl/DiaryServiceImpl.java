@@ -46,7 +46,7 @@ public class DiaryServiceImpl implements DiaryService {
      * @param dto 다이어리 등록 객체
      */
     @Override
-    public void addDiary(String loginId, AddDiaryDtoList dto) {
+    public DiaryResponse addDiary(String loginId, AddDiaryDtoList dto) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
@@ -55,16 +55,24 @@ public class DiaryServiceImpl implements DiaryService {
         StringBuilder send = new StringBuilder();
 
         for (AddDiaryDto diary : diaries) {
-            String createdDate = diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String createdDate = diary.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            String createdDay = diary.getCreatedDate().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+            String createdDay = diary.getTime().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+            String plusContent = null;
+            if (diary.isPlus()) {
+                plusContent = "를 썼고, ";
+            } else {
+                plusContent = "의 돈이 들어왔고,";
+            }
 
             String sendMessage = "오늘은 " + createdDate + "이고"
                     + "오늘 요일은 " + createdDay + "야."
+                    + "내가 있던 위치는 " + diary.getPlace() + " 이야\n"
                     + "나는 " + diary.getCategory().getText()+ "로 "
-                    + diary.getCost() + "를 썼고, "
+                    + diary.getCost() + plusContent + "\n"
                     + "내 기분은 " + diary.getFeel().getText() + " 라는 걸 참고해주고,"
-                    + diary.getDesc() + " 와 같은 마음이 들었어. \n";
+                    + diary.getDiary() + " 와 같은 마음이 들었어. \n";
 
             send.append(sendMessage);
         }
@@ -79,13 +87,28 @@ public class DiaryServiceImpl implements DiaryService {
 
         String diary = gptAnswer.getMessages().get(0).getMessage();
 
-        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getDiaries().get(0).getCreatedDate());
+        // 기분 출력
+        String feelSend = diary + "\n"
+                + "여기까지 일기 내용인데 전체적인 일기 내용을 바탕으로 감정을 판별해주라. \n"
+                + "감정은 '너무 좋음', '감사', '신남', '화남', '역겨움', '공포', '약간 슬픔', '호기심', '놀람', '그저 그런 감정', '행복', '슬픔' 이 중에서 하나 선택해서 말해줘";
+
+        GPTCompletionChatResponse gptFeelAnswer = gptService.completionChat(GPTCompletionChatRequest.builder()
+                .role("user")
+                .message(feelSend)
+                .build());
+
+        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getDiaries().get(0).getTime());
 
         if (registeredHistory.isEmpty()) {
             throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 거래 내역을 찾을 수가 없습니다.");
         }
 
         registeredHistory.get().updateDiary(diary);
+
+        return DiaryResponse.builder()
+                .diary(diary)
+                .feel(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim())
+                .build();
     }
 
     /**
