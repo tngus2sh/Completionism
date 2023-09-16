@@ -15,6 +15,7 @@ const initialState = {
   MonthHistoryData : [],  //계좌 상세조회
   isDiary : false,
   totalBudgetData : [],
+  AiScript:'',
 };
 
 export const authSlice = createSlice({
@@ -37,6 +38,7 @@ export const authSlice = createSlice({
       state.MonthHistoryData = [] 
       state.isDiary = false
       state.totalBudgetData = []
+      state.AiScript=null
     },
     setSelectedYearAndMonth: (state,action) => {
       state.selectedYearAndMonth = action.payload
@@ -64,13 +66,16 @@ export const authSlice = createSlice({
       }
     },
     fatchTotalBudgetData: (state,action) => {
-      state.totalBudgetData = action.payload
+      state.totalBudgetData = action.payload;
+    },
+    SetAiScript: (state,action) => {
+      state.AiScript = action.payload;
     }
   },
 });
 
 export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,
   setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData, fatchTotalBudgetData,
-  fatchMonthTransactionData500} = authSlice.actions;
+  fatchMonthTransactionData500,SetAiScript} = authSlice.actions;
 
 export default authSlice.reducer;

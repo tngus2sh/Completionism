@@ -1,16 +1,34 @@
-/* MainPage.css */
+/* DiaryPage.css */
 
-.diary-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 0.7rem;
-  width: 11rem;
-  height: 2.7rem;
-  background-color: #0046ff;
-  border-radius: 1rem;
+/* 전체 페이지 컨테이너 스타일 */
+.accountbook-page {
+  font-family: Tahoma, Arial, sans-serif;
+  color: #333; /* 일반 텍스트 컬러 설정 */
 }
 
-.diary-link {
-  color: white;
+/* 정보 컨테이너 스타일 */
+.accountbook-info-container {
+  /* 이전 스타일 유지 */
+
+  /* 글자 폰트 및 색상 설정 */
+  font-family: Tahoma, Arial, sans-serif;
+  color: #333; /* 일반 텍스트 컬러 설정 */
+}
+
+/* 토글 버튼 스타일 */
+.toggle-button {
+  font-family: Tahoma, Arial, sans-serif;
+  color: #0046FF; /* 토글 버튼 텍스트 컬러 설정 */
+}
+
+/* 버튼 스타일 */
+.accountbook-button {
+  font-family: Tahoma, Arial, sans-serif;
+  color: white; /* 버튼 텍스트 컬러 설정 */
+}
+
+/* 링크 스타일 */
+.accountbook-link {
+  font-family: Tahoma, Arial, sans-serif;
+  color: white; /* 링크 텍스트 컬러 설정 */
 }
