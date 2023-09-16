@@ -78,8 +78,8 @@ public class ScheduleQueryRepository {
                 .where(schedule.member.loginId.eq(loginId),
                         schedule.plus.isFalse(),
                         schedule.fixed.isFalse(),
-                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
-                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                        schedule.date.eq(date))
+                .groupBy(schedule.date)
                 .fetchOne());
     }
 
@@ -90,8 +90,8 @@ public class ScheduleQueryRepository {
                 .where(schedule.member.loginId.eq(loginId),
                         schedule.plus.isTrue(),
                         schedule.fixed.isFalse(),
-                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
-                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                        schedule.date.eq(date))
+                .groupBy(schedule.date)
                 .fetchOne());
     }
 

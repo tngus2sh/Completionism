@@ -89,7 +89,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         Optional<Integer> expenseOptional = scheduleQueryRepository.countExpenseMonthlyFutureSchedule(loginId, nowFirstDate);
         if (expenseOptional.isPresent()) {
-            futureSchedule += expenseOptional.get();
+            futureSchedule -= expenseOptional.get();
             futureSend += expenseOptional.get() + "정도 지출할 계획이고, ";
         }
 
@@ -110,7 +110,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         Optional<Integer> expenseFixedOptional = scheduleQueryRepository.countExpenseMonthlyFixedSchedule(loginId, nowFirstDate);
         if (expenseFixedOptional.isPresent()) {
-            fixedSchedule += expenseFixedOptional.get();
+            fixedSchedule -= expenseFixedOptional.get();
             fixedSend += expenseFixedOptional.get() + "원의 돈이 나가.";
         }
 

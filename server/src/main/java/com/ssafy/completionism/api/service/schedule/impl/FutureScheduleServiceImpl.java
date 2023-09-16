@@ -104,7 +104,7 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
         int total = 0;
         Optional<Integer> expenseOptional = scheduleQueryRepository.countExpenseMonthlyFutureSchedule(loginId, target);
         if (expenseOptional.isPresent()) {
-            total += expenseOptional.get();
+            total -= expenseOptional.get();
         }
 
         Optional<Integer> incomeOptional = scheduleQueryRepository.countIncomeDailyFutureSchedule(loginId, target);
