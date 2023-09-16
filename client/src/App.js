@@ -13,6 +13,7 @@ import FixedExpenditurePage from "./pages/FixedExpenditurePage";
 import FutureExpenditurePage from "./pages/FutureExpenditurePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
+import TotalDiaryPage from "./pages/TotalDiaryPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/diary/write" element={<DiaryWritePage />} />
           <Route path="/fixed" element={<FixedExpenditurePage />} />
           <Route path="/future" element={<FutureExpenditurePage />} />
+          <Route path="/diary/total" element={ <TotalDiaryPage/>} />
         </Routes>
       </Router>
     </Grid>
