@@ -8,6 +8,9 @@ import axios from "axios";
 import { fatchMonthHistoryData } from "../redux/authSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import {colors} from "@mui/material";
+import {blue} from "@mui/material/colors";
+import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 
 const emotions = [
   "ANGER",
@@ -91,22 +94,34 @@ const AccoutBookDetailPage = () => {
   };
 
   return (
-    <div>
+    <div className="account-detail-page">
       <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
 
       <div className="progressive_bar"></div>
 
-      <div className="daily_consumption_plan_box"></div>
+      <div className="account-detail-page_top_box">
+        <div className="main-header-info-text-container ">
+          총 소비금액: {}원
+          <div style={{ marginBottom: "0.3rem" , marginTop:"0.3rem" }}>
+            <SmartToyOutlinedIcon sx={{ fontSize: "2.3rem", color: "#60f14f" }} />
+          </div>
+          AI의 조언: {}
+        </div>
+      </div>
 
-      <div className="body">this is AccountBookDetailPage</div>
+      {/*<div className="body">this is AccountBookDetailPage</div>*/}
+
+      <div className="account-detail-manual">
+        🥺 😀 가계부에 이모지와 함께 한 줄 일기를 작성해보세요! 😉 😣
+      </div>
+
 
       <div>
         {MonthHistoryData.map((item, index) => {
           return (
-            <div key={item.transactionId}>
-              <hr />
+            <div key={item.transactionId} className='transaction-item-container'>
               {item.transactionId}|{item.time}|{item.cost}|{item.category}|
               {item.place}|{item.diary}|{item.feel}|
               <button
