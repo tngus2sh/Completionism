@@ -81,10 +81,14 @@ const DiaryPage = () => {
       <div className="uppernavbar">
         <UpperNavigationBar props={upperNavbarName} />
       </div>
-        <div className="progressive_bar"></div>
+      <div className="progressive_bar"></div>
       <div className="diary-page-container">
         <div className="diary-page-content-container">
-          <div className="diary-content-area">{AiScript}</div>
+          {AiScript===""
+              ?<div>작성된 일기가 없습니다.</div>
+          :<div className="diary-content-area">{AiScript}</div>
+          }
+
 
           <div className="diary-page-flex">
             {/*가로 정렬 할거임*/}
@@ -96,9 +100,11 @@ const DiaryPage = () => {
               </div>
             </div>
             <div style={{ flex: "1" }}>
-              <button className="diarypage-button diarypage-link" onClick={createAiDiary}>
-                AI자동일기
-              </button>
+              <div className="diarypage-button">
+                <button className="ai-diary-button diarypage-link" onClick={createAiDiary}>
+                  AI자동일기
+                </button>
+              </div>
             </div>
           </div>
           <div>
@@ -108,8 +114,9 @@ const DiaryPage = () => {
               <br />
               유저의 가계부 항목과 가계부에 입력한 기분, <br />
               한줄일기(메모)를 바탕으로 <br />
-              ChatGPT가<br/>
-                자동으로 일기를 완성해주는 서비스입니다.
+              ChatGPT가
+              <br />
+              자동으로 일기를 완성해주는 서비스입니다.
             </div>
           </div>
         </div>
