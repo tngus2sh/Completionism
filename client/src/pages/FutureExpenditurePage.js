@@ -144,15 +144,19 @@ const FutureExpenditurePage = () => {
       height: "25rem",
       padding: "0",
       borderRadius: "0 0 1rem 1rem",
-      boxShadow: 20,
       textAlign: "center",
       overflowY: "auto", // 스크롤바 추가
       outline: "none",
-      backdropFilter: "blur(5px)",
-      overlay: {
-        background: "gray",
-      },
-      // bgcolor: "white",
+      borderBottom: "1px solid #919191",
+    },
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      backdropFilter: "blur(2px)",
     },
   };
 
