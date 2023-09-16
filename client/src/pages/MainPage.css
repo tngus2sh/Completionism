@@ -69,6 +69,14 @@
   height: 8rem;
   background-color: white;
   border-radius: 0.8rem;
+  position: relative;
+}
+
+.todays_ai_diary-content-date{
+  position: absolute;
+  top: 0.4rem;
+  left: 0.7rem;
+  color: rgb(150, 150, 150);
 }
 
 .tomorrow-consumption-content-container {
