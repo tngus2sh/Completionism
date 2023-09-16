@@ -430,15 +430,6 @@ const FixedExpenditurePage = () => {
         </div>
       </Modal>
 
-      <div
-        style={{
-          display: "inline-block",
-          width: "100%",
-          height: "6rem",
-          backgroundColor: "#F0F1F4",
-        }}
-      ></div>
-
       <div className="undernavbar">
         <UnderNavigationBar />
       </div>

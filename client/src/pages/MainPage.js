@@ -31,21 +31,18 @@ const MainPage = () => {
 
   //daily_consumption_plan_box 관련 데이터들
   const [plannedAmount,setPlannedAmount] = useState(0);
-  const [FutuerAmount,setFutuerAmount] = useState(0);
   const [actualUsageAmount,setActualUsageAmount] = useState(0);
   const amountSpentMoreThanPlanned = 0;
 
   //daily_consumption_plan_box 관련 데이터들
 
-  useEffect(()=>{
-    const fatch = async ()=>{
+  useEffect(() => {
+    
       loadData();
       loadFutureData();
       loadDataTodayExpend();
-      calAmount();
-    }
-    fatch();
-  },[])
+    
+  }, []); // 빈 의존
 
 
   const functionName = async (e) => {
@@ -58,10 +55,10 @@ const MainPage = () => {
     };
     try {
       const response = await axios.get("/api/auth/logout", { headers });
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
-      console.log(accessToken);
+      // console.log(accessToken);
     }
   };
 
@@ -76,43 +73,45 @@ const MainPage = () => {
 
 
 
-  //고정지출 데이터를 가져와서 
-  const loadData = async () => {
-    // 로컬 스토리지에서 엑세스 토큰 가져오기
-    const accessToken = localStorage.getItem("accessToken");
+  // 고정지출 데이터를 가져와서
+const loadData = async () => {
+  // 로컬 스토리지에서 엑세스 토큰 가져오기
+  const accessToken = localStorage.getItem("accessToken");
 
-    // Axios 요청 헤더 설정
-    const headers = {
-      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
-    };
-
-    try {
-      let tempSumOfPinned = 0
-      const response = await axios.get("/api/schedule/pinned", { headers });
-      console.log(response.data);
-      dispatch(fatchPinnedData(response.data.dataBody));
-    } catch (error) {
-      console.error(error);
-    }
+  // Axios 요청 헤더 설정
+  const headers = {
+    Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
   };
 
-  //미래지출 데이터를 가져와서 
-  const loadFutureData = async () => {// 로컬 스토리지에서 엑세스 토큰 가져오기
-    const accessToken = localStorage.getItem("accessToken");
+  try {
+    const response = await axios.get(`/api/schedule/pinned/daily/${parsingToday}`, { headers });
 
-    // Axios 요청 헤더 설정
-    const headers = {
-      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
-    };
+    console.log('고정지출', response.data.dataBody);
+    setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-    try {
-      const response = await axios.get("/api/schedule/future", { headers });
-      console.log(response.data.dataBody);
-      dispatch(fatchFutureData(response.data.dataBody));
-    } catch (error) {
-      console.error(error);
-    }
+// 미래지출 데이터를 가져와서
+const loadFutureData = async () => {
+  // 로컬 스토리지에서 엑세스 토큰 가져오기
+  const accessToken = localStorage.getItem("accessToken");
+
+  // Axios 요청 헤더 설정
+  const headers = {
+    Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
   };
+
+  try {
+    const response = await axios.get(`/api/schedule/future/daily/${parsingToday}`, { headers });
+    console.log('미래지출', response.data.dataBody);
+    setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+    setPlannedAmount(-plannedAmount);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 
   const loadDataTodayExpend = async () => {
@@ -128,39 +127,22 @@ const MainPage = () => {
           headers,
         }
       );
-      dispatch(fatchMonthHistoryData(response.data.dataBody));
-      // console.log(response.data);
+      // dispatch(fatchMonthHistoryData(response.data.dataBody));
+      console.log(response.data);
+      let temp = 0 
+      response.data.dataBody.map((item, index)=>{
+      if(item.time.slice(0,10) === parsingToday)
+        // console.log('요놈을빼야해요',item.cost)
+        temp += item.cost
+        // console.log('요놈을빼야해요',temp)
+      })
+      setActualUsageAmount(temp)
     } catch (error) {
       console.error(error);
     }
   };
 
 
-
-
-
-  //오늘날짜에 해당되는 것들을 연산한다
-  const calAmount = async () =>{
-//  fixedExpenditureList.map((item , index)=>{
-//       if(parsingToday===item.date){
-//         console.log(item.cost)
-//         setPlannedAmount(plannedAmount+item.cost);
-//       }
-//     })
-//  FutureExpenditureList.map((item , index)=>{
-//       if(parsingToday===item.date){
-//         console.log(item.cost)
-//         setFutuerAmount(plannedAmount+item.cost);
-//       }
-//     })
- MonthHistoryData.map((item , index)=>{
-      if(parsingToday===item.time.slice(0,9)){
-        console.log(item.cost)
-        setActualUsageAmount(actualUsageAmount+item.cost);
-      }
-    })
-    
-  }
 
   return (
     <div className="main-page">
