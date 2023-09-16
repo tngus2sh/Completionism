@@ -1,6 +1,7 @@
 package com.ssafy.completionism.domain.transaction.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.completionism.api.controller.transaction.response.TransactionCategoryResponse;
 import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
 import com.ssafy.completionism.domain.member.Member;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,20 @@ public class TransactionQueryRepository {
                 .where(transaction.history.member.eq(member),
                         transaction.createdDate.between(resultDate.minusDays(1), resultDate))
                 .orderBy(transaction.cost.desc())
+                .fetch();
+    }
+
+    public List<TransactionCategoryResponse> getIncomeForCategory(Member member, TransactionPeriodSearchCond cond) {
+        return queryFactory.select(constructor(TransactionCategoryResponse.class,
+                        transaction.category,
+                        transaction.cost.sum(),
+                        transaction.plus
+                ))
+                .from(transaction)
+                .where(transaction.history.member.eq(member),
+                        transaction.plus.isTrue(),
+                        transaction.createdDate.between(cond.getStartDay(), cond.getEndDay()))
+                .groupBy(transaction.category, transaction.plus)
                 .fetch();
     }
 

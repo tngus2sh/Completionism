@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class StatisticsResponse {
+public class SumIncomeOutcomeResponse {
 
     private int income;
 
     private int outcome;
 
     @Builder
-    public StatisticsResponse(int income, int outcome) {
+    public SumIncomeOutcomeResponse(int income, int outcome) {
         this.income = income;
         this.outcome = outcome;
     }
