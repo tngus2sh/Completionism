@@ -50,6 +50,14 @@
     padding: 0.3rem;
 }
 
+.transaction-item-flex-container{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+
 .transaction-item-container-contain-diary{
     display: inline-block;
     width: 90%;
@@ -58,4 +66,16 @@
     margin-bottom: 0.5rem;
     border-radius: 0.7rem;
     padding: 0.3rem;
+}
+
+.transaction-item-flex-container-show-diary{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+.transaction-item-date{
+    color: rgb(150, 150, 150);
+    font-size: 0.8rem;
 }
