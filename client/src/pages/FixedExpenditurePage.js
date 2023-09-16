@@ -53,7 +53,22 @@ const FixedExpenditurePage = () => {
     try {
       const response = await axios.get("/api/schedule/pinned", { headers });
       console.log(response.data);
-      dispatch(fatchPinnedData(response.data.dataBody));
+      const sortedData = response.data.dataBody.sort(function (a, b) {
+        if (a.date > b.date) {
+          return 1;
+        } else if (a.date < b.date) {
+          return -1;
+        } else {
+          if (a.todo > b.todo) {
+            return 1;
+          } else if (a.todo < b.todo) {
+            return -1;
+          }
+        }
+        return 0;
+      });
+      // dispatch(fatchPinnedData(response.data.dataBody));
+      dispatch(fatchPinnedData(sortedData));
     } catch (error) {
       console.error(error);
     }
@@ -96,7 +111,6 @@ const FixedExpenditurePage = () => {
     } catch (error) {
       console.error(error);
       console.log(data);
-      
     }
   };
 
@@ -184,11 +198,11 @@ const FixedExpenditurePage = () => {
 
   function selectOption() {
     console.log(periodType);
-  
+
     const handleSelect = (e) => {
       setPeriod(e.target.value);
     };
-  
+
     if (periodType) {
       return (
         <select className="period-select" value={period} onChange={handleSelect}>
@@ -429,6 +443,15 @@ const FixedExpenditurePage = () => {
           </div>
         </div>
       </Modal>
+
+      <div
+        style={{
+          display: "inline-block",
+          width: "100%",
+          height: "6rem",
+          backgroundColor: "#F0F1F4",
+        }}
+      ></div>
 
       <div className="undernavbar">
         <UnderNavigationBar />
