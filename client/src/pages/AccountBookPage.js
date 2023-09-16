@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Modal from "react-modal";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
@@ -14,30 +15,29 @@ import axios from "axios";
 import { fatchMonthTransactionData } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 
+// 모달 스타일을 설정합니다.
+const modalStyle = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
 const AccountBookPage = () => {
   const upperNavbarName = "가계부";
   const isDiary = useSelector((state) => state.auth.isDiary);
-  const selectedYearAndMonth = useSelector((state) => state.auth.selectedYearAndMonth);
-  const MonthTransactionData = useSelector((state) => state.auth.MonthTransactionData);
-
+  const selectedYearAndMonth = useSelector(
+    (state) => state.auth.selectedYearAndMonth
+  );
+  const MonthTransactionData = useSelector(
+    (state) => state.auth.MonthTransactionData
+  );
   const dispatch = useDispatch();
-
-  const diaryData = {
-    startDay: "2023-08-01",
-    endDay: "2023-08-31",
-    income: "일기데이터",
-    spend: null,
-    day: [
-      {
-        day: "2023-08-01",
-        income: "일기데이터",
-      },
-      {
-        day: "2023-08-15",
-        income: "일기데이터",
-      },
-    ],
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const loadData = async () => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
@@ -50,9 +50,16 @@ const AccountBookPage = () => {
     const year = selectedYearAndMonth.split("-")[0];
     const month = selectedYearAndMonth.split("-")[1];
     const firstDayOfMonth = `${year}-${month}-01`;
-    const lastDayOfMonth = `${year}-${month}-${new Date(year, month, 0).getDate()}`;
+    const lastDayOfMonth = `${year}-${month}-${new Date(
+      year,
+      month,
+      0
+    ).getDate()}`;
     try {
-      const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, { headers });
+      const response = await axios.get(
+        `/api/history/${firstDayOfMonth}_${lastDayOfMonth}`,
+        { headers }
+      );
       // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
@@ -62,6 +69,10 @@ const AccountBookPage = () => {
 
   const ToggleCalendar = () => {
     dispatch(setIsDiary());
+  };
+  // 모달 열기 버튼을 클릭했을 때 실행되는 함수
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
   function setScreenSize() {
@@ -92,7 +103,6 @@ const AccountBookPage = () => {
         </div>
       </div>
 
-
       {/* 일기달력 하단 네비게이션 바로 이동 */}
       {/* <div className="toggle-container">
         <button className="toggle-button" onClick={ToggleCalendar}>
@@ -100,7 +110,23 @@ const AccountBookPage = () => {
         </button>
       </div> */}
 
-      <div className="calendar-container">{isDiary ? <CalenderForDiary /> : <Calendar />}</div>
+      <div>
+        <button onClick={openModal}>예산(budget) 작성하기</button>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+        style={modalStyle}
+        contentLabel="예산 작성 모달"
+      >
+        {/* 모달 내용 */}
+        <h2>예산 작성</h2>
+        {/* 예산 작성 양식 등을 추가하세요 */}
+      </Modal>
+
+      <div className="calendar-container">
+        {isDiary ? <CalenderForDiary /> : <Calendar />}
+      </div>
 
       <div className="accountbook-button-container">
         {/* <div>

@@ -19,7 +19,13 @@ export const authSlice = createSlice({
       state.isAuthenticated = true
     },
     logoutState: (state) => {
-      state.isAuthenticated = false
+      state.isAuthenticated = false 
+      state.selectedYearAndMonth = null
+      state.fixedExpenditureList = [] 
+      state.FutureExpenditureList = [] 
+      state.MonthTransactionData = [] 
+      state.MonthHistoryData = [] 
+      state.isDiary = false
     },
     setSelectedYearAndMonth: (state,action) => {
       state.selectedYearAndMonth = action.payload
