@@ -41,12 +41,7 @@ const RenderDays = () => {
   return <div className="days row">{days}</div>;
 };
 
-const RenderCells = ({
-  currentMonth,
-  selectedDate,
-  onDateClick,
-  MonthTransactionData,
-}) => {
+const RenderCells = ({ currentMonth, selectedDate, onDateClick, MonthTransactionData }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -70,7 +65,7 @@ const RenderCells = ({
       //     (item) => {
       //       if(item.day !==null){
       //         item.day.split("-").pop() === format(cloneDay, "dd")
-            
+
       //     }
       //   );
       // }
@@ -79,27 +74,11 @@ const RenderCells = ({
 
       days.push(
         <div
-          className={`col cell ${
-            !isSameMonth(day, monthStart)
-              ? "disabled"
-              : isSameDay(day, selectedDate)
-              ? "selected"
-              : format(currentMonth, "M") !== format(day, "M")
-              ? "not-valid"
-              : "valid"
-          }`}
+          className={`col cell ${!isSameMonth(day, monthStart) ? "disabled" : isSameDay(day, selectedDate) ? "selected" : format(currentMonth, "M") !== format(day, "M") ? "not-valid" : "valid"}`}
           key={day}
           onClick={() => onDateClick(cloneDay)}
         >
-          <span
-            className={
-              format(currentMonth, "M") !== format(day, "M")
-                ? "text not-valid"
-                : ""
-            }
-          >
-            {formattedDate}
-          </span>
+          <span className={format(currentMonth, "M") !== format(day, "M") ? "text not-valid" : ""}>{formattedDate}</span>
 
           <div className="cellData">
             {cellData && (
@@ -109,7 +88,6 @@ const RenderCells = ({
               </div>
             )}
           </div>
-
         </div>
       );
       day = addDays(day, 1);
@@ -125,9 +103,7 @@ const RenderCells = ({
 };
 
 export const Calendar = () => {
-  const MonthTransactionData = useSelector(
-    (state) => state.auth.MonthTransactionData
-  );
+  const MonthTransactionData = useSelector((state) => state.auth.MonthTransactionData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -135,22 +111,14 @@ export const Calendar = () => {
 
   const prevMonth = () => {
     const previousMonth = subMonths(currentMonth, 1);
-    const payload = `${previousMonth.getFullYear()}-${(
-      previousMonth.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}`;
+    const payload = `${previousMonth.getFullYear()}-${(previousMonth.getMonth() + 1).toString().padStart(2, "0")}`;
     setCurrentMonth(previousMonth);
     dispatch(setSelectedYearAndMonth(payload));
   };
 
   const nextMonth = () => {
     const nextMonthDate = addMonths(currentMonth, 1);
-    const payload = `${nextMonthDate.getFullYear()}-${(
-      nextMonthDate.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}`;
+    const payload = `${nextMonthDate.getFullYear()}-${(nextMonthDate.getMonth() + 1).toString().padStart(2, "0")}`;
     setCurrentMonth(nextMonthDate);
     dispatch(setSelectedYearAndMonth(payload));
   };
@@ -165,19 +133,10 @@ export const Calendar = () => {
   };
   return (
     <div className="calendar">
-      가계부달력
-      <RenderHeader
-        currentMonth={currentMonth}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
-      />
+      {/* 가계부달력 */}
+      <RenderHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
       <RenderDays />
-      <RenderCells
-        currentMonth={currentMonth}
-        selectedDate={selectedDate}
-        onDateClick={onDateClick}
-        MonthTransactionData={MonthTransactionData}
-      />
+      <RenderCells currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={onDateClick} MonthTransactionData={MonthTransactionData} />
     </div>
   );
 };

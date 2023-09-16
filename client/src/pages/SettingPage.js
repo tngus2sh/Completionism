@@ -42,21 +42,21 @@ const SettingPage = () => {
   };
 
   return (
-    <Grid>
-      <Grid className="uppernavbar">
-        <UpperNavigationBar />
-      </Grid>
+    <div className="setting-page">
+      <div>
+        <Grid className="uppernavbar">
+          <UpperNavigationBar />
+        </Grid>
 
-      <Grid className="progressive_bar" props={upperNavbarName} />
+        <Grid className="progressive_bar" props={upperNavbarName} />
 
-      <Grid className="body">this is SettingPage</Grid>
+        <button onClick={logOut}>로그아웃 </button>
 
-      <button onClick={logOut}>로그아웃 </button>
-
-      <Grid className="undernavbar">
-        <UnderNavigationBar />
-      </Grid>
-    </Grid>
+        <Grid className="undernavbar">
+          <UnderNavigationBar />
+        </Grid>
+      </div>
+    </div>
   );
 };
 

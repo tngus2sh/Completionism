@@ -19,13 +19,18 @@ import { setSelectedYearAndMonth } from "../redux/authSlice";
 // 모달 스타일을 설정합니다.
 const modalStyle = {
   content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    border: "1px solid #919191",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    rigiht: "0",
+    width: "100%",
+    height: "25rem",
+    padding: "0",
+    borderRadius: "0 0 1rem 1rem",
+    textAlign: "center",
+    overflowY: "auto", // 스크롤바 추가
+    outline: "none",
+    borderBottom: "1px solid #919191",
   },
   overlay: {
     position: "fixed",
@@ -53,17 +58,27 @@ const AccountBookPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const [nowExpenseMoney, setNowExpenseMoney] = useState(0);
   const [budgetData, setBudgetData] = useState({
     yearMonth: null,
     totalBudget: null,
     category: "TOTAL", // 기본 카테고리 설정
   });
 
+  const [nextFutureScheduleMoney, setNextFutureScheduleMoney] = useState(0);
+  const [nextPinnedScheduleMoney, setNextPinnedScheduleMoney] = useState(0);
+
+  useEffect(() => {
+    console.log("future: ", nextFutureScheduleMoney, ", pinned: ", nextPinnedScheduleMoney);
+  }, [nextFutureScheduleMoney, nextPinnedScheduleMoney]);
+
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(setSelectedYearAndMonth(temp));
       await loadData();
       await loadBudgetData();
+      await loadFutureMoney();
+      await loadPinnedMoney();
     };
 
     fetchData();
@@ -90,19 +105,65 @@ const AccountBookPage = () => {
     let firstDayOfMonth = null;
     let lastDayOfMonth = null;
     if (selectedYearAndMonth) {
-      const year = selectedYearAndMonth.split("-")[0];  //selectedYearAndMonth = YYYY-MM 형식
+      const year = selectedYearAndMonth.split("-")[0]; //selectedYearAndMonth = YYYY-MM 형식
       const month = selectedYearAndMonth.split("-")[1];
       firstDayOfMonth = `${year}-${month}-01`;
       lastDayOfMonth = `${year}-${month}-${new Date(year, month, 0).getDate()}`;
     }
 
     try {
+      console.log(firstDayOfMonth);
+      console.log(lastDayOfMonth);
       const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, { headers });
       // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
       console.error(error);
       dispatch(fatchMonthTransactionData500());
+    }
+  };
+
+  // 미래 예상 소비 조회 (내일 ~ 말일)
+  const loadFutureMoney = async (e) => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
+    const day = ("0" + now.getDate()).slice(-2);
+
+    const today = year + "-" + month + "-" + day;
+
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = {
+      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+    };
+    try {
+      const response = await axios.get(`/api/schedule/future/next/${today}`, { headers });
+      setNextFutureScheduleMoney(response.data.dataBody);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 고정 지출 소비 조회 (내일 ~ 말일)
+  const loadPinnedMoney = async (e) => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
+    const day = ("0" + now.getDate()).slice(-2);
+
+    const today = year + "-" + month + "-" + day;
+
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = {
+      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+    };
+    try {
+      const response = await axios.get(`/api/schedule/pinned/next/${today}`, { headers });
+      setNextPinnedScheduleMoney(response.data.dataBody);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -204,6 +265,11 @@ const AccountBookPage = () => {
     }
   };
 
+  function totalBudgetDataIsPresent() {
+    if (totalBudgetData != null && totalBudgetData.length > 0) return true;
+    return false;
+  }
+
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
@@ -220,57 +286,137 @@ const AccountBookPage = () => {
       <div className="progressive_bar"></div>
 
       <div className="accountbook-info-container">
-        <div style={{ marginTop: "1.7rem" }}>
-          <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-          <span>현재 잔액 : 원</span>
-        </div>
-        <div style={{ marginBottom: "1.7rem" }}>
-          <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-          <span>이번 달 나갈 예정인 금액 : 원</span>
-        </div>
+        {totalBudgetDataIsPresent() && (
+          <div>
+            <div className="budget-update-button-container">
+              <button className="budget-modal-button" onClick={() => openEditModal("TOTAL")}>
+                예산 수정
+              </button>
+            </div>
+            <div style={{ marginTop: "0.7rem" }}>
+              <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
+              <span>이번달 예산 : {totalBudgetData[0].totalBudget}원</span>
+            </div>
+            <div>
+              <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
+              <span>현재까지 사용 금액 : {MonthTransactionData.spend}원</span>
+            </div>
+            <div style={{ marginBottom: "1.7rem" }}>
+              <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
+              <span>남은 자유 금액 : {totalBudgetData[0].totalBudget + nextFutureScheduleMoney + nextPinnedScheduleMoney}원</span>
+            </div>
+          </div>
+        )}
+        {!totalBudgetDataIsPresent() && (
+          <div>
+            <div className="budget-create-container">
+              <div style={{ marginTop: "1.7rem", fontSize: "0.9rem" }}>🔔아직 등록된 예산이 없어요. 등록하실래요?</div>
+              <button className="budget-modal-button" onClick={openCreateModal} style={{ marginTop: "0.7rem", marginBottom: "1.7rem" }}>
+                <b>이번달 예산 등록하기</b>
+              </button>
+            </div>
+
+            {/* <div className="budget-update-button-container">
+              <button className="budget-update-button" onClick={() => openEditModal("TOTAL")}>
+                예산 수정
+              </button>
+            </div> */}
+          </div>
+        )}
       </div>
 
-      <div>
+      {/* <div>
         <button onClick={openCreateModal}>예산(budget) 작성하기</button>
-      </div>
+      </div> */}
+
       <Modal isOpen={isCreateModalOpen} onRequestClose={() => setIsCreateModalOpen(false)} style={modalStyle} contentLabel="예산 작성 모달">
-        <h2>{selectedYearAndMonth} 예산 생성</h2>
-        <div>
-          <label htmlFor="totalBudget">총 예산</label>
-          <input type="text" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
+        <div style={{ display: "inline-block", width: "90%", height: "100%" }}>
+          <div className="fixed-header-container" style={{ marginTop: "2.5rem" }}>
+            <h3>예산 생성</h3>
+          </div>
+
+          <div className="budget-container">
+            <div className="budget-create-flex-container" style={{ marginTop: "3rem" }}>
+              <div className="budget-create-info-container">총 예산</div>
+              <div className="budget-create-content-container">
+                <div className="budget-create-border-container">
+                  <div className="budget-create-border-flex-container" style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <input type="number" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="budget-create-flex-container" style={{ marginBottom: "2rem" }}>
+              <div className="budget-create-info-container">카테고리</div>
+              <div className="budget-create-content-container">
+                <div className="budget-create-border-container">
+                  <div className="budget-create-border-flex-container" style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <select className="budget-category" id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
+                      <option value="TOTAL">전체</option>
+                      <option value="TRAFFIC">교통</option>
+                      <option value="FOOD">식비</option>
+                      <option value="SHOPPING">쇼핑</option>
+                      <option value="LIFE">생활</option>
+                      <option value="ETC">기타</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="budget-create-flex-container">
+              <button onClick={createBudget} className="budget-button">
+                예산 생성하기
+              </button>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="category">카테고리</label>
-          <select id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
-            <option value="TOTAL">전체</option>
-            <option value="TRAFFIC">교통</option>
-            <option value="FOOD">식비</option>
-            <option value="SHOPPING">쇼핑</option>
-            <option value="LIFE">생활</option>
-            <option value="ETC">기타</option>
-          </select>
-        </div>
-        <button onClick={createBudget}>예산 생성하기</button>
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onRequestClose={() => setIsEditModalOpen(false)} style={modalStyle} contentLabel="예산 수정 모달">
-        <h2>{selectedYearAndMonth} 예산 수정</h2>
-        <div>
-          <label htmlFor="totalBudget">총 예산</label>
-          <input type="text" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
+        <div style={{ display: "inline-block", width: "90%", height: "100%" }}>
+          <div className="fixed-header-container" style={{ marginTop: "2.5rem" }}>
+            <h3>예산 수정</h3>
+          </div>
+
+          <div className="budget-container">
+            <div className="budget-create-flex-container" style={{ marginTop: "3rem" }}>
+              <div className="budget-create-info-container">총 예산</div>
+              <div className="budget-create-content-container">
+                <div className="budget-create-border-container">
+                  <div className="budget-create-border-flex-container" style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <input type="text" id="totalBudget" name="totalBudget" value={budgetData.totalBudget || ""} onChange={handleInputChange} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="budget-create-flex-container" style={{ marginBottom: "2rem" }}>
+              <div className="budget-create-info-container">카테고리</div>
+              <div className="budget-create-content-container">
+                <div className="budget-create-border-container">
+                  <div className="budget-create-border-flex-container" style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <select className="budget-category" id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
+                      <option value="TOTAL">전체</option>
+                      <option value="TRAFFIC">교통</option>
+                      <option value="FOOD">식비</option>
+                      <option value="SHOPPING">쇼핑</option>
+                      <option value="LIFE">생활</option>
+                      <option value="ETC">기타</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="budget-create-flex-container">
+              <button onClick={updateBudget} className="budget-button">
+                예산 수정하기
+              </button>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="category">카테고리</label>
-          <select id="category" name="category" value={budgetData.category || "TOTAL"} onChange={handleCategoryChange}>
-            <option value="TOTAL">전체</option>
-            <option value="TRAFFIC">교통</option>
-            <option value="FOOD">식비</option>
-            <option value="SHOPPING">쇼핑</option>
-            <option value="LIFE">생활</option>
-            <option value="ETC">기타</option>
-          </select>
-        </div>
-        <button onClick={updateBudget}>예산 수정하기</button>
       </Modal>
 
       <div className="calendar-container">
@@ -278,18 +424,17 @@ const AccountBookPage = () => {
         {/* {isDiary ? <CalenderForDiary /> : <Calendar />} */}
       </div>
 
-      <div>
-        {selectedYearAndMonth} 예산
+      {/* <div>
         {totalBudgetData.map((item, index) => {
           if (item.yearMonth.slice(0, 7) === selectedYearAndMonth.slice(0, 7)) {
             return (
               <div key={item.id}>
-                {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|{item.category}|<button onClick={() => openEditModal(item.category)}>수정</button>
+                {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|{item.category}|
               </div>
             );
           }
         })}
-      </div>
+      </div> */}
 
       <div className="accountbook-button-container">
         <div className="accountbook-button">
