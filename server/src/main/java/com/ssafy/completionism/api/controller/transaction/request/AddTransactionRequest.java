@@ -4,11 +4,13 @@ import com.ssafy.completionism.api.service.transaction.dto.AddTransactionDto;
 import com.ssafy.completionism.domain.Category;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 public class AddTransactionRequest {
 
     @NotNull
