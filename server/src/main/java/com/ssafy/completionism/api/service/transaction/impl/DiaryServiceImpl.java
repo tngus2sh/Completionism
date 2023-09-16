@@ -6,9 +6,11 @@ import com.ssafy.completionism.api.controller.transaction.response.DiaryResponse
 import com.ssafy.completionism.api.service.gpt.GptService;
 import com.ssafy.completionism.api.service.transaction.DiaryService;
 import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDto;
+import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDtoList;
 import com.ssafy.completionism.api.service.transaction.dto.DiaryDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.domain.transaction.History;
 import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
 import com.ssafy.completionism.domain.transaction.repository.HistoryQueryRepository;
 import com.ssafy.completionism.domain.transaction.repository.HistoryRepository;
@@ -17,13 +19,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.ssafy.completionism.global.common.Constants.NOT_FOUND_DIARY;
+import static org.springframework.data.repository.util.ClassUtils.ifPresent;
 
 @Service
 @RequiredArgsConstructor
@@ -39,25 +46,46 @@ public class DiaryServiceImpl implements DiaryService {
      * @param dto 다이어리 등록 객체
      */
     @Override
-    public void addDiary(String loginId, AddDiaryDto dto) {
+    public void addDiary(String loginId, AddDiaryDtoList dto) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        String sendMessage = "나는 " + dto.getCategory().getText()+ "로 "
-                + dto.getCost() + "를 썼고, "
-                + dto.getDesc() + " 와 같은 마음이 들었어."
-                + "이 정보들을 가지고 사실만을 바탕으로 일기를 써줘.";
+        List<AddDiaryDto> diaries = dto.getDiaries();
+
+        StringBuilder send = new StringBuilder();
+
+        for (AddDiaryDto diary : diaries) {
+            String createdDate = diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            String createdDay = diary.getCreatedDate().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+            String sendMessage = "오늘은 " + createdDate + "이고"
+                    + "오늘 요일은 " + createdDay + "야."
+                    + "나는 " + diary.getCategory().getText()+ "로 "
+                    + diary.getCost() + "를 썼고, "
+                    + "내 기분은 " + diary.getFeel().getText() + " 라는 걸 참고해주고,"
+                    + diary.getDesc() + " 와 같은 마음이 들었어. \n";
+
+            send.append(sendMessage);
+        }
+
+        send.append("이 정보들을 바탕으로 일기를 만들어줘.");
+
 
         GPTCompletionChatResponse gptAnswer = gptService.completionChat(GPTCompletionChatRequest.builder()
                 .role("user")
-                .message(sendMessage)
+                .message(send.toString())
                 .build());
 
         String diary = gptAnswer.getMessages().get(0).getMessage();
 
-        historyQueryRepository.getRegisteredHistory(loginId, dto.getCreatedDate()).ifPresent((history -> {
-            history.updateDiary(diary);
-        }));
+        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getDiaries().get(0).getCreatedDate());
+
+        if (registeredHistory.isEmpty()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 거래 내역을 찾을 수가 없습니다.");
+        }
+
+        registeredHistory.get().updateDiary(diary);
     }
 
     /**

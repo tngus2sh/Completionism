@@ -2,6 +2,7 @@ package com.ssafy.completionism.api.service.transaction.dto;
 
 import com.ssafy.completionism.api.controller.transaction.request.AddDiaryRequest;
 import com.ssafy.completionism.domain.Category;
+import com.ssafy.completionism.domain.transaction.Feel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,12 +20,15 @@ public class AddDiaryDto {
 
     private LocalDateTime createdDate;
 
+    private Feel feel;
+
     @Builder
-    public AddDiaryDto(Category category, int cost, String desc, LocalDateTime createdDate) {
+    public AddDiaryDto(Category category, int cost, String desc, LocalDateTime createdDate, Feel feel) {
         this.category = category;
         this.cost = cost;
         this.desc = desc;
         this.createdDate = createdDate;
+        this.feel = feel;
     }
 
     public static AddDiaryDto toDto(AddDiaryRequest request) {
@@ -36,6 +40,7 @@ public class AddDiaryDto {
                 .cost(request.getCost())
                 .desc(request.getDesc())
                 .createdDate(createdDate)
+                .feel(Feel.valueOf(request.getFeel()))
                 .build();
     }
 
