@@ -57,6 +57,9 @@
     align-items: center;
 }
 
+.modal-flex-container{
+    display: flex;
+}
 
 .transaction-item-container-contain-diary{
     display: inline-block;
@@ -78,4 +81,21 @@
 .transaction-item-date{
     color: rgb(150, 150, 150);
     font-size: 0.8rem;
+}
+
+
+.modal-overlay{
+    background-color: black;
+    z-index: 999;
+}
+
+.writeDiaryPageBtn{
+    background-color: #0046FF;
+    color: white;
+    padding: 0.5rem;
+    border-style: none;
+    width: 5rem;
+    border-radius: 0.6rem;
+    margin: 0.3rem;
+
 }
