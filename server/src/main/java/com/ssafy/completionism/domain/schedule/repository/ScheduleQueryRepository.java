@@ -139,4 +139,65 @@ public class ScheduleQueryRepository {
                 .fetchOne());
     }
 
+    public Optional<Integer> countExpenseNextFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isFalse(),
+                        schedule.fixed.isFalse(),
+                        schedule.date.goe(date))
+//                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
+    public Optional<Integer> countIncomeNextFutureSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isTrue(),
+                        schedule.fixed.isFalse(),
+                        schedule.date.goe(date))
+//                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
+    public List<SearchPinnedScheduleDto> getIncomePinnedNextSchedules(String loginId) {
+        List<SearchPinnedScheduleDto> pinnedSchedules = queryFactory
+                .select(Projections.fields(SearchPinnedScheduleDto.class,
+                        schedule.id,
+                        schedule.todo,
+                        schedule.cost,
+                        schedule.plus,
+                        schedule.periodType,
+                        schedule.period))
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId), schedule.fixed.isTrue(), schedule.plus.isTrue())
+                .orderBy(
+                        schedule.todo.asc()
+                )
+                .fetch();
+
+        return pinnedSchedules;
+    }
+
+    public List<SearchPinnedScheduleDto> getExpensePinnedNextSchedules(String loginId) {
+        List<SearchPinnedScheduleDto> pinnedSchedules = queryFactory
+                .select(Projections.fields(SearchPinnedScheduleDto.class,
+                        schedule.id,
+                        schedule.todo,
+                        schedule.cost,
+                        schedule.plus,
+                        schedule.periodType,
+                        schedule.period))
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId), schedule.fixed.isTrue(), schedule.plus.isFalse())
+                .orderBy(
+                        schedule.todo.asc()
+                )
+                .fetch();
+
+        return pinnedSchedules;
+    }
 }

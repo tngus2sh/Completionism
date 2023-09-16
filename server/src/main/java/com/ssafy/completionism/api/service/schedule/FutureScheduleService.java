@@ -14,4 +14,5 @@ public interface FutureScheduleService {
     List<ScheduleResponse> searchFutureScheduleAll(String loginId);
     ScheduleResponse searchFutureSchedule(String loginId, Long id);
     Integer countDailyFutureSchedule(String loginId, String date);
+    Integer countNextFutureSchedule(String loginId, String date);
 }

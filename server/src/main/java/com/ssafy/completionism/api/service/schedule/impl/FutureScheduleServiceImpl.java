@@ -114,4 +114,26 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
 
         return total;
     }
+
+    @Override
+    public Integer countNextFutureSchedule(String loginId, String date) {
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate target = LocalDate.parse(date, formatter);
+
+        int total = 0;
+        Optional<Integer> expenseOptional = scheduleQueryRepository.countExpenseNextFutureSchedule(loginId, target);
+        if (expenseOptional.isPresent()) {
+            total -= expenseOptional.get();
+        }
+
+        Optional<Integer> incomeOptional = scheduleQueryRepository.countIncomeNextFutureSchedule(loginId, target);
+        if (incomeOptional.isPresent()) {
+            total += incomeOptional.get();
+        }
+
+        return total;
+    }
 }
