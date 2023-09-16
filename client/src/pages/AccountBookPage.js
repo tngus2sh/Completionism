@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import { fatchMonthTransactionData } from "../redux/authSlice";
+import { fatchMonthTransactionData, fatchTotalBudgetData } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
 
@@ -37,17 +37,34 @@ const AccountBookPage = () => {
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
+  const totalBudgetData = useSelector(
+    (state) => state.auth.totalBudgetData
+  );
+  const [useAxios, setUseAxios] = useState(false);
 
-  
   const todayDate = new Date();
-  const temp = todayDate.getFullYear().toString()+'-'+(todayDate.getMonth()+1).toString().padStart(2,"0")
+  const temp =
+    todayDate.getFullYear().toString() +
+    "-" +
+    (todayDate.getMonth() + 1).toString().padStart(2, "0");
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  useEffect(()=>{
+  const [budgetData, setBudgetData] = useState({
+    yearMonth: null,
+    totalBudget: null,
+    category: "TOTAL", // 기본 카테고리 설정
+  });
+
+  useEffect(() => {
     dispatch(setSelectedYearAndMonth(temp));
-  },[])
+    loadBudgetData();
+  }, []);
 
+  useEffect(() => {
+    loadBudgetData();
+  }, [useAxios,selectedYearAndMonth]);
 
   const loadData = async () => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
@@ -77,18 +94,108 @@ const AccountBookPage = () => {
     }
   };
 
-  const ToggleCalendar = () => {
-    dispatch(setIsDiary());
+  // 예산 전체조회
+  const loadBudgetData = async (e) => {
+    // 로컬 스토리지에서 엑세스 토큰 가져오기
+    const accessToken = localStorage.getItem("accessToken");
+    // Axios 요청 헤더 설정
+    const headers = {
+      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+    };
+    try {
+      //요청 보내기
+      const response = await axios.get(`/api/budget`, { headers });
+      console.log(response.data);
+      dispatch(fatchTotalBudgetData(response.data.dataBody));
+    } catch (error) {
+      console.error(error);
+    }
   };
-  // 모달 열기 버튼을 클릭했을 때 실행되는 함수
-  const openModal = () => {
-    setIsModalOpen(true);
+
+  // 예산 생성 모달 열기
+  const openCreateModal = () => {
+    setBudgetData({
+      yearMonth: selectedYearAndMonth + "-" + "01",
+      totalBudget: null,
+      category: "TOTAL", // 기본 카테고리 설정
+    });
+    setIsCreateModalOpen(true);
+  };
+
+  // 예산 수정 모달 열기
+  const openEditModal = (selectedCategory) => {
+    setBudgetData({
+      yearMonth: selectedYearAndMonth + "-" + "01",
+      totalBudget: totalBudgetData.find(
+        (item) => item.category === selectedCategory
+      )?.totalBudget,
+      category: selectedCategory,
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBudgetData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setBudgetData((prevData) => ({
+      ...prevData,
+      category: selectedCategory,
+    }));
+  };
+
+  const createBudget = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const data = {
+      yearMonth: budgetData.yearMonth,
+      totalBudget: budgetData.totalBudget,
+      category: budgetData.category,
+    };
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    try {
+      const response = await axios.post(`/api/budget`, data, {
+        headers,
+      });
+      console.log(response.data);
+      setUseAxios(!useAxios);
+      setIsCreateModalOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateBudget = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const data = {
+      yearMonth: budgetData.yearMonth,
+      totalBudget: budgetData.totalBudget,
+      category: budgetData.category,
+    };
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    try {
+      const response = await axios.patch(`/api/budget`, data, {
+        headers,
+      });
+      console.log(response.data);
+      setUseAxios(!useAxios);
+      setIsEditModalOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   function setScreenSize() {
-    //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
     let vh = window.innerHeight * 0.01;
-    //그런 다음 --vh 사용자 정의 속성의 값을 문서의 루트로 설정합니다.
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
   setScreenSize();
@@ -113,35 +220,106 @@ const AccountBookPage = () => {
         </div>
       </div>
 
-      {/* 일기달력 하단 네비게이션 바로 이동 */}
-      {/* <div className="toggle-container">
-        <button className="toggle-button" onClick={ToggleCalendar}>
-          <div>{isDiary ? "일기달력" : "가계부달력"}</div>
-        </button>
-      </div> */}
-
       <div>
-        <button onClick={openModal}>예산(budget) 작성하기</button>
+        <button onClick={openCreateModal}>예산(budget) 작성하기</button>
       </div>
       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+        isOpen={isCreateModalOpen}
+        onRequestClose={() => setIsCreateModalOpen(false)}
         style={modalStyle}
         contentLabel="예산 작성 모달"
       >
-        {/* 모달 내용 */}
-        <h2>예산 작성</h2>
-        {/* 예산 작성 양식 등을 추가하세요 */}
+        <h2>{selectedYearAndMonth} 예산 생성</h2>
+        <div>
+          <label htmlFor="totalBudget">총 예산</label>
+          <input
+            type="text"
+            id="totalBudget"
+            name="totalBudget"
+            value={budgetData.totalBudget || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="category">카테고리</label>
+          <select
+            id="category"
+            name="category"
+            value={budgetData.category || "TOTAL"}
+            onChange={handleCategoryChange}
+          >
+            <option value="TOTAL">전체</option>
+            <option value="TRAFFIC">교통</option>
+            <option value="FOOD">식비</option>
+            <option value="SHOPPING">쇼핑</option>
+            <option value="LIFE">생활</option>
+            <option value="ETC">기타</option>
+          </select>
+        </div>
+        <button onClick={createBudget}>예산 생성하기</button>
+      </Modal>
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onRequestClose={() => setIsEditModalOpen(false)}
+        style={modalStyle}
+        contentLabel="예산 수정 모달"
+      >
+        <h2>{selectedYearAndMonth} 예산 수정</h2>
+        <div>
+          <label htmlFor="totalBudget">총 예산</label>
+          <input
+            type="text"
+            id="totalBudget"
+            name="totalBudget"
+            value={budgetData.totalBudget || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="category">카테고리</label>
+          <select
+            id="category"
+            name="category"
+            value={budgetData.category || "TOTAL"}
+            onChange={handleCategoryChange}
+          >
+            <option value="TOTAL">전체</option>
+            <option value="TRAFFIC">교통</option>
+            <option value="FOOD">식비</option>
+            <option value="SHOPPING">쇼핑</option>
+            <option value="LIFE">생활</option>
+            <option value="ETC">기타</option>
+          </select>
+        </div>
+        <button onClick={updateBudget}>예산 수정하기</button>
       </Modal>
 
       <div className="calendar-container">
         {isDiary ? <CalenderForDiary /> : <Calendar />}
       </div>
 
+      <div>
+        {selectedYearAndMonth} 예산 
+        {totalBudgetData.map((item, index) => {
+          if (item.yearMonth.slice(0,7) === selectedYearAndMonth.slice(0,7)){
+            return (
+              <div key={item.id}>
+                {item.id}|
+                {item.yearMonth}|
+                {item.memberId}|
+                {item.totalBudget}|
+                {item.category}|
+                <button onClick={() => openEditModal(item.category)}>
+                  수정
+                </button>
+              </div>
+            );
+          }
+        })}
+      </div>
+
       <div className="accountbook-button-container">
-        {/* <div>
-          <SwipeableTemporaryDrawer />
-        </div> */}
         <div className="accountbook-button">
           <Link to="/future" className="accountbook-link">
             미래 예상소비 등록

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   userName: null,
+  memberId: null,
   isAuthenticated: false,
   selectedYearAndMonth : null,
   fixedExpenditureList : [] , //고정지출
@@ -9,6 +10,7 @@ const initialState = {
   MonthTransactionData : [], //달력에 띄울 수입지출데이터
   MonthHistoryData : [],  //계좌 상세조회
   isDiary : false,
+  totalBudgetData : [],
 };
 
 export const authSlice = createSlice({
@@ -17,8 +19,12 @@ export const authSlice = createSlice({
   reducers: {
     loginState: (state) => {
       state.isAuthenticated = true
+      state.userName = null
+      state.memberId = null
     },
     logoutState: (state) => {
+      state.userName = null
+      state.memberId = null
       state.isAuthenticated = false 
       state.selectedYearAndMonth = null
       state.fixedExpenditureList = [] 
@@ -26,6 +32,7 @@ export const authSlice = createSlice({
       state.MonthTransactionData = [] 
       state.MonthHistoryData = [] 
       state.isDiary = false
+      state.totalBudgetData = []
     },
     setSelectedYearAndMonth: (state,action) => {
       state.selectedYearAndMonth = action.payload
@@ -46,11 +53,14 @@ export const authSlice = createSlice({
       if (action.payload !== null){
         state.MonthHistoryData = action.payload;
       }
+    },
+    fatchTotalBudgetData: (state,action) => {
+      state.totalBudgetData = action.payload
     }
   },
 });
 
 export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,
-  setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData} = authSlice.actions;
+  setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData, fatchTotalBudgetData} = authSlice.actions;
 
 export default authSlice.reducer;
