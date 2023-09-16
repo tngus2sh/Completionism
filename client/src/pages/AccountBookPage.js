@@ -35,6 +35,7 @@ const AccountBookPage = () => {
   const selectedYearAndMonth = useSelector(
     (state) => state.auth.selectedYearAndMonth
   );
+
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
@@ -59,14 +60,18 @@ const AccountBookPage = () => {
   });
 
   useEffect(() => {
-    dispatch(setSelectedYearAndMonth(temp));
-    loadBudgetData();
-    loadData();
+    const fetchData = async () => {
+      await dispatch(setSelectedYearAndMonth(temp));
+      await loadBudgetData();
+      await loadData();
+    };
   }, []);
 
   useEffect(() => {
-    loadBudgetData();
-    loadData();
+    const fetchData = async () => {
+      await loadBudgetData();
+      await loadData();
+    };
   }, [useAxios,selectedYearAndMonth]);
 
   const loadData = async () => {
@@ -300,7 +305,8 @@ const AccountBookPage = () => {
       </Modal>
 
       <div className="calendar-container">
-        {isDiary ? <CalenderForDiary /> : <Calendar />}
+        <Calendar/>
+        {/* {isDiary ? <CalenderForDiary /> : <Calendar />} */}
       </div>
 
       <div>

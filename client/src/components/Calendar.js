@@ -64,11 +64,17 @@ const RenderCells = ({
       const cloneDay = day;
 
       // console.log('dd',MonthTransactionData)
-      if (MonthTransactionData.day !== undefined) {
-        cellData = MonthTransactionData.day.find(
-          (item) => item.day.split("-").pop() === format(cloneDay, "dd")
-        );
-      }
+
+      // if (MonthTransactionData.day) {
+      //   cellData = MonthTransactionData.day.find(
+      //     (item) => {
+      //       if(item.day !==null){
+      //         item.day.split("-").pop() === format(cloneDay, "dd")
+      //       }
+      //     }
+      //   );
+      // }
+
       // const cellData = data.day.find(item => item.day.split('-').pop() === format(cloneDay, 'dd'));
 
       days.push(
@@ -94,14 +100,16 @@ const RenderCells = ({
           >
             {formattedDate}
           </span>
-          <div className="cellData">
+
+          {/* <div className="cellData">
             {cellData && (
               <div className="income-spend">
                 <div className="income">+{cellData.income}</div>
                 <div className="spend">-{cellData.spend}</div>
               </div>
             )}
-          </div>
+          </div> */}
+
         </div>
       );
       day = addDays(day, 1);
