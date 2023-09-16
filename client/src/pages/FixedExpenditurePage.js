@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
@@ -30,6 +31,11 @@ const FixedExpenditurePage = () => {
   const [plus, setPlus] = useState(false);
   const [periodType, setPeriodType] = useState(false);
   const [period, setPeriod] = useState(5);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fixedScheduleId, setFixedScheduleId] = useState(-1);
+
+  // useEffect(() => {}, );
+  useEffect(() => {}, [fixedScheduleId, periodType]);
 
   useEffect(() => {
     loadData();
@@ -54,6 +60,8 @@ const FixedExpenditurePage = () => {
   };
 
   const createData = async () => {
+    setIsModalOpen(false);
+
     // 데이터를 객체로 만들기
     const data = {
       todo: todo,
@@ -112,8 +120,35 @@ const FixedExpenditurePage = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setFixedScheduleId(id);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const modalStyle = {
+    content: {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      rigiht: "0",
+      width: "100%",
+      height: "25rem",
+      padding: "0",
+      borderRadius: "0 0 1rem 1rem",
+      boxShadow: 20,
+      textAlign: "center",
+      overflowY: "auto", // 스크롤바 추가
+      outline: "none",
+      backdropFilter: "blur(5px)",
+      overlay: {
+        backgroundColor: "gray",
+      },
+      // bgcolor: "white",
+    },
   };
 
   function setScreenSize() {
@@ -124,6 +159,32 @@ const FixedExpenditurePage = () => {
   }
   setScreenSize();
   window.addEventListener("resize", setScreenSize);
+
+  function monthPeriod() {
+    let arr = [];
+    for (let i = 1; i <= 31; i++) {
+      arr.push(<option onClick={() => setPeriod(i)}>{i}일</option>);
+    }
+    return arr;
+  }
+
+  function weekPeriod() {
+    let week = ["월", "화", "수", "목", "금", "토", "일"];
+    let arr = [];
+    for (let i = 1; i <= 7; i++) {
+      arr.push(<option onClick={() => setPeriod(i)}>{week[i - 1]}</option>);
+    }
+    return arr;
+  }
+
+  function selectOption() {
+    console.log(periodType);
+    if (periodType) {
+      return <select className="period-select">{monthPeriod()}</select>;
+    } else {
+      return <select className="period-select">{weekPeriod()}</select>;
+    }
+  }
 
   return (
     <div className="fixed-page">
@@ -173,7 +234,7 @@ const FixedExpenditurePage = () => {
           <span>
             <strong>작성하기&nbsp;</strong>
           </span>
-          <div className="fixed-button-icon-container">
+          <div onClick={openModal} className="fixed-button-icon-container">
             <div className="fixed-button-icon-flex-container">
               <EditCalendarRoundedIcon sx={{ color: "#0046FF" }} />
             </div>
@@ -185,11 +246,6 @@ const FixedExpenditurePage = () => {
         {fixedExpenditureList.map((item, index) => {
           const handleClose = () => {
             setAnchorEl(null);
-          };
-
-          const deleteFutureItem = () => {
-            deleteData(item.id);
-            setUseAxios(!useAxios);
           };
 
           return (
@@ -207,7 +263,15 @@ const FixedExpenditurePage = () => {
                 <div className="fixed-item-cost-container">{item.cost}원</div>
 
                 <div className="fixed-item-info-container">
-                  <Button id="fade-button" aria-controls={open ? "fade-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
+                  <Button
+                    id="fade-button"
+                    aria-controls={open ? "fade-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={(e) => {
+                      handleClick(e, item.id);
+                    }}
+                  >
                     <MoreVertRoundedIcon sx={{ color: "#696969" }} />
                   </Button>
                   <Menu
@@ -220,7 +284,15 @@ const FixedExpenditurePage = () => {
                     onClose={handleClose}
                     TransitionComponent={Fade}
                   >
-                    <MenuItem onClick={deleteFutureItem}>삭제</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        deleteData(fixedScheduleId);
+                        setUseAxios(!useAxios);
+                      }}
+                      sx={{ padding: "0 0.7rem" }}
+                    >
+                      삭제
+                    </MenuItem>
                   </Menu>
                 </div>
               </div>
@@ -241,6 +313,104 @@ const FixedExpenditurePage = () => {
           );
         })}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+        style={modalStyle}
+        contentLabel="고정 지출 등록 모달"
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div style={{ display: "inline-block", width: "90%", height: "100%" }}>
+          <div className="fixed-header-container" style={{ marginTop: "2.5rem" }}>
+            <h3>고정 지출 등록</h3>
+          </div>
+
+          <div className="fixed-date-container">
+            {/* <div className="fixed-create-flex-container">
+              <div className="fixed-create-info-container">날짜</div>
+              <div className="fixed-create-content-container">
+                <div className="fixed-create-border-container">
+                  <div className="fixed-create-border-flex-container">
+                    <DatePicker locale="ko" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" showPopperArrow={false} fixedHeight className="datepicker" />
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
+            <div className="fixed-create-flex-container">
+              <div className="fixed-create-info-container">내용</div>
+              <div className="fixed-create-content-container">
+                <div className="fixed-create-border-container">
+                  <div className="fixed-create-border-flex-container">
+                    <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="fixed-create-flex-container">
+              <div className="fixed-create-info-container">금액</div>
+              <div className="fixed-create-content-container">
+                <div className="fixed-create-border-container">
+                  <div className="fixed-create-border-flex-container">
+                    <input type="number" value={cost} onChange={(e) => setCost(parseFloat(e.target.value))} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="fixed-create-flex-container">
+              <div className="fixed-create-info-container">주기</div>
+              <div className="fixed-create-content-container">
+                <div className="fixed-create-border-radio-container">
+                  <div className="fixed-create-border-radio-flex-container">
+                    <div class="select">
+                      <div onClick={(e) => setPeriodType(0)}>
+                        <input type="radio" id="select" name="shop" checked />
+                        <label for="select">주마다</label>
+                      </div>
+                      <div onClick={(e) => setPeriodType(1)}>
+                        <input type="radio" id="select2" name="shop" />
+                        <label for="select2">월마다</label>
+                      </div>
+                    </div>
+
+                    {/* <input type="checkbox" checked={periodType} onChange={(e) => setPeriodType(e.target.checked)} /> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="fixed-create-flex-container">
+              <div className="fixed-create-info-container">기간</div>
+              <div className="fixed-create-content-container">
+                <div className="fixed-create-border-container">
+                  <div className="fixed-create-border-flex-container">
+                    {selectOption()}
+
+                    {/* <input type="checkbox" checked={periodType} onChange={(e) => setPeriodType(e.target.checked)} /> */}
+                  </div>
+                </div>
+              </div>
+
+              {/* <div className="fixed-create-flex-container"></div> */}
+            </div>
+          </div>
+
+          {/* <div>
+            <label>Plus(체크하면 수입):</label>
+            <input type="checkbox" checked={plus} onChange={(e) => setPlus(e.target.checked)} />
+          </div> */}
+
+          <div className="fixed-create-button-container">
+            <div onClick={createData} className="fixed-create-button-flex-container">
+              생성하기
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <div className="undernavbar">
         <UnderNavigationBar />
