@@ -67,18 +67,18 @@ const MainPage = () => {
         <div className="main-header-content-text-container">
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            &nbsp;오늘 하루 예산 : {plannedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-            {plannedAmount}50000원
+            &nbsp;오늘 계획한 소비 : {plannedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
           </div>
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
             &nbsp;오늘 지출된 금액 : {actualUsageAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-            {actualUsageAmount}70000원
           </div>
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            &nbsp;계획보다 {amountSpentMoreThanPlanned.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-            {amountSpentMoreThanPlanned}20000원을 더 쓰셨습니다.
+            &nbsp;{ plannedAmount>=actualUsageAmount
+              ? (<span>오늘 {(plannedAmount-actualUsageAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원 만큼 더 사용할 수 있어요!</span>)
+              :(<span>오늘 계획보다 {(actualUsageAmount-plannedAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원을 초과했어요!</span>)
+          }
           </div>
         </div>
       </div>
@@ -89,9 +89,6 @@ const MainPage = () => {
             <strong>오늘의 ai 일기</strong>
           </div>
           <div className="todays_ai_diary-content-container">
-            <div className='todays_ai_diary-content-date'>
-              {year}.{month}.{day}
-            </div>
             <div className="todays_ai_diary-content-feel">
               😍
             </div>
