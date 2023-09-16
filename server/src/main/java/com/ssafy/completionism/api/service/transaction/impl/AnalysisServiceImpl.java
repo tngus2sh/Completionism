@@ -1,11 +1,19 @@
 package com.ssafy.completionism.api.service.transaction.impl;
 
 import com.ssafy.completionism.api.ApiResponse;
+import com.ssafy.completionism.api.controller.budget.response.BudgetResponse;
 import com.ssafy.completionism.api.controller.transaction.response.*;
+import com.ssafy.completionism.api.service.budget.BudgetService;
+import com.ssafy.completionism.api.service.gpt.GptService;
 import com.ssafy.completionism.api.service.transaction.AnalysisService;
 import com.ssafy.completionism.api.service.transaction.dto.OneMonthIncomeExpenseDto;
+import com.ssafy.completionism.domain.Category;
+import com.ssafy.completionism.domain.budget.Budget;
+import com.ssafy.completionism.domain.budget.repository.BudgetQueryRepository;
+import com.ssafy.completionism.domain.budget.repository.BudgetRepository;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.domain.schedule.repository.ScheduleQueryRepository;
 import com.ssafy.completionism.domain.transaction.StatisticsType;
 import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
 import com.ssafy.completionism.domain.transaction.repository.HistoryQueryRepository;
@@ -15,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,7 +40,74 @@ public class AnalysisServiceImpl implements AnalysisService {
     private final TransactionQueryRepository transactionQueryRepository;
     private final HistoryQueryRepository historyQueryRepository;
 
+    private final BudgetQueryRepository budgetQueryRepository;
+    private final ScheduleQueryRepository scheduleQueryRepository;
+    private final GptService gptService;
 
+
+    @Override
+    public AIFeedBackResponse getAIFeedBack(String loginId) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        // 현재 날짜 가져오기
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+
+        // 달의 첫 날 == 해당 달의 예산
+        LocalDate nowFirstDate = now.withDayOfMonth(1);
+
+        // 현재 요일 가져오기
+        DayOfWeek nowDay = now.getDayOfWeek();
+
+        // 전체 예산 가져오기
+        Optional<BudgetResponse> budgetOptional = budgetQueryRepository.findByYearMonthAndCategory(member.getId(), nowFirstDate, Category.TOTAL);
+
+        if (budgetOptional.isEmpty()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "예산을 찾을 수 없습니다.");
+        }
+        BudgetResponse budget = budgetOptional.get();
+
+        // 미래예상소비 가져오기
+        int futureSchedule = 0;
+
+        Optional<Integer> expenseOptional = scheduleQueryRepository.countExpenseMonthlyFutureSchedule(loginId, nowFirstDate);
+        if (expenseOptional.isPresent()) {
+            futureSchedule += expenseOptional.get();
+        }
+
+        Optional<Integer> incomeOptional = scheduleQueryRepository.countIncomeMonthlyFutureSchedule(loginId, nowFirstDate);
+        if (incomeOptional.isPresent()) {
+            futureSchedule += incomeOptional.get();
+        }
+
+        // 고정 지출 가져오기
+        int fixedSchedule = 0;
+
+        Optional<Integer> expenseFixedOptional = scheduleQueryRepository.countExpenseMonthlyFixedSchedule(loginId, nowFirstDate);
+        if (expenseFixedOptional.isPresent()) {
+            fixedSchedule += expenseFixedOptional.get();
+        }
+
+        Optional<Integer> incomeFixedOptional = scheduleQueryRepository.countIncomeMonthlyFixedSchedule(loginId, nowFirstDate);
+        if (incomeFixedOptional.isPresent()) {
+            fixedSchedule += incomeFixedOptional.get();
+        }
+
+        // 현재까지 한 달 지출, 수입 내역 가져오기
+
+
+        //  카테고리별 지출, 수입 내역 가져오기
+
+
+        return null;
+    }
+
+    /**
+     * 한달 소비 통계
+     * @param loginId 사용자 아이디
+     * @param type 일별, 월별, 연별
+     * @return 통계 결과
+     */
     @Override
     public FeedBackResponse getFeedBack(String loginId, StatisticsType type) {
         memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);

@@ -1,7 +1,9 @@
 package com.ssafy.completionism.domain.budget.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.completionism.api.controller.budget.response.BudgetResponse;
 import com.ssafy.completionism.api.controller.budget.response.MonthBudgetResponse;
+import com.ssafy.completionism.domain.Category;
 import com.ssafy.completionism.domain.budget.Budget;
 import com.ssafy.completionism.domain.member.Member;
 import org.springframework.stereotype.Repository;
@@ -75,6 +77,20 @@ public class BudgetQueryRepository {
                 .from(budget)
                 .where(budget.member.eq(member),
                         budget.yearMonth.eq(yearMonth))
+                .fetchOne());
+    }
+
+    public Optional<BudgetResponse> findByYearMonthAndCategory(Long memberId, LocalDate yearMonth, Category category) {
+        return Optional.ofNullable(queryFactory
+                .select(constructor(BudgetResponse.class,
+                        budget.id,
+                        budget.yearMonth,
+                        budget.totalBudget,
+                        budget.category))
+                .from(budget)
+                .where(budget.member.id.eq(memberId),
+                        budget.yearMonth.eq(yearMonth),
+                        budget.category.eq(category))
                 .fetchOne());
     }
 

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -100,10 +101,15 @@ public class FutureScheduleServiceImpl implements FutureScheduleService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate target = LocalDate.parse(date, formatter);
 
-        Integer total = scheduleQueryRepository.countDailyFutureSchedule(loginId, target);
+        int total = 0;
+        Optional<Integer> expenseOptional = scheduleQueryRepository.countExpenseMonthlyFutureSchedule(loginId, target);
+        if (expenseOptional.isPresent()) {
+            total += expenseOptional.get();
+        }
 
-        if(total == null) {
-            return 0;
+        Optional<Integer> incomeOptional = scheduleQueryRepository.countIncomeDailyFutureSchedule(loginId, target);
+        if (incomeOptional.isPresent()) {
+            total += incomeOptional.get();
         }
 
         return total;
