@@ -12,11 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import {
-  fatchMonthTransactionData,
-  fatchTotalBudgetData,
-  fatchMonthTransactionData500,
-} from "../redux/authSlice";
+import { fatchMonthTransactionData, fatchTotalBudgetData, fatchMonthTransactionData500 } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
 
@@ -57,10 +53,7 @@ const AccountBookPage = () => {
   const [useAxios, setUseAxios] = useState(false);
 
   const todayDate = new Date();
-  const temp =
-    todayDate.getFullYear().toString() +
-    "-" +
-    (todayDate.getMonth() + 1).toString().padStart(2, "0");
+  const temp = todayDate.getFullYear().toString() + "-" + (todayDate.getMonth() + 1).toString().padStart(2, "0");
   const dispatch = useDispatch();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -334,7 +327,6 @@ const AccountBookPage = () => {
 
       {/* <div>
         <button onClick={openCreateModal}>예산(budget) 작성하기</button>
-<<<<<<< HEAD
       </div> */}
 
       <Modal isOpen={isCreateModalOpen} onRequestClose={() => setIsCreateModalOpen(false)} style={modalStyle} contentLabel="예산 작성 모달">
@@ -425,79 +417,6 @@ const AccountBookPage = () => {
             </div>
           </div>
         </div>
-=======
-      </div>
-      <Modal
-        isOpen={isCreateModalOpen}
-        onRequestClose={() => setIsCreateModalOpen(false)}
-        style={modalStyle}
-        contentLabel="예산 작성 모달"
-      >
-        <h2>{selectedYearAndMonth} 예산 생성</h2>
-        <div>
-          <label htmlFor="totalBudget">총 예산</label>
-          <input
-            type="text"
-            id="totalBudget"
-            name="totalBudget"
-            value={budgetData.totalBudget || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="category">카테고리</label>
-          <select
-            id="category"
-            name="category"
-            value={budgetData.category || "TOTAL"}
-            onChange={handleCategoryChange}
-          >
-            <option value="TOTAL">전체</option>
-            <option value="TRAFFIC">교통</option>
-            <option value="FOOD">식비</option>
-            <option value="SHOPPING">쇼핑</option>
-            <option value="LIFE">생활</option>
-            <option value="ETC">기타</option>
-          </select>
-        </div>
-        <button onClick={createBudget}>예산 생성하기</button>
-      </Modal>
-
-      <Modal
-        isOpen={isEditModalOpen}
-        onRequestClose={() => setIsEditModalOpen(false)}
-        style={modalStyle}
-        contentLabel="예산 수정 모달"
-      >
-        <h2>{selectedYearAndMonth} 예산 수정</h2>
-        <div>
-          <label htmlFor="totalBudget">총 예산</label>
-          <input
-            type="text"
-            id="totalBudget"
-            name="totalBudget"
-            value={budgetData.totalBudget || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="category">카테고리</label>
-          <select
-            id="category"
-            name="category"
-            value={budgetData.category || "TOTAL"}
-            onChange={handleCategoryChange}
-          >
-            <option value="TOTAL">전체</option>
-            <option value="TRAFFIC">교통</option>
-            <option value="FOOD">식비</option>
-            <option value="SHOPPING">쇼핑</option>
-            <option value="LIFE">생활</option>
-            <option value="ETC">기타</option>
-          </select>
-        </div>
-        <button onClick={updateBudget}>예산 수정하기</button>
->>>>>>> 1917a952bce517e1e9cd327a084e4bc6bd346a2f
       </Modal>
 
       <div className="calendar-container">
@@ -511,10 +430,6 @@ const AccountBookPage = () => {
             return (
               <div key={item.id}>
                 {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|{item.category}|
-<<<<<<< HEAD
-=======
-                <button onClick={() => openEditModal(item.category)}>수정</button>
->>>>>>> 1917a952bce517e1e9cd327a084e4bc6bd346a2f
               </div>
             );
           }
