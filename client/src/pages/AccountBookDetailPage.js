@@ -47,6 +47,7 @@ const AccoutBookDetailPage = () => {
   const [selectedEmotion, setSelectedEmotion] = useState("NEUTRAL");
   const [useAxios, setUseAxios] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactionId, setTransaction] = useState(-1);
 
   useEffect(() => {
     loadData();
@@ -63,7 +64,7 @@ const AccoutBookDetailPage = () => {
       });
       dispatch(fatchMonthHistoryData(response.data.dataBody));
       console.log(id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,9))
-      console.log(response.data.dataBody);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -131,6 +132,7 @@ const AccoutBookDetailPage = () => {
                   setIsModalOpen(true); // 모달 열기
                   setDiaryContent("");
                   setSelectedEmotion("NEUTRAL");
+                  setTransaction(item.transactionId)
                 }}
                 style={{borderStyle:"none", background:"white"}}
               >
@@ -160,7 +162,7 @@ const AccoutBookDetailPage = () => {
                   value={diaryContent}
                   onChange={(e) => setDiaryContent(e.target.value)}
                 />
-                <button onClick={() => createDiary(item.transactionId)}>
+                <button onClick={() => createDiary(transactionId)}>
                   작성완료
                 </button>
                 <button onClick={() => setIsModalOpen(false)}>취소</button>
