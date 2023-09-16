@@ -49,6 +49,9 @@ export const authSlice = createSlice({
     fatchMonthTransactionData: (state,action) => {
       state.MonthTransactionData = action.payload;
     },
+    fatchMonthTransactionData500: (state,action) => {
+      state.MonthTransactionData = [];
+    },
     fatchMonthHistoryData: (state,action) => {
       if (action.payload === null){
         state.MonthHistoryData = []
@@ -63,6 +66,7 @@ export const authSlice = createSlice({
 });
 
 export const { loginState, logoutState ,setSelectedYearAndMonth ,fatchFutureData ,fatchPinnedData,
-  setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData, fatchTotalBudgetData} = authSlice.actions;
+  setIsDiary,fatchMonthTransactionData,fatchMonthHistoryData, fatchTotalBudgetData,
+  fatchMonthTransactionData500} = authSlice.actions;
 
 export default authSlice.reducer;
