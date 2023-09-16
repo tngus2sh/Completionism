@@ -117,4 +117,26 @@ public class ScheduleQueryRepository {
                 .fetchOne());
     }
 
+    public Optional<Integer> countExpenseMonthlyFixedSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isFalse(),
+                        schedule.fixed.isTrue(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
+    public Optional<Integer> countIncomeMonthlyFixedSchedule(String loginId, LocalDate date) {
+        return Optional.ofNullable(queryFactory.select(schedule.cost.sum())
+                .from(schedule)
+                .where(schedule.member.loginId.eq(loginId),
+                        schedule.plus.isTrue(),
+                        schedule.fixed.isTrue(),
+                        Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date).eq(date.format(DateTimeFormatter.ofPattern("yyyy-MM"))))
+                .groupBy(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m')", schedule.date))
+                .fetchOne());
+    }
+
 }
