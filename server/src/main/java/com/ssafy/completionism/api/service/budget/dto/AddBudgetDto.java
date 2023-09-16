@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 public class AddBudgetDto {
@@ -24,10 +25,12 @@ public class AddBudgetDto {
     }
 
     public static AddBudgetDto toDto(AddBudgetRequest request) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate yearMonth = LocalDate.parse(request.getYearMonth(), dateTimeFormatter).withDayOfMonth(1);
         return AddBudgetDto.builder()
-                .yearMonth(request.getYearMonth())
+                .yearMonth(yearMonth)
                 .totalBudget(request.getTotalBudget())
-                .category(request.getCategory())
+                .category(Category.valueOf(request.getCategory()))
                 .build();
     }
 

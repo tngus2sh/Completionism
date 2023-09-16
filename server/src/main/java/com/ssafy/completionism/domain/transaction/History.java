@@ -37,7 +37,7 @@ public class History extends TimeBaseEntity {
     @Lob
     private String diary;
     @Enumerated(STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = true)
     private Feel feel;
 
 
@@ -65,6 +65,10 @@ public class History extends TimeBaseEntity {
         } else {
             this.outcome += cost;
         }
+    }
+
+    public void updateDiary(String diary) {
+        this.diary = diary;
     }
 
     public void addTransaction(Transaction transaction) {

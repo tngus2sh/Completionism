@@ -1,19 +1,41 @@
-import { Grid } from '@mui/material';
 import React from "react";
 import "./UnderNavigationBar.css";
-import {Link} from "react-router-dom" ;
+import { Link } from "react-router-dom";
+import HouseRoundedIcon from "@mui/icons-material/HouseRounded";
+import LibraryBooksRoundedIcon from "@mui/icons-material/LibraryBooksRounded";
+import PsychologyAltRoundedIcon from "@mui/icons-material/PsychologyAltRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 
 const UnderNavigationBar = () => {
-    return(
-        <Grid className ="undernavbar">
-   
-            <Link to ="/mainpage">홈</Link>
-            <Link to ="/accountbook">|가계부</Link>
-            <Link to ="/feadback">|피드백</Link>
-            <Link to ="/setting">|설정</Link>
+  return (
+    <div className="undernavbar">
+      <Link to="/mainpage">
+        <div className="footer-link-container">
+          <HouseRoundedIcon sx={{ fontSize: "2rem" }} />
+          <span>홈</span>
+        </div>
+      </Link>
+      <Link to="/accountbook">
+        <div className="footer-link-container">
+          <LibraryBooksRoundedIcon sx={{ fontSize: "2rem" }} />
+          <span>가계부</span>
+        </div>
+      </Link>
+      <Link to="/feadback">
+        <div className="footer-link-container">
+          <PsychologyAltRoundedIcon sx={{ fontSize: "2rem" }} />
+          <span>피드백</span>
+        </div>
+      </Link>
 
-        </Grid>
-    )
-}
+      <Link to="/setting">
+        <div className="footer-link-container">
+          <SettingsRoundedIcon sx={{ fontSize: "2rem" }} />
+          <span>설정</span>
+        </div>
+      </Link>
+    </div>
+  );
+};
 
-export default UnderNavigationBar
+export default UnderNavigationBar;

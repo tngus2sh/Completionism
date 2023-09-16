@@ -1,11 +1,14 @@
 package com.ssafy.completionism.api.service.budget.dto;
 
+import com.ssafy.completionism.api.controller.budget.request.ModifyBudgetRequest;
 import com.ssafy.completionism.domain.Category;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 
 @Data
 public class ModifyBudgetDto {
@@ -27,5 +30,15 @@ public class ModifyBudgetDto {
         this.yearMonth = yearMonth;
         this.totalBudget = totalBudget;
         this.category = category;
+    }
+
+    public static ModifyBudgetDto toDto(ModifyBudgetRequest request) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate yearMonthLocalDate = LocalDate.parse(request.getYearMonth(), dateTimeFormatter);
+        return ModifyBudgetDto.builder()
+                .yearMonth(yearMonthLocalDate)
+                .totalBudget(request.getTotalBudget())
+                .category(Category.valueOf(request.getCategory()))
+                .build();
     }
 }

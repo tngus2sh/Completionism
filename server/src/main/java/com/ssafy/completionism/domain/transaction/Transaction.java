@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
+import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -28,6 +29,7 @@ public class Transaction extends TimeBaseEntity {
 
     private boolean plus;
 
+    @Enumerated(STRING)
     private Category category;
 
     @Column(nullable = false)
@@ -37,13 +39,16 @@ public class Transaction extends TimeBaseEntity {
     @Lob
     private String diary;
 
+    @Enumerated(STRING)
+    @Column(length = 20, nullable = true)
+    private Feel feel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "history_id")
     private History history;
 
     @Builder
-    private Transaction(Long id, LocalDateTime time, int cost, boolean plus, Category category, String place, String diary, History history) {
+    private Transaction(Long id, LocalDateTime time, int cost, boolean plus, Category category, String place, String diary, Feel feel, History history) {
         this.id = id;
         this.time = time;
         this.cost = cost;
@@ -51,11 +56,17 @@ public class Transaction extends TimeBaseEntity {
         this.category = category;
         this.place = place;
         this.diary = diary;
+        this.feel = feel;
         this.history = history;
     }
 
     public void regist(History todayHistory) {
         this.history = todayHistory;
         this.history.addTransaction(this);
+    }
+
+    public void writeOneLineDiary(String diary, Feel feel) {
+        this.diary = diary;
+        this.feel = feel;
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.completionism.domain.schedule;
 
+import com.ssafy.completionism.domain.TimeBaseEntity;
 import com.ssafy.completionism.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Schedule {
+public class Schedule extends TimeBaseEntity {
 
     @Id
     @GeneratedValue
