@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-// const today = new Date()
-// const parsingToday = today.getFullYear().toString()+'-'+(today.getMonth()+1).toString().padStart(2, "0")+'-'+today.getDate().toString().padStart(2, "0")
 
 const initialState = {
   userName: null,

@@ -30,7 +30,7 @@ const FixedExpenditurePage = () => {
   const [fixed, setFixed] = useState(true);
   const [plus, setPlus] = useState(false);
   const [periodType, setPeriodType] = useState(false);
-  const [period, setPeriod] = useState(5);
+  const [period, setPeriod] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fixedScheduleId, setFixedScheduleId] = useState(-1);
 
@@ -92,10 +92,11 @@ const FixedExpenditurePage = () => {
       setFixed(true);
       setPlus(false);
       setPeriodType(false);
-      setPeriod(5);
+      setPeriod(1);
     } catch (error) {
       console.error(error);
       console.log(data);
+      
     }
   };
 
@@ -167,7 +168,7 @@ const FixedExpenditurePage = () => {
   function monthPeriod() {
     let arr = [];
     for (let i = 1; i <= 31; i++) {
-      arr.push(<option onClick={() => setPeriod(i)}>{i}일</option>);
+      arr.push(<option onClick={() => setPeriod(i)}>{i}</option>);
     }
     return arr;
   }
@@ -183,10 +184,23 @@ const FixedExpenditurePage = () => {
 
   function selectOption() {
     console.log(periodType);
+  
+    const handleSelect = (e) => {
+      setPeriod(e.target.value);
+    };
+  
     if (periodType) {
-      return <select className="period-select">{monthPeriod()}</select>;
+      return (
+        <select className="period-select" value={period} onChange={handleSelect}>
+          {monthPeriod()}
+        </select>
+      );
     } else {
-      return <select className="period-select">{weekPeriod()}</select>;
+      return (
+        <select className="period-select" value={period} onChange={handleSelect}>
+          {weekPeriod()}
+        </select>
+      );
     }
   }
 

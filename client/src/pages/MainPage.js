@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import LibraryBooksRoundedIcon from "@mui/icons-material/LibraryBooksRounded";
@@ -6,20 +6,47 @@ import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import "./MainPage.css";
 import axios from "axios";
+import { fatchPinnedData } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { UseSelector } from "react-redux";
+import { fatchFutureData } from "../redux/authSlice";
+import { fatchMonthHistoryData } from "../redux/authSlice";
 
 const MainPage = () => {
+  const today = new Date()
+  const parsingToday = today.getFullYear().toString()+'-'+(today.getMonth()+1).toString().padStart(2, "0")+'-'+today.getDate().toString().padStart(2, "0")
+
+  const dispatch = useDispatch();
   const upperNavbarName = "홈";
   const currentDate = new Date();
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const month = currentDate.getMonth()+1;
   const day = currentDate.getDate();
 
+  const fixedExpenditureList = useSelector(state=>state.auth.fixedExpenditureList)
+  const FutureExpenditureList = useSelector(state=>state.auth.FutureExpenditureList)
+  const MonthHistoryData = useSelector(state=>state.auth.MonthHistoryData)
+  
+
   //daily_consumption_plan_box 관련 데이터들
-  const plannedAmount = 0;
-  const actualUsageAmount = 0;
+  const [plannedAmount,setPlannedAmount] = useState(0);
+  const [FutuerAmount,setFutuerAmount] = useState(0);
+  const [actualUsageAmount,setActualUsageAmount] = useState(0);
   const amountSpentMoreThanPlanned = 0;
 
   //daily_consumption_plan_box 관련 데이터들
+
+  useEffect(()=>{
+    const fatch = async ()=>{
+      loadData();
+      loadFutureData();
+      loadDataTodayExpend();
+      calAmount();
+    }
+    fatch();
+  },[])
+
 
   const functionName = async (e) => {
     //e.preventDefault();
@@ -46,6 +73,94 @@ const MainPage = () => {
   }
   setScreenSize();
   window.addEventListener("resize", setScreenSize);
+
+
+
+  //고정지출 데이터를 가져와서 
+  const loadData = async () => {
+    // 로컬 스토리지에서 엑세스 토큰 가져오기
+    const accessToken = localStorage.getItem("accessToken");
+
+    // Axios 요청 헤더 설정
+    const headers = {
+      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+    };
+
+    try {
+      let tempSumOfPinned = 0
+      const response = await axios.get("/api/schedule/pinned", { headers });
+      console.log(response.data);
+      dispatch(fatchPinnedData(response.data.dataBody));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //미래지출 데이터를 가져와서 
+  const loadFutureData = async () => {// 로컬 스토리지에서 엑세스 토큰 가져오기
+    const accessToken = localStorage.getItem("accessToken");
+
+    // Axios 요청 헤더 설정
+    const headers = {
+      Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
+    };
+
+    try {
+      const response = await axios.get("/api/schedule/future", { headers });
+      console.log(response.data.dataBody);
+      dispatch(fatchFutureData(response.data.dataBody));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const loadDataTodayExpend = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+   
+    try {
+      const response = await axios.get(
+        `/api/history?date=${parsingToday}`,
+        {
+          headers,
+        }
+      );
+      dispatch(fatchMonthHistoryData(response.data.dataBody));
+      // console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
+
+
+  //오늘날짜에 해당되는 것들을 연산한다
+  const calAmount = async () =>{
+//  fixedExpenditureList.map((item , index)=>{
+//       if(parsingToday===item.date){
+//         console.log(item.cost)
+//         setPlannedAmount(plannedAmount+item.cost);
+//       }
+//     })
+//  FutureExpenditureList.map((item , index)=>{
+//       if(parsingToday===item.date){
+//         console.log(item.cost)
+//         setFutuerAmount(plannedAmount+item.cost);
+//       }
+//     })
+ MonthHistoryData.map((item , index)=>{
+      if(parsingToday===item.time.slice(0,9)){
+        console.log(item.cost)
+        setActualUsageAmount(actualUsageAmount+item.cost);
+      }
+    })
+    
+  }
 
   return (
     <div className="main-page">
