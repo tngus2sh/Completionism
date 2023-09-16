@@ -37,7 +37,9 @@ export const authSlice = createSlice({
       state.MonthTransactionData = action.payload;
     },
     fatchMonthHistoryData: (state,action) => {
-      state.MonthHistoryData = action.payload;
+      if (action.payload !== null){
+        state.MonthHistoryData = action.payload;
+      }
     }
   },
 });
