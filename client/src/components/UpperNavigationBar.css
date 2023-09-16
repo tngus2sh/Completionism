@@ -1,0 +1,11 @@
+/* MainPage.css */
+
+
+/* 상단 네비게이션 바 스타일 */
+.uppernavbar {
+  width: 100%;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }

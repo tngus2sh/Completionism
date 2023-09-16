@@ -1,0 +1,92 @@
+/* Calendar.css */
+
+/* Calendar container styles */
+.calendar {
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+}
+
+.header .col-end {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Days styles */
+.days {
+  display: flex;
+  background-color: #f2f2f2;
+  padding: 5px;
+}
+
+.days .col {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Cell styles */
+.body {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.cell.selected {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.cell.disabled {
+  color: #ccc;
+}
+
+.cell.not-valid {
+  background-color: #f2f2f2;
+  color: #ccc;
+}
+
+/* Income and spend information styles */
+.income-spend {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.income {
+  color: green;
+}
+
+.spend {
+  color: red;
+}
+
+
+.cellData {
+  width: 1rem;
+  height: 1rem;
+  font-size: 2px; /* 원하는 글꼴 크기를 설정하세요 */
+}

@@ -1,0 +1,92 @@
+/* DiaryPage.css */
+
+/* 전체 페이지 컨테이너 스타일 */
+.accountbook-page {
+  font-family: Tahoma, Arial, sans-serif;
+  color: #333; /* 일반 텍스트 컬러 설정 */
+}
+
+/* 정보 컨테이너 스타일 */
+.accountbook-info-container {
+  /* 이전 스타일 유지 */
+
+  /* 글자 폰트 및 색상 설정 */
+  font-family: Tahoma, Arial, sans-serif;
+  color: #333; /* 일반 텍스트 컬러 설정 */
+}
+
+/* 토글 버튼 스타일 */
+.toggle-button {
+  font-family: Tahoma, Arial, sans-serif;
+  color: #0046FF; /* 토글 버튼 텍스트 컬러 설정 */
+}
+
+/* 버튼 스타일 */
+.accountbook-button {
+  font-family: Tahoma, Arial, sans-serif;
+  color: white; /* 버튼 텍스트 컬러 설정 */
+}
+
+/* 링크 스타일 */
+.accountbook-link {
+  font-family: Tahoma, Arial, sans-serif;
+  color: white; /* 링크 텍스트 컬러 설정 */
+}
+
+.diary-page-size{
+  display: inline-block;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #F0F1F4;
+}
+
+.diary-page-container{
+  padding: 1rem;
+}
+
+.diary-page-content-container{
+/*  흰 배경 */
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.diary-content-area{
+/* 일기 구역 */
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.diary-page-flex{
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.diarypage-button{
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background-color: #0046FF;
+  padding: 0.5rem;
+  width: 8rem;
+  height: 1.8rem;
+  border-radius: 0.7rem;
+  /*border-style: 1px solid #0046FF;*/
+}
+
+.diarypage-link{
+  color: white;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.ai-diary-button {
+  border: none;
+  background-color: #0046FF;
+}
+
+.ai-diary-manual{
+  background-color: #e8e8e8;
+  padding: 1rem;
+  border-radius: 1rem;
+}
