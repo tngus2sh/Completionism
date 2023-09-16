@@ -77,7 +77,7 @@ public class HistoryQueryRepository {
                 .select(history)
                 .from(history)
                 .where(history.member.loginId.eq(loginId),
-                        history.createdDate.between(transactionTime, transactionTime.plusDays(1)))
+                        history.createdDate.between(transactionTime.withHour(0).withMinute(0), transactionTime.plusDays(1)))
                 .fetchFirst();
         return Optional.ofNullable(findHistory);
     }
