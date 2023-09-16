@@ -87,7 +87,7 @@ const loadData = async () => {
     const response = await axios.get(`/api/schedule/pinned/daily/${parsingToday}`, { headers });
 
     console.log('고정지출', response.data.dataBody);
-    setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
+    setPlannedAmount((prevAmount) => prevAmount - response.data.dataBody); // 현재 값에 더하기
   } catch (error) {
     console.error(error);
   }
@@ -106,8 +106,8 @@ const loadFutureData = async () => {
   try {
     const response = await axios.get(`/api/schedule/future/daily/${parsingToday}`, { headers });
     console.log('미래지출', response.data.dataBody);
-    setPlannedAmount((prevAmount) => prevAmount + response.data.dataBody); // 현재 값에 더하기
-    setPlannedAmount(-plannedAmount);
+    setPlannedAmount((prevAmount) => prevAmount - response.data.dataBody); // 현재 값에 더하기
+
   } catch (error) {
     console.error(error);
   }
