@@ -15,9 +15,9 @@ const MainPage = () => {
   const day = currentDate.getDate();
 
   //daily_consumption_plan_box 관련 데이터들
-  const plannedAmount = null;
-  const actualUsageAmount = null;
-  const amountSpentMoreThanPlanned = null;
+  const plannedAmount = 0;
+  const actualUsageAmount = 0;
+  const amountSpentMoreThanPlanned = 0;
 
   //daily_consumption_plan_box 관련 데이터들
 
@@ -58,7 +58,7 @@ const MainPage = () => {
       <div className="daily_consumption_plan_box">
         <div className="main-header-info-text-container">
           <strong>
-            {year}년 {month}월 {day}일 소비 계획
+            {year}년 {month}월 {day}일
           </strong>
         </div>
         <div style={{ marginBottom: "0.3rem" }}>
@@ -67,15 +67,18 @@ const MainPage = () => {
         <div className="main-header-content-text-container">
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            &nbsp;계획한 소비 금액 : {plannedAmount}50000원
+            &nbsp;오늘 하루 예산 : {plannedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+            {plannedAmount}50000원
           </div>
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            &nbsp;실제 내가 쓴 금액 : {actualUsageAmount}70000원
+            &nbsp;오늘 지출된 금액 : {actualUsageAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+            {actualUsageAmount}70000원
           </div>
           <div className="main-header-content-text">
             <DoneRoundedIcon sx={{ fontSize: "1.2rem" }} />
-            &nbsp;계획보다 {amountSpentMoreThanPlanned}20000원을 더 쓰셨습니다.
+            &nbsp;계획보다 {amountSpentMoreThanPlanned.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+            {amountSpentMoreThanPlanned}20000원을 더 쓰셨습니다.
           </div>
         </div>
       </div>
