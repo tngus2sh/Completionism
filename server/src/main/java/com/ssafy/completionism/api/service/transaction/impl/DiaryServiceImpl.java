@@ -113,7 +113,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public DiaryResponse addDiaryInPersion(String loginId, AddDiaryInPersonDto dto) {
+    public void addDiaryInPersion(String loginId, AddDiaryInPersonDto dto) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
@@ -124,8 +124,6 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         registeredHistory.get().updateDiary(dto.getDiary());
-
-        return null;
     }
 
     /**
