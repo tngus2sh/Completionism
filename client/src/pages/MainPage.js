@@ -80,6 +80,9 @@ const MainPage = () => {
             <div className='todays_ai_diary-content-date'>
               {year}.{month}.{day}
             </div>
+            <div className="todays_ai_diary-content-feel">
+              😍
+            </div>
             (이모티콘) 이른아침 나는 오전 8시 45분에..
           </div>
         </div>

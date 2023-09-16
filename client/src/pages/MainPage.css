@@ -79,6 +79,10 @@
   color: rgb(150, 150, 150);
 }
 
+.todays_ai_diary-content-feel{
+  font-size: 2.5rem;
+}
+
 .tomorrow-consumption-content-container {
   display: flex;
   flex-direction: column;
