@@ -10,5 +10,6 @@ import java.util.List;
 public interface PinnedScheduleService {
     Long createPinnedSchedule(String loginId, CreatePinnedScheduleDto dto);
     List<ScheduleResponse> searchPinnedScheduleAll(String loginId);
+    Integer countDailyPinnedSchedule(String loginId, String date);
     Integer countNextPinnedSchedule(String loginId, String date);
 }

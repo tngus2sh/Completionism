@@ -80,6 +80,37 @@ public class PinnedScheduleServiceImpl implements PinnedScheduleService {
     }
 
     @Override
+    public Integer countDailyPinnedSchedule(String loginId, String date) {
+        Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
+                .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));
+
+        List<SearchPinnedScheduleDto> dtoList = scheduleQueryRepository.getPinnedSchedules(loginId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate targetDate = LocalDate.parse(date, formatter);
+
+        int day = Integer.parseInt(date.substring(8));
+
+        int total = 0;
+        for(SearchPinnedScheduleDto dto: dtoList) {
+            System.out.println("periodType: " + dto.isPeriodType() + ", period: " + dto.getPeriod());
+
+            if (dto.isPeriodType()) {
+                if (dto.getPeriod() == day) {
+                    total -= dto.getCost();
+                }
+            } else {
+                int startDay = findStartDay(targetDate, dto.getPeriod());
+                if ((day - startDay) % 7 == 0) {
+                    total -= dto.getCost();
+                }
+            }
+        }
+
+        return total;
+    }
+
+    @Override
     public Integer countNextPinnedSchedule(String loginId, String date) {
         Member member = memberQueryRepository.getByLoginIdAndActive(loginId, true)
                 .orElseThrow(() -> new NotFoundException("404", HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."));

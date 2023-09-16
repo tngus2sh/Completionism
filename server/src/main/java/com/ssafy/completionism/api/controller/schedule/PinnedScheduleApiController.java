@@ -65,6 +65,19 @@ public class PinnedScheduleApiController {
         }
     }
 
+    @GetMapping("/daily/{date}")
+    public ApiResponse<Integer> countDailyPinnedSchedule(@PathVariable("date") String date) {
+        log.debug("countDailyPinnedSchedule={}", date);
+
+        try {
+            Integer total = pinnedScheduleService.countDailyPinnedSchedule(SecurityUtils.getCurrentLoginId(), date);
+            return ApiResponse.ok(total);
+        }
+        catch(NotFoundException e) {
+            return ApiResponse.of(1, e.getHttpStatus(), e.getResultMessage(), null);
+        }
+    }
+
     @GetMapping("/next/{date}")
     public ApiResponse<Integer> countNextPinnedSchedule(@PathVariable("date") String date) {
         log.debug("countNextPinnedSchedule={}", date);
