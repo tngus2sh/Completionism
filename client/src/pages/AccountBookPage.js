@@ -14,6 +14,7 @@ import { useState } from "react";
 import axios from "axios";
 import { fatchMonthTransactionData } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
+import { setSelectedYearAndMonth } from "../redux/authSlice";
 
 // 모달 스타일을 설정합니다.
 const modalStyle = {
@@ -36,8 +37,17 @@ const AccountBookPage = () => {
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
+
+  
+  const todayDate = new Date();
+  const temp = todayDate.getFullYear().toString()+'-'+(todayDate.getMonth()+1).toString().padStart(2,"0")
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(()=>{
+    dispatch(setSelectedYearAndMonth(temp));
+  },[])
+
 
   const loadData = async () => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
