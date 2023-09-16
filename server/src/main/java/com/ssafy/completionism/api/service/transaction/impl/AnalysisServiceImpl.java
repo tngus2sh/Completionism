@@ -174,7 +174,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         String feedback  = gptAnswer.getMessages().get(0).getMessage();
 
-        return null;
+        return AIFeedBackResponse.builder()
+                .feedback(feedback)
+                .build();
     }
 
     /**
