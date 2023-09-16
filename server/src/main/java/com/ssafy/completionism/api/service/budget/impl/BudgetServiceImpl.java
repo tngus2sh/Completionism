@@ -45,7 +45,11 @@ public class BudgetServiceImpl implements BudgetService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        Optional<Long> alreadyBudget = budgetRepository.findByIdAndYearMonthAndCategory(member.getId(), dto.getYearMonth(), dto.getCategory());
+
+        LocalDate yearMonth = dto.getYearMonth().withDayOfMonth(1);
+
+
+        Optional<BudgetResponse> alreadyBudget = budgetQueryRepository.findByYearMonthAndCategory(member.getId(), yearMonth, dto.getCategory());
 
         if (alreadyBudget.isPresent()) {
             throw new AlreadyExistException("409", HttpStatus.CONFLICT, "이미 있는 예산입니다.");
