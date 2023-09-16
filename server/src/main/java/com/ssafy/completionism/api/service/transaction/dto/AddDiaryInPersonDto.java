@@ -5,20 +5,20 @@ import com.ssafy.completionism.domain.transaction.Feel;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Data
 public class AddDiaryInPersonDto {
 
-    private LocalDateTime time;
+    private LocalDate time;
     private String diary;
 
     private Feel feel;
 
 
     @Builder
-    public AddDiaryInPersonDto(LocalDateTime time, String diary, Feel feel) {
+    public AddDiaryInPersonDto(LocalDate time, String diary, Feel feel) {
         this.time = time;
         this.diary = diary;
         this.feel = feel;
@@ -27,8 +27,8 @@ public class AddDiaryInPersonDto {
 
 
     public static AddDiaryInPersonDto toDto(AddDiaryInPersonRequest request) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime time = LocalDateTime.parse(request.getTime(), dateTimeFormatter);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate time = LocalDate.parse(request.getTime(), dateTimeFormatter);
 
         return AddDiaryInPersonDto.builder()
                 .time(time)

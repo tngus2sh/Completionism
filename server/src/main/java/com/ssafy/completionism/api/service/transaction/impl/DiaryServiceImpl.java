@@ -117,7 +117,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getTime());
+        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getTime().atStartOfDay());
 
         if (registeredHistory.isEmpty()) {
             throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 거래 내역을 찾을 수가 없습니다.");
