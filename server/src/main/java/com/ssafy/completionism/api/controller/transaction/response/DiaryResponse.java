@@ -1,17 +1,23 @@
 package com.ssafy.completionism.api.controller.transaction.response;
 
+import com.ssafy.completionism.domain.transaction.Feel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class DiaryResponse {
+
+    private Long id;
 
     private String diary;
 
-    private String feel;
+    private Feel feel;
 
     @Builder
-    public DiaryResponse(String diary, String feel) {
+    public DiaryResponse(Long id, String diary, Feel feel) {
+        this.id = id;
         this.diary = diary;
         this.feel = feel;
     }

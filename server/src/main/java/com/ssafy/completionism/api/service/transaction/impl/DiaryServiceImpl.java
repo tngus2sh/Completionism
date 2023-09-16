@@ -11,6 +11,7 @@ import com.ssafy.completionism.api.service.transaction.dto.AddDiaryInPersonDto;
 import com.ssafy.completionism.api.service.transaction.dto.DiaryDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
+import com.ssafy.completionism.domain.transaction.Feel;
 import com.ssafy.completionism.domain.transaction.History;
 import com.ssafy.completionism.domain.transaction.repository.HistoryPeriodSearchCond;
 import com.ssafy.completionism.domain.transaction.repository.HistoryQueryRepository;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -108,8 +110,10 @@ public class DiaryServiceImpl implements DiaryService {
 
         return DiaryResponse.builder()
                 .diary(diary)
-                .feel(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim())
-                .build();
+                .feel(Feel.ANGER)
+                        .build();
+
+//        Feel.builder().text(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim()).build()
     }
 
     @Override
@@ -150,7 +154,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
-        LocalDateTime diaryDateTme = LocalDateTime.parse(diaryDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate diaryDateTme = LocalDate.parse(diaryDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         Optional<DiaryResponse> registeredDiaryOptional = historyQueryRepository.getRegisteredDiary(loginId, diaryDateTme);
 

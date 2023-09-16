@@ -92,13 +92,14 @@ public class HistoryQueryRepository {
                 .fetch();
     }
 
-    public Optional<DiaryResponse> getRegisteredDiary(String loginId, LocalDateTime transactionTime) {
+    public Optional<DiaryResponse> getRegisteredDiary(String loginId, LocalDate transactionTime) {
         return Optional.ofNullable(queryFactory.select(constructor(DiaryResponse.class,
                         history.id,
-                        history.diary))
+                        history.diary,
+                        history.feel))
                 .from(history)
                 .where(history.member.loginId.eq(loginId),
-                        history.createdDate.between(transactionTime, transactionTime.plusDays(1)))
+                        history.createdDate.between(transactionTime.atStartOfDay(), transactionTime.plusDays(1).atStartOfDay()))
                 .fetchFirst());
     }
     public Optional<SumIncomeOutcomeResponse> getSumIncomeOutcomeForPeriod(String loginId, HistoryPeriodSearchCond cond) {

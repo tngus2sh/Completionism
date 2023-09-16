@@ -1,5 +1,6 @@
 package com.ssafy.completionism.domain.transaction;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -22,4 +23,6 @@ public enum Feel {
     Feel(String text) {
         this.text = text;
     }
+
+
 }
