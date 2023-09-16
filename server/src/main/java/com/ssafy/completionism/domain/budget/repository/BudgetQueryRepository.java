@@ -95,6 +95,21 @@ public class BudgetQueryRepository {
                 .fetchOne());
     }
 
+    public Optional<Budget> findByYearMonthAndCategoryForUpdate(Long memberId, LocalDate yearMonth, Category category) {
+        return Optional.ofNullable((Budget) queryFactory
+                .select(
+                        budget.id,
+                        budget.yearMonth,
+                        budget.totalBudget,
+                        budget.category)
+                .from(budget)
+                .where(budget.member.id.eq(memberId),
+                        budget.yearMonth.eq(yearMonth),
+                        budget.category.eq(category))
+                .fetchOne());
+    }
+
+
     public List<BudgetCategoryResponse> getBudgetCategory(Long memberId, LocalDate yearMonth) {
         return queryFactory.select(constructor(BudgetCategoryResponse.class,
                         budget.category,

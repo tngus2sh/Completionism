@@ -116,7 +116,7 @@ public class BudgetServiceImpl implements BudgetService {
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
 
         // 목표 예산 수정
-        Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndMember(dto.getYearMonth(), member);
+        Optional<Budget> budgetOptional = budgetQueryRepository.findByYearMonthAndCategoryForUpdate(member.getId(), dto.getYearMonth(),dto.getCategory());
 
         if (budgetOptional.isEmpty()) {
             throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 예산을 찾을 수 없습니다.");
