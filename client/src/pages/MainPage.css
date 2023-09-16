@@ -1,5 +1,5 @@
 /* MainPage.css */
-.main_page{
+.main-page{
   display: inline-block;
   width: 100%;
   height: calc(var(--vh, 1vh) * 100);
