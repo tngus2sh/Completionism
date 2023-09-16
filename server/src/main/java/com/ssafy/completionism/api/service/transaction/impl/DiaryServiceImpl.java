@@ -110,10 +110,8 @@ public class DiaryServiceImpl implements DiaryService {
 
         return DiaryResponse.builder()
                 .diary(diary)
-                .feel(Feel.ANGER)
+                .feel(Feel.fromText(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim()))
                         .build();
-
-//        Feel.builder().text(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim()).build()
     }
 
     @Override

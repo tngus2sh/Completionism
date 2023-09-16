@@ -24,5 +24,18 @@ public enum Feel {
         this.text = text;
     }
 
+    public static Feel fromText(String text) {
+        for (Feel feel : Feel.values()) {
+            if (feel.getText().equals(text)) {
+                return feel;
+            }
+        }
+        throw new IllegalArgumentException("Invalid text: " + text);
+    }
+
+    public String getText() {
+        return text;
+    }
+
 
 }
