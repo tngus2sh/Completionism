@@ -123,6 +123,7 @@ const AccoutBookDetailPage = () => {
           return (
             <div key={item.transactionId}>
               {item.diary === "" ? (
+                //   일기 없음
                 <div className="transaction-item-container">
                   <div className="transaction-item-flex-container">
                     <div style={{ flex: "1", textAlign: "left", paddingLeft: "1rem" }}>
@@ -186,6 +187,7 @@ const AccoutBookDetailPage = () => {
                   </div>
                 </div>
               ) : (
+                //   일기 있음
                 <div className="transaction-item-container-contain-diary">
                   <div>
                     <div className="transaction-item-flex-container-show-diary">
