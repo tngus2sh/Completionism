@@ -31,14 +31,14 @@ public class DiaryApiController {
     private final DiaryService diaryService;
 
     @PostMapping
-    public ApiResponse<Void> addDiary(
+    public ApiResponse<DiaryResponse> addDiary(
             @Valid @RequestBody AddDiaryRequestList request
     ) {
         String loginId = SecurityUtils.getCurrentLoginId();
 
         try {
-            diaryService.addDiary(loginId, AddDiaryDtoList.toDto(request));
-            return ApiResponse.ok(null);
+            DiaryResponse diaryResponse = diaryService.addDiary(loginId, AddDiaryDtoList.toDto(request));
+            return ApiResponse.ok(diaryResponse);
         } catch (NoSuchElementException e) {
             return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
         } catch (NotFoundException e) {

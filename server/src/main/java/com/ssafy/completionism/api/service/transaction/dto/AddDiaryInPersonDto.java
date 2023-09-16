@@ -24,8 +24,6 @@ public class AddDiaryInPersonDto {
         this.feel = feel;
     }
 
-
-
     public static AddDiaryInPersonDto toDto(AddDiaryInPersonRequest request) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate time = LocalDate.parse(request.getTime(), dateTimeFormatter);
