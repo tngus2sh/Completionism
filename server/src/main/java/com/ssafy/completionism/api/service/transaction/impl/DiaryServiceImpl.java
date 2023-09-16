@@ -7,6 +7,7 @@ import com.ssafy.completionism.api.service.gpt.GptService;
 import com.ssafy.completionism.api.service.transaction.DiaryService;
 import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDto;
 import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDtoList;
+import com.ssafy.completionism.api.service.transaction.dto.AddDiaryInPersonDto;
 import com.ssafy.completionism.api.service.transaction.dto.DiaryDto;
 import com.ssafy.completionism.domain.member.Member;
 import com.ssafy.completionism.domain.member.repository.MemberRepository;
@@ -109,6 +110,22 @@ public class DiaryServiceImpl implements DiaryService {
                 .diary(diary)
                 .feel(gptFeelAnswer.getMessages().get(0).getMessage().split(":")[1].trim())
                 .build();
+    }
+
+    @Override
+    public DiaryResponse addDiaryInPersion(String loginId, AddDiaryInPersonDto dto) {
+
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        Optional<History> registeredHistory = historyQueryRepository.getRegisteredHistory(loginId, dto.getTime());
+
+        if (registeredHistory.isEmpty()) {
+            throw new NotFoundException("404", HttpStatus.NOT_FOUND, "해당하는 거래 내역을 찾을 수가 없습니다.");
+        }
+
+        registeredHistory.get().updateDiary(dto.getDiary());
+
+        return null;
     }
 
     /**

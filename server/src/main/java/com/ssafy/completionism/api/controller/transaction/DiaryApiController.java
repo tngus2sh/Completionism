@@ -1,12 +1,14 @@
 package com.ssafy.completionism.api.controller.transaction;
 
 import com.ssafy.completionism.api.ApiResponse;
+import com.ssafy.completionism.api.controller.transaction.request.AddDiaryInPersonRequest;
 import com.ssafy.completionism.api.controller.transaction.request.AddDiaryRequest;
 import com.ssafy.completionism.api.controller.transaction.request.AddDiaryRequestList;
 import com.ssafy.completionism.api.controller.transaction.response.DiaryResponse;
 import com.ssafy.completionism.api.service.transaction.DiaryService;
 import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDto;
 import com.ssafy.completionism.api.service.transaction.dto.AddDiaryDtoList;
+import com.ssafy.completionism.api.service.transaction.dto.AddDiaryInPersonDto;
 import com.ssafy.completionism.global.exception.NotFoundException;
 import com.ssafy.completionism.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,22 @@ public class DiaryApiController {
 
         try {
             diaryService.addDiary(loginId, AddDiaryDtoList.toDto(request));
+            return ApiResponse.ok(null);
+        } catch (NoSuchElementException e) {
+            return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
+        } catch (NotFoundException e) {
+            return ApiResponse.of(Integer.parseInt(e.getResultCode()), e.getHttpStatus(), e.getResultMessage(), null);
+        }
+    }
+
+    @PostMapping("/in-person")
+    public ApiResponse<Void> addDiaryInPerson(
+            @Valid @RequestBody AddDiaryInPersonRequest request
+    ) {
+        String loginId = SecurityUtils.getCurrentLoginId();
+
+        try {
+            diaryService.addDiaryInPersion(loginId, AddDiaryInPersonDto.toDto(request));
             return ApiResponse.ok(null);
         } catch (NoSuchElementException e) {
             return ApiResponse.of(404, HttpStatus.NOT_FOUND, NOT_FOUND_MEMBER, null);
