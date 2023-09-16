@@ -119,15 +119,9 @@ const AccountBookPage = () => {
     }
 
     try {
-<<<<<<< HEAD
-      console.log(firstDayOfMonth);
-      console.log(lastDayOfMonth);
-      const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, { headers });
-=======
       const response = await axios.get(`/api/history/${firstDayOfMonth}_${lastDayOfMonth}`, {
         headers,
       });
->>>>>>> 1917a952bce517e1e9cd327a084e4bc6bd346a2f
       // console.log(response.data);
       dispatch(fatchMonthTransactionData(response.data.dataBody));
     } catch (error) {
