@@ -38,7 +38,7 @@ public class TransactionResponse {
         this.time = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
         this.cost = cost;
         this.isPlus = isPlus;
-        this.category = category.getText();
+        this.category = category.name();
         this.place = place;
         this.diary = diary;
         this.feel = feel;
