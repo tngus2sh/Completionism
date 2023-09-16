@@ -105,7 +105,7 @@ const AccountBookPage = () => {
     try {
       //요청 보내기
       const response = await axios.get(`/api/budget`, { headers });
-      console.log(response.data);
+      // console.log(response.data);
       dispatch(fatchTotalBudgetData(response.data.dataBody));
     } catch (error) {
       console.error(error);
