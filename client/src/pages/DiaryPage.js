@@ -47,7 +47,6 @@ const DiaryPage = () => {
     }
   };
 
-
   //데이터를 가져왔으니 요청을 보낸다
   const createAiDiary = async (e) => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
