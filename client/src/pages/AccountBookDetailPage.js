@@ -8,10 +8,10 @@ import axios from "axios";
 import { fatchMonthHistoryData } from "../redux/authSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {colors} from "@mui/material";
-import {blue} from "@mui/material/colors";
+import { colors } from "@mui/material";
+import { blue } from "@mui/material/colors";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 
 const emotions = [
   "ANGER",
@@ -59,11 +59,14 @@ const AccoutBookDetailPage = () => {
       Authorization: `Bearer ${accessToken}`,
     };
     try {
-      const response = await axios.get(`/api/history?date=${id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,9)}`, {
-        headers,
-      });
+      const response = await axios.get(
+        `/api/history?date=${id.slice(0, 4) + "-" + id.slice(4, 6) + "-" + id.slice(6, 9)}`,
+        {
+          headers,
+        }
+      );
       dispatch(fatchMonthHistoryData(response.data.dataBody));
-      console.log(id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,9))
+      console.log(id.slice(0, 4) + "-" + id.slice(4, 6) + "-" + id.slice(6, 9));
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -80,13 +83,9 @@ const AccoutBookDetailPage = () => {
       Authorization: `Bearer ${accessToken}`,
     };
     try {
-      const response = await axios.post(
-        `/api/transaction/${id}/diary`,
-        data,
-        {
-          headers,
-        }
-      );
+      const response = await axios.post(`/api/transaction/${id}/diary`, data, {
+        headers,
+      });
       console.log(response.data);
       setUseAxios(!useAxios);
       setIsModalOpen(false); // 일기 작성이 완료되면 모달을 닫습니다.
@@ -106,7 +105,7 @@ const AccoutBookDetailPage = () => {
       <div className="account-detail-page_top_box">
         <div className="main-header-info-text-container ">
           총 소비금액: {}원
-          <div style={{ marginBottom: "0.3rem" , marginTop:"0.3rem" }}>
+          <div style={{ marginBottom: "0.3rem", marginTop: "0.3rem" }}>
             <SmartToyOutlinedIcon sx={{ fontSize: "2.3rem", color: "#60f14f" }} />
           </div>
           AI의 조언: {}
@@ -119,7 +118,6 @@ const AccoutBookDetailPage = () => {
         😀 가계부에 이모지와 함께 한 줄 일기를 작성해보세요! 😉
       </div>
 
-
       <div>
         {MonthHistoryData.map((item, index) => {
           return (
@@ -127,15 +125,22 @@ const AccoutBookDetailPage = () => {
               {item.diary === "" ? (
                 <div className="transaction-item-container">
                   <div className="transaction-item-flex-container">
-                    <div style={{ flex: "1", textAlign:"left", paddingLeft:"1rem" }}>
+                    <div style={{ flex: "1", textAlign: "left", paddingLeft: "1rem" }}>
                       <div>{item.place}</div>
-                      <div className="transaction-item-date">{item.time} | {item.category}</div>
-
+                      <div className="transaction-item-date">
+                        {item.time} | {item.category}
+                      </div>
                     </div>
-                    <div style={{ width: "5rem" }}>
-                      {item.plus
-                        ? item.cost
-                      :-item.cost}원
+                    <div style={{ width: "7rem", textAlign: "right" }}>
+                      {item.plus ? (
+                        <span style={{ color: "green" }}>
+                          {item.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                        </span>
+                      ) : (
+                        <span style={{ color: "red" }}>
+                          -{item.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                        </span>
+                      )}
                     </div>
                     <div style={{ width: "3.5rem" }}>
                       <button
@@ -144,7 +149,7 @@ const AccoutBookDetailPage = () => {
                           setIsModalOpen(true); // 모달 열기
                           setDiaryContent("");
                           setSelectedEmotion("NEUTRAL");
-                          setTransaction(item.transactionId)
+                          setTransaction(item.transactionId);
                         }}
                         style={{ borderStyle: "none", background: "white" }}
                       >
@@ -181,62 +186,65 @@ const AccoutBookDetailPage = () => {
                   </div>
                 </div>
               ) : (
-                  
-                  
                 <div className="transaction-item-container-contain-diary">
                   <div>
                     <div className="transaction-item-flex-container-show-diary">
-                      <div style={{ flex: "1", textAlign:"left", paddingLeft:"1rem" }}>
+                      <div style={{ flex: "1", textAlign: "left", paddingLeft: "1rem" }}>
                         <div>{item.place}</div>
-                        <div className="transaction-item-date">{item.time} | {item.category}</div>
-
+                        <div className="transaction-item-date">
+                          {item.time} | {item.category}
+                        </div>
                       </div>
-                      <div style={{ width: "5rem" }}>
-                        {item.plus
-                            ? item.cost
-                            :-item.cost}원
+                      <div style={{ width: "7rem", textAlign: "right" }}>
+                        {item.plus ? (
+                          <span style={{ color: "green" }}>
+                            {item.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                          </span>
+                        ) : (
+                          <span style={{ color: "red" }}>
+                            -{item.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                          </span>
+                        )}
                       </div>
                       <div style={{ width: "3.5rem" }}>
                         <button
-                            onClick={() => {
-                              setSelectedItemIndex(index);
-                              setIsModalOpen(true); // 모달 열기
-                              setDiaryContent("");
-                              setSelectedEmotion("NEUTRAL");
-                              setTransaction(item.transactionId)
-                            }}
-                            style={{borderStyle:"none", background:"white"}}
+                          onClick={() => {
+                            setSelectedItemIndex(index);
+                            setIsModalOpen(true); // 모달 열기
+                            setDiaryContent("");
+                            setSelectedEmotion("NEUTRAL");
+                            setTransaction(item.transactionId);
+                          }}
+                          style={{ borderStyle: "none", background: "white" }}
                         >
-                          <div >
+                          <div>
                             <EditCalendarIcon sx={{ fontSize: "2rem", color: "#0046FF" }} />
                           </div>
                         </button>
                       </div>
                       <Modal
-                          isOpen={isModalOpen}
-                          onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
-                          style={modalStyle}
-                          contentLabel="일기 작성 모달"
+                        isOpen={isModalOpen}
+                        onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+                        style={modalStyle}
+                        contentLabel="일기 작성 모달"
                       >
                         <h2>일기 작성</h2>
                         <select
-                            value={selectedEmotion}
-                            onChange={(e) => setSelectedEmotion(e.target.value)}
+                          value={selectedEmotion}
+                          onChange={(e) => setSelectedEmotion(e.target.value)}
                         >
                           {emotions.map((emotion) => (
-                              <option key={emotion} value={emotion}>
-                                {emotion}
-                              </option>
+                            <option key={emotion} value={emotion}>
+                              {emotion}
+                            </option>
                           ))}
                         </select>
                         <input
-                            placeholder="일기를 입력하세요"
-                            value={diaryContent}
-                            onChange={(e) => setDiaryContent(e.target.value)}
+                          placeholder="일기를 입력하세요"
+                          value={diaryContent}
+                          onChange={(e) => setDiaryContent(e.target.value)}
                         />
-                        <button onClick={() => createDiary(transactionId)}>
-                          작성완료
-                        </button>
+                        <button onClick={() => createDiary(transactionId)}>작성완료</button>
                         <button onClick={() => setIsModalOpen(false)}>취소</button>
                       </Modal>
                     </div>
