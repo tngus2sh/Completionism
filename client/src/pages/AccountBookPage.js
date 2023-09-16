@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState } from "react";
 import axios from "axios";
-import { fatchMonthTransactionData, fatchTotalBudgetData ,fatchMonthTransactionData500
+import {
+  fatchMonthTransactionData,
+  fatchTotalBudgetData,
+  fatchMonthTransactionData500,
 } from "../redux/authSlice";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { setSelectedYearAndMonth } from "../redux/authSlice";
@@ -39,9 +42,7 @@ const AccountBookPage = () => {
   const MonthTransactionData = useSelector(
     (state) => state.auth.MonthTransactionData
   );
-  const totalBudgetData = useSelector(
-    (state) => state.auth.totalBudgetData
-  );
+  const totalBudgetData = useSelector((state) => state.auth.totalBudgetData);
   const [useAxios, setUseAxios] = useState(false);
 
   const todayDate = new Date();
@@ -62,17 +63,21 @@ const AccountBookPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(setSelectedYearAndMonth(temp));
-      await loadBudgetData();
       await loadData();
+      await loadBudgetData();
     };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      await loadBudgetData();
+      await dispatch(setSelectedYearAndMonth(temp));
       await loadData();
+      await loadBudgetData();
     };
-  }, [useAxios,selectedYearAndMonth]);
+    fetchData();
+  }, [useAxios, selectedYearAndMonth]);
 
   const loadData = async () => {
     // 로컬 스토리지에서 엑세스 토큰 가져오기
@@ -82,14 +87,21 @@ const AccountBookPage = () => {
     const headers = {
       Authorization: `Bearer ${accessToken}`, // 엑세스 토큰을 Bearer 토큰으로 헤더에 추가
     };
-    const year = selectedYearAndMonth.split("-")[0];
-    const month = selectedYearAndMonth.split("-")[1];
-    const firstDayOfMonth = `${year}-${month}-01`;
-    const lastDayOfMonth = `${year}-${month}-${new Date(
-      year,
-      month,
-      0
-    ).getDate()}`;
+
+
+    let firstDayOfMonth = null
+    let lastDayOfMonth = null
+    if (selectedYearAndMonth) {
+      const year = selectedYearAndMonth.split("-")[0];
+      const month = selectedYearAndMonth.split("-")[1];
+      firstDayOfMonth = `${year}-${month}-01`;
+      lastDayOfMonth = `${year}-${month}-${new Date(
+        year,
+        month,
+        0
+      ).getDate()}`;
+    }
+
     try {
       const response = await axios.get(
         `/api/history/${firstDayOfMonth}_${lastDayOfMonth}`,
@@ -305,20 +317,17 @@ const AccountBookPage = () => {
       </Modal>
 
       <div className="calendar-container">
-        <Calendar/>
+        <Calendar />
         {/* {isDiary ? <CalenderForDiary /> : <Calendar />} */}
       </div>
 
       <div>
-        {selectedYearAndMonth} 예산 
+        {selectedYearAndMonth} 예산
         {totalBudgetData.map((item, index) => {
-          if (item.yearMonth.slice(0,7) === selectedYearAndMonth.slice(0,7)){
+          if (item.yearMonth.slice(0, 7) === selectedYearAndMonth.slice(0, 7)) {
             return (
               <div key={item.id}>
-                {item.id}|
-                {item.yearMonth}|
-                {item.memberId}|
-                {item.totalBudget}|
+                {item.id}|{item.yearMonth}|{item.memberId}|{item.totalBudget}|
                 {item.category}|
                 <button onClick={() => openEditModal(item.category)}>
                   수정
