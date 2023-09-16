@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import {colors} from "@mui/material";
 import {blue} from "@mui/material/colors";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 
 const emotions = [
   "ANGER",
@@ -131,8 +132,11 @@ const AccoutBookDetailPage = () => {
                   setDiaryContent("");
                   setSelectedEmotion("NEUTRAL");
                 }}
+                style={{borderStyle:"none", background:"white"}}
               >
-                한줄일기쓰기!
+                <div >
+                  <EditCalendarIcon sx={{ fontSize: "2rem", color: "#0046FF" }} />
+                </div>
               </button>
               <Modal
                 isOpen={isModalOpen}
