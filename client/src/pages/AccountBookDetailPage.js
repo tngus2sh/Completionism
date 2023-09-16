@@ -123,50 +123,127 @@ const AccoutBookDetailPage = () => {
       <div>
         {MonthHistoryData.map((item, index) => {
           return (
-            <div key={item.transactionId} className='transaction-item-container'>
-              {item.transactionId}|{item.time}|{item.cost}|{item.category}|
-              {item.place}|{item.diary}|{item.feel}|
-              <button
-                onClick={() => {
-                  setSelectedItemIndex(index);
-                  setIsModalOpen(true); // 모달 열기
-                  setDiaryContent("");
-                  setSelectedEmotion("NEUTRAL");
-                  setTransaction(item.transactionId)
-                }}
-                style={{borderStyle:"none", background:"white"}}
-              >
-                <div >
-                  <EditCalendarIcon sx={{ fontSize: "2rem", color: "#0046FF" }} />
+            <div key={item.transactionId}>
+              {item.diary === "" ? (
+                <div className="transaction-item-container">
+                  <div className="transaction-item-flex-container">
+                    <div style={{ flex: "1", textAlign:"left", paddingLeft:"1rem" }}>
+                      <div>{item.place}</div>
+                      <div className="transaction-item-date">{item.time} | {item.category}</div>
+
+                    </div>
+                    <div style={{ width: "5rem" }}>
+                      {item.plus
+                        ? item.cost
+                      :-item.cost}원
+                    </div>
+                    <div style={{ width: "3.5rem" }}>
+                      <button
+                        onClick={() => {
+                          setSelectedItemIndex(index);
+                          setIsModalOpen(true); // 모달 열기
+                          setDiaryContent("");
+                          setSelectedEmotion("NEUTRAL");
+                          setTransaction(item.transactionId)
+                        }}
+                        style={{ borderStyle: "none", background: "white" }}
+                      >
+                        <div>
+                          <EditCalendarIcon sx={{ fontSize: "2rem", color: "#0046FF" }} />
+                        </div>
+                      </button>
+                    </div>
+                    <Modal
+                      isOpen={isModalOpen}
+                      onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+                      style={modalStyle}
+                      contentLabel="일기 작성 모달"
+                    >
+                      <h2>일기 작성</h2>
+                      <select
+                        value={selectedEmotion}
+                        onChange={(e) => setSelectedEmotion(e.target.value)}
+                      >
+                        {emotions.map((emotion) => (
+                          <option key={emotion} value={emotion}>
+                            {emotion}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        placeholder="일기를 입력하세요"
+                        value={diaryContent}
+                        onChange={(e) => setDiaryContent(e.target.value)}
+                      />
+                      <button onClick={() => createDiary(item.transactionId)}>작성완료</button>
+                      <button onClick={() => setIsModalOpen(false)}>취소</button>
+                    </Modal>
+                  </div>
                 </div>
-              </button>
-              <Modal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
-                style={modalStyle}
-                contentLabel="일기 작성 모달"
-              >
-                <h2>일기 작성</h2>
-                <select
-                  value={selectedEmotion}
-                  onChange={(e) => setSelectedEmotion(e.target.value)}
-                >
-                  {emotions.map((emotion) => (
-                    <option key={emotion} value={emotion}>
-                      {emotion}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  placeholder="일기를 입력하세요"
-                  value={diaryContent}
-                  onChange={(e) => setDiaryContent(e.target.value)}
-                />
-                <button onClick={() => createDiary(transactionId)}>
-                  작성완료
-                </button>
-                <button onClick={() => setIsModalOpen(false)}>취소</button>
-              </Modal>
+              ) : (
+                  
+                  
+                <div className="transaction-item-container-contain-diary">
+                  <div>
+                    <div className="transaction-item-flex-container-show-diary">
+                      <div style={{ flex: "1", textAlign:"left", paddingLeft:"1rem" }}>
+                        <div>{item.place}</div>
+                        <div className="transaction-item-date">{item.time} | {item.category}</div>
+
+                      </div>
+                      <div style={{ width: "5rem" }}>
+                        {item.plus
+                            ? item.cost
+                            :-item.cost}원
+                      </div>
+                      <div style={{ width: "3.5rem" }}>
+                        <button
+                            onClick={() => {
+                              setSelectedItemIndex(index);
+                              setIsModalOpen(true); // 모달 열기
+                              setDiaryContent("");
+                              setSelectedEmotion("NEUTRAL");
+                              setTransaction(item.transactionId)
+                            }}
+                            style={{borderStyle:"none", background:"white"}}
+                        >
+                          <div >
+                            <EditCalendarIcon sx={{ fontSize: "2rem", color: "#0046FF" }} />
+                          </div>
+                        </button>
+                      </div>
+                      <Modal
+                          isOpen={isModalOpen}
+                          onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+                          style={modalStyle}
+                          contentLabel="일기 작성 모달"
+                      >
+                        <h2>일기 작성</h2>
+                        <select
+                            value={selectedEmotion}
+                            onChange={(e) => setSelectedEmotion(e.target.value)}
+                        >
+                          {emotions.map((emotion) => (
+                              <option key={emotion} value={emotion}>
+                                {emotion}
+                              </option>
+                          ))}
+                        </select>
+                        <input
+                            placeholder="일기를 입력하세요"
+                            value={diaryContent}
+                            onChange={(e) => setDiaryContent(e.target.value)}
+                        />
+                        <button onClick={() => createDiary(transactionId)}>
+                          작성완료
+                        </button>
+                        <button onClick={() => setIsModalOpen(false)}>취소</button>
+                      </Modal>
+                    </div>
+                  </div>
+                  <div>일기내용</div>
+                </div>
+              )}
             </div>
           );
         })}
