@@ -90,7 +90,7 @@ const AccountBookPage = () => {
     let firstDayOfMonth = null;
     let lastDayOfMonth = null;
     if (selectedYearAndMonth) {
-      const year = selectedYearAndMonth.split("-")[0];
+      const year = selectedYearAndMonth.split("-")[0];  //selectedYearAndMonth = YYYY-MM 형식
       const month = selectedYearAndMonth.split("-")[1];
       firstDayOfMonth = `${year}-${month}-01`;
       lastDayOfMonth = `${year}-${month}-${new Date(year, month, 0).getDate()}`;
