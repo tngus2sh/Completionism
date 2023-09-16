@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./AccountBookPage.css";
-import { Calender } from "../components/Calendar";
+import { Calendar } from "../components/Calendar";
+import { CalenderForDiary } from "../components/CalendarForDiary";
 import SwipeableTemporaryDrawer from "../components/bottomDrawer";
 import { Link } from "react-router-dom";
 import { setIsDiary } from "../redux/authSlice";
@@ -93,11 +94,9 @@ const AccountBookPage = () => {
 
       <div className="calander_container" container>
         
-        {isDiary ? (
-          <Calender isDiary={isDiary} props={diaryData} loadData={loadData}/>
-        ) : (
-          <Calender isDiary={isDiary} props={MonthTransactionData} loadData={loadData}/>
-        )}
+          {isDiary? (<CalenderForDiary/>):(<Calendar/>)}
+          
+          
       </div>
 
       <div>
