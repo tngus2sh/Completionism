@@ -251,13 +251,40 @@ const AccoutBookDetailPage = () => {
                       </Modal>
                     </div>
                   </div>
-                  <div>일기내용</div>
+                  <hr
+                    style={{
+                      borderColor: "#bbbbbb",
+                      borderWidth: "1px 0 0 0",
+                      borderStyle: "dotted",
+                    }}
+                  />
+                  <div>
+                    <div className="transaction-item-flex-container">
+                      {
+                        {
+                          DESIRE: <span style={{ fontSize: "3rem", width: "4rem" }}>😍</span>,
+                          GRATITUDE: <span style={{ fontSize: "3rem", width: "4rem" }}>🙏</span>,
+                          JOY: <span style={{ fontSize: "3rem", width: "4rem" }}>😃</span>,
+                          ANGER: <span style={{ fontSize: "3rem", width: "4rem" }}>😡</span>,
+                          DISGUST: <span style={{ fontSize: "3rem", width: "4rem" }}>🤮</span>,
+                          FEAR: <span style={{ fontSize: "3rem", width: "4rem" }}>😨</span>,
+                          GRIEF: <span style={{ fontSize: "3rem", width: "4rem" }}>😰</span>,
+                          CURIOSITY: <span style={{ fontSize: "3rem", width: "4rem" }}>🤔</span>,
+                          SURPRISE: <span style={{ fontSize: "3rem", width: "4rem" }}>😲</span>,
+                          NEUTRAL: <span style={{ fontSize: "3rem", width: "4rem" }}>😶</span>,
+                        }[item.feel]
+                      }
+                      {item.feel}
+                      <div style={{ flex: "1", textAlign: "left", paddingLeft: "1rem" }}>
+                        | {item.diary}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           );
         })}
-        <hr />
       </div>
 
       <div className="undernavbar">
