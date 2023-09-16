@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
 import UnderNavigationBar from "../components/UnderNavigationBar";
 import UpperNavigationBar from "../components/UpperNavigationBar";
 import "./FutureExpenditurePage.css";
@@ -19,6 +20,7 @@ import Fade from "@mui/material/Fade";
 
 const FutureExpenditurePage = () => {
   const selectedYearAndMonth = useSelector((state) => state.auth.selectedYearAndMonth);
+  console.log(selectedYearAndMonth);
   const upperNavbarName = `${selectedYearAndMonth.split("-")[0]}년 ${selectedYearAndMonth.split("-")[1]}월 미래소비`;
   const FutureExpenditureList = useSelector((state) => state.auth.FutureExpenditureList);
   const dispatch = useDispatch();
@@ -29,14 +31,15 @@ const FutureExpenditurePage = () => {
   const [cost, setCost] = useState(0);
   const [plus, setPlus] = useState(false);
   const [fixed, setFixed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   //데이트 피커 전용 변수
   const [startDate, setStartDate] = useState(new Date());
-  const ExampleCustomInput = ({ value, onClick }) => (
-    <button className="example-custom-input" onClick={onClick}>
-      {value}
-    </button>
-  );
+  // const ExampleCustomInput = ({ value, onClick }) => (
+  //   <button className="example-custom-input" onClick={onClick}>
+  //     {value}
+  //   </button>
+  // );
 
   useEffect(() => {
     loadData();
@@ -61,6 +64,8 @@ const FutureExpenditurePage = () => {
   };
 
   const createData = async () => {
+    setIsModalOpen(false);
+
     // 데이터를 객체로 만들기
     const data = {
       date: startDate.getFullYear() + "-" + (startDate.getMonth() + 1).toString().padStart(2, "0") + "-" + startDate.getDate().toString().padStart(2, "0"),
@@ -97,6 +102,7 @@ const FutureExpenditurePage = () => {
   };
 
   const deleteData = async (id) => {
+    console.log("id: ", id);
     // 로컬 스토리지에서 엑세스 토큰 가져오기
     const accessToken = localStorage.getItem("accessToken");
 
@@ -121,6 +127,32 @@ const FutureExpenditurePage = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const modalStyle = {
+    content: {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      rigiht: "0",
+      width: "100%",
+      height: "25rem",
+      padding: "0",
+      borderRadius: "0 0 1rem 1rem",
+      boxShadow: 20,
+      textAlign: "center",
+      overflowY: "auto", // 스크롤바 추가
+      outline: "none",
+      backdropFilter: "blur(5px)",
+      overlay: {
+        background: "gray",
+      },
+      // bgcolor: "white",
+    },
+  };
+
   function setScreenSize() {
     //먼저 뷰포트 높이를 얻고 1%를 곱하여 vh 단위 값을 얻습니다.
     let vh = window.innerHeight * 0.01;
@@ -138,24 +170,6 @@ const FutureExpenditurePage = () => {
 
       <div className="progressive_bar" />
 
-      {/* <div>
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} customInput={<ExampleCustomInput />} dateFormat="yyyy-MM-dd" />
-        <div>
-          <label>Todo:</label>
-          <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
-        </div>
-        <div>
-          <label>Cost:</label>
-          <input type="number" value={cost} onChange={(e) => setCost(parseFloat(e.target.value))} />
-        </div>
-        <div>
-          <label>Plus(체크하면 수입):</label>
-          <input type="checkbox" checked={plus} onChange={(e) => setPlus(e.target.checked)} />
-        </div>
-        <button onClick={createData}>미래소비 생성하기</button>
-        <hr />
-      </div> */}
-
       <div className="future-info-container">
         <div className="balloon">
           <span>
@@ -171,7 +185,7 @@ const FutureExpenditurePage = () => {
           <span>
             <strong>작성하기&nbsp;</strong>
           </span>
-          <div className="future-button-icon-container">
+          <div onClick={openModal} className="future-button-icon-container">
             <div className="future-button-icon-flex-container">
               <EditCalendarRoundedIcon sx={{ color: "#0046FF" }} />
             </div>
@@ -219,7 +233,15 @@ const FutureExpenditurePage = () => {
                       onClose={handleClose}
                       TransitionComponent={Fade}
                     >
-                      <MenuItem onClick={deleteFutureItem}>삭제</MenuItem>
+                      {/* <MenuItem onClick={deleteFutureItem}>삭제</MenuItem> */}
+                      <MenuItem
+                        onClick={() => {
+                          deleteData(item.id);
+                          setUseAxios(!useAxios);
+                        }}
+                      >
+                        삭제
+                      </MenuItem>
                     </Menu>
                   </div>
                 </div>
@@ -238,6 +260,68 @@ const FutureExpenditurePage = () => {
           }
         })}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)} // 모달 닫기
+        style={modalStyle}
+        contentLabel="미래 소비 등록 모달"
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div style={{ display: "inline-block", width: "90%", height: "100%" }}>
+          <div className="future-header-container" style={{ marginTop: "2.5rem" }}>
+            <h3>미래 소비 등록</h3>
+          </div>
+
+          <div className="future-date-container">
+            <div className="future-create-flex-container">
+              <div className="future-create-info-container">날짜</div>
+              <div className="future-create-content-container">
+                {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} customInput={<ExampleCustomInput />} dateFormat="yyyy-MM-dd" className="datepicker" /> */}
+                <div className="future-create-border-container">
+                  <div className="future-create-border-flex-container">
+                    <DatePicker locale="ko" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" showPopperArrow={false} fixedHeight className="datepicker" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="future-create-flex-container">
+              <div className="future-create-info-container">내용</div>
+              <div className="future-create-content-container">
+                <div className="future-create-border-container">
+                  <div className="future-create-border-flex-container">
+                    <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="future-create-flex-container">
+              <div className="future-create-info-container">비용</div>
+              <div className="future-create-content-container">
+                <div className="future-create-border-container">
+                  <div className="future-create-border-flex-container">
+                    <input type="number" value={cost} onChange={(e) => setCost(parseFloat(e.target.value))} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* <div>
+            <label>Plus(체크하면 수입):</label>
+            <input type="checkbox" checked={plus} onChange={(e) => setPlus(e.target.checked)} />
+          </div> */}
+
+          <div className="future-create-button-container">
+            <div onClick={createData} className="future-create-button-flex-container">
+              생성하기
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <div className="undernavbar">
         <UnderNavigationBar />
