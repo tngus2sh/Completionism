@@ -4,6 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.completionism.api.controller.transaction.response.DiaryResponse;
 import com.ssafy.completionism.api.controller.transaction.response.HistoryResponse;
 import com.ssafy.completionism.api.controller.transaction.response.TransactionResponse;
+import com.ssafy.completionism.api.controller.transaction.response.StatisticsResponse;
+import com.ssafy.completionism.api.service.transaction.dto.OneMonthIncomeExpenseDto;
 import com.ssafy.completionism.domain.transaction.History;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -98,5 +100,28 @@ public class HistoryQueryRepository {
                 .where(history.member.loginId.eq(loginId),
                         history.createdDate.between(transactionTime, transactionTime.plusDays(1)))
                 .fetchFirst());
+    }
+    public Optional<StatisticsResponse> getHistoryResponseForPeriodStatistics(String loginId, HistoryPeriodSearchCond cond) {
+        return Optional.ofNullable(queryFactory.select(constructor(StatisticsResponse.class,
+                        history.income.sum(),
+                        history.outcome.sum()
+                ))
+                .from(history)
+                .where(history.member.loginId.eq(loginId),
+                        history.createdDate.between(cond.getStartDay(), cond.getEndDay()))
+                .orderBy(history.createdDate.asc())
+                .groupBy(history.member)
+                .fetchOne());
+    }
+
+    public Optional<OneMonthIncomeExpenseDto> getOneMonthIncomeExpense(String loginId, LocalDateTime resultDate) {
+        return Optional.ofNullable(queryFactory.select(constructor(OneMonthIncomeExpenseDto.class,
+                        history.income.sum(),
+                        history.outcome.sum()))
+                .from(history)
+                .where(history.member.loginId.eq(loginId),
+                        history.createdDate.between(resultDate.minusDays(1).minusMonths(1), resultDate.minusDays(1)))
+                .groupBy(history.createdDate.year(), history.createdDate.month())
+                .fetchOne());
     }
 }
