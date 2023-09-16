@@ -53,7 +53,7 @@ const MainPage = () => {
         <UpperNavigationBar props={upperNavbarName} />
       </div>
 
-      <div className="progressive_bar"></div>
+      {/*<div className="progressive_bar"></div>*/}
 
       <div className="daily_consumption_plan_box">
         <div className="main-header-info-text-container">
