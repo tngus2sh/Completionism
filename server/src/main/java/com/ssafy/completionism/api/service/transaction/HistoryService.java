@@ -46,7 +46,9 @@ public class HistoryService {
             outcomeSum += history.getSpend();
         }
         log.debug("[기간조회 서비스] in = {}, out = {}", incomeSum, outcomeSum);
-        log.debug("[기간조회 서비스] list = {}", list.get(0).getFeel());
+        if(list.size() > 0) {
+            log.debug("[기간조회 서비스] list = {}", list.get(0).getFeel());
+        }
         return getHistoryListResponse(cond, list, incomeSum, outcomeSum);
     }
 

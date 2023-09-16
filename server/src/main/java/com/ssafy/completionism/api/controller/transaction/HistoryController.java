@@ -48,7 +48,9 @@ public class HistoryController {
 
         HistoryListResponse response = historyService.getHistoryListUsingPeriod(loginId, cond);
 
-        log.debug("[기간별 +- 조회] Controller. res = {}", response.getDay().get(0).getDay());
+        if(response.getDay().size() > 0) {
+            log.debug("[기간별 +- 조회] Controller. res = {}", response.getDay().get(0).getDay());
+        }
         return ApiResponse.ok(response);
     }
 
