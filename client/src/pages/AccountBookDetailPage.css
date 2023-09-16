@@ -57,6 +57,9 @@
     align-items: center;
 }
 
+.modal-flex-container{
+    display: flex;
+}
 
 .transaction-item-container-contain-diary{
     display: inline-block;
@@ -93,4 +96,6 @@
     border-style: none;
     width: 5rem;
     border-radius: 0.6rem;
+    margin: 0.3rem;
+
 }
