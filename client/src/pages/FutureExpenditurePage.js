@@ -42,6 +42,8 @@ const FutureExpenditurePage = () => {
   //   </button>
   // );
 
+  useEffect(() => {}, [futureScheduleId]);
+
   useEffect(() => {
     loadData();
   }, [useAxios]);
@@ -103,7 +105,6 @@ const FutureExpenditurePage = () => {
   };
 
   const deleteData = async (id) => {
-    console.log("id: ", id);
     // 로컬 스토리지에서 엑세스 토큰 가져오기
     const accessToken = localStorage.getItem("accessToken");
 
@@ -124,8 +125,9 @@ const FutureExpenditurePage = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setFutureScheduleId(id);
   };
 
   const openModal = () => {
@@ -200,11 +202,6 @@ const FutureExpenditurePage = () => {
             setAnchorEl(null);
           };
 
-          const deleteFutureItem = () => {
-            deleteData(item.id);
-            setUseAxios(!useAxios);
-          };
-
           if (item.date.slice(0, 7) === selectedYearAndMonth.slice(0, 7)) {
             return (
               <div className="future-item-container">
@@ -221,7 +218,15 @@ const FutureExpenditurePage = () => {
                   <div className="future-item-cost-container">{item.cost}원</div>
 
                   <div className="future-item-info-container">
-                    <Button id="fade-button" aria-controls={open ? "fade-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
+                    <Button
+                      id="fade-button"
+                      aria-controls={open ? "fade-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      onClick={(e) => {
+                        handleClick(e, item.id);
+                      }}
+                    >
                       <MoreVertRoundedIcon sx={{ color: "#696969" }} />
                     </Button>
                     <Menu
@@ -235,11 +240,8 @@ const FutureExpenditurePage = () => {
                       TransitionComponent={Fade}
                       elevation={2}
                     >
-                      {/* <MenuItem onClick={deleteFutureItem}>삭제</MenuItem> */}
                       <MenuItem
                         onClick={() => {
-                          console.log(item.id);
-                          setFutureScheduleId(item.id);
                           deleteData(futureScheduleId);
                           setUseAxios(!useAxios);
                         }}
@@ -250,16 +252,6 @@ const FutureExpenditurePage = () => {
                     </Menu>
                   </div>
                 </div>
-                {/* <div className="test-container"></div>
-                id: {item.id}|{item.date}|{item.todo}|{item.cost}|{item.plus}
-                <button
-                  onClick={() => {
-                    deleteData(item.id);
-                    setUseAxios(!useAxios);
-                  }}
-                >
-                  삭제
-                </button> */}
               </div>
             );
           }
