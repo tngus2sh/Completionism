@@ -1,2 +1,2 @@
-# Completionism
-SSAFY 신한 해커톤
+# 미래를 메모하는 다이어리, 메모리
+2023 신한 X SSAFY 해커톤
